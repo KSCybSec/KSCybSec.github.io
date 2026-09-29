@@ -1,33 +1,16 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description" content="KSCybSec — Cybersecurity, OSINT, SOC, investigations, projects and field notes.">
-    <meta name="author" content="KSCybSec">
+    <title>KSCybSec | Cybersecurity Without the Blah Blah</title>
 
-    <title>KSCybSec | Cybersecurity Field Lab</title>
+    <meta name="description"
+          content="KSCybSec — simple, practical cybersecurity guides for beginners. Learn OSINT, SOC, networking, Linux, Windows and cybersecurity fundamentals without the blah blah.">
 
     <style>
-        /* =========================
-           GLOBAL
-        ========================= */
-
-        :root {
-            --bg: #080a0f;
-            --panel: #0e1118;
-            --panel-light: #141923;
-            --border: #242b38;
-            --text: #e8edf5;
-            --muted: #8b95a7;
-            --accent: #64d8cb;
-            --accent-soft: rgba(100, 216, 203, 0.10);
-            --blue: #7aa7ff;
-            --danger: #ff7b7b;
-            --grid: rgba(255,255,255,0.025);
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -39,11 +22,10 @@
         }
 
         body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: Arial, Helvetica, sans-serif;
-            line-height: 1.6;
-            overflow-x: hidden;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #080b10;
+            color: #d7dde7;
+            line-height: 1.7;
         }
 
         a {
@@ -51,186 +33,175 @@
             text-decoration: none;
         }
 
-        .mono {
-            font-family: "Courier New", Courier, monospace;
-        }
-
-        /* =========================
-           BACKGROUND
-        ========================= */
-
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            background-image:
-                linear-gradient(var(--grid) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-            background-size: 40px 40px;
-            mask-image: linear-gradient(to bottom, black, transparent 85%);
-            z-index: -1;
+        .container {
+            width: 90%;
+            max-width: 1150px;
+            margin: auto;
         }
 
         /* =========================
            NAVBAR
-        ========================= */
+        ========================== */
 
         nav {
             position: sticky;
             top: 0;
-            z-index: 100;
-            backdrop-filter: blur(14px);
-            background: rgba(8, 10, 15, 0.82);
-            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            background: rgba(8, 11, 16, 0.94);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #1b2430;
         }
 
         .nav-inner {
-            max-width: 1150px;
-            margin: auto;
-            padding: 18px 25px;
+            height: 70px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
         .logo {
-            font-family: "Courier New", monospace;
+            font-family: monospace;
+            font-size: 1.35rem;
             font-weight: bold;
-            font-size: 1.15rem;
             letter-spacing: 1px;
+            color: #ffffff;
         }
 
         .logo span {
-            color: var(--accent);
+            color: #6ee7b7;
         }
 
         .nav-links {
             display: flex;
-            gap: 25px;
-            font-size: 0.9rem;
-            color: var(--muted);
+            gap: 28px;
+            list-style: none;
+            font-size: 0.95rem;
         }
 
         .nav-links a {
-            transition: 0.2s ease;
+            color: #9da8b7;
+            transition: 0.2s;
         }
 
         .nav-links a:hover {
-            color: var(--accent);
+            color: #6ee7b7;
         }
 
         /* =========================
            HERO
-        ========================= */
+        ========================== */
 
         .hero {
-            max-width: 1150px;
-            margin: auto;
-            min-height: 88vh;
-            padding: 100px 25px 70px;
+            min-height: 78vh;
             display: flex;
             align-items: center;
+            padding: 80px 0;
         }
 
         .hero-grid {
-            width: 100%;
             display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 60px;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 70px;
             align-items: center;
         }
 
         .eyebrow {
-            color: var(--accent);
-            font-size: 0.8rem;
-            letter-spacing: 3px;
+            font-family: monospace;
+            color: #6ee7b7;
+            font-size: 0.9rem;
             margin-bottom: 18px;
         }
 
         .hero h1 {
-            font-size: clamp(3rem, 7vw, 6rem);
-            line-height: 0.95;
-            letter-spacing: -4px;
+            font-size: clamp(2.8rem, 6vw, 5.2rem);
+            line-height: 1.05;
+            color: #ffffff;
+            letter-spacing: -2px;
             margin-bottom: 25px;
         }
 
         .hero h1 span {
-            color: var(--accent);
+            color: #6ee7b7;
         }
 
         .hero-description {
             max-width: 650px;
-            color: var(--muted);
-            font-size: 1.05rem;
-            margin-bottom: 35px;
+            color: #9da8b7;
+            font-size: 1.12rem;
+            margin-bottom: 32px;
         }
 
         .hero-buttons {
             display: flex;
-            gap: 12px;
+            gap: 15px;
             flex-wrap: wrap;
         }
 
-        .button {
+        .btn {
+            display: inline-block;
             padding: 12px 20px;
-            border: 1px solid var(--border);
+            border: 1px solid #2b3948;
             border-radius: 6px;
-            font-family: "Courier New", monospace;
-            font-size: 0.85rem;
-            transition: 0.25s ease;
+            font-size: 0.92rem;
+            transition: 0.2s;
         }
 
-        .button.primary {
-            background: var(--accent);
-            color: #07100f;
-            border-color: var(--accent);
-            font-weight: bold;
+        .btn-primary {
+            background: #6ee7b7;
+            color: #07100c;
+            border-color: #6ee7b7;
+            font-weight: 600;
         }
 
-        .button:hover {
-            transform: translateY(-2px);
-            border-color: var(--accent);
+        .btn-primary:hover {
+            opacity: 0.85;
+        }
+
+        .btn-secondary:hover {
+            border-color: #6ee7b7;
+            color: #6ee7b7;
         }
 
         /* =========================
            TERMINAL
-        ========================= */
+        ========================== */
 
         .terminal {
-            background: var(--panel);
-            border: 1px solid var(--border);
+            background: #0c1118;
+            border: 1px solid #253140;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
         }
 
         .terminal-header {
-            padding: 12px 15px;
-            border-bottom: 1px solid var(--border);
+            height: 42px;
             display: flex;
             align-items: center;
             gap: 7px;
+            padding: 0 15px;
+            border-bottom: 1px solid #202a36;
+            background: #0a0f15;
         }
 
         .dot {
             width: 9px;
             height: 9px;
             border-radius: 50%;
-            background: var(--border);
+            background: #394554;
         }
 
         .terminal-title {
             margin-left: 8px;
-            color: var(--muted);
-            font-size: 0.75rem;
+            font-family: monospace;
+            font-size: 0.78rem;
+            color: #697687;
         }
 
         .terminal-body {
             padding: 25px;
-            font-family: "Courier New", monospace;
-            font-size: 0.82rem;
-            min-height: 280px;
+            font-family: monospace;
+            font-size: 0.88rem;
         }
 
         .terminal-line {
@@ -238,287 +209,292 @@
         }
 
         .prompt {
-            color: var(--accent);
+            color: #6ee7b7;
+        }
+
+        .command {
+            color: #ffffff;
         }
 
         .output {
-            color: var(--muted);
-            padding-left: 15px;
-        }
-
-        .status {
-            color: var(--blue);
+            color: #7e8b9c;
+            padding-left: 18px;
         }
 
         /* =========================
            SECTION
-        ========================= */
+        ========================== */
 
         section {
-            max-width: 1150px;
-            margin: auto;
-            padding: 100px 25px;
+            padding: 95px 0;
         }
 
-        .section-header {
-            display: flex;
-            align-items: end;
-            justify-content: space-between;
-            gap: 30px;
-            margin-bottom: 35px;
-        }
-
-        .section-number {
-            color: var(--accent);
-            font-family: "Courier New", monospace;
+        .section-label {
+            font-family: monospace;
+            color: #6ee7b7;
             font-size: 0.8rem;
-            margin-bottom: 8px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
         }
 
-        .section-header h2 {
+        .section-title {
             font-size: 2.3rem;
-            letter-spacing: -1px;
+            color: #ffffff;
+            margin-bottom: 12px;
         }
 
-        .section-header p {
-            color: var(--muted);
-            max-width: 500px;
+        .section-description {
+            color: #8995a5;
+            max-width: 650px;
+            margin-bottom: 45px;
         }
 
         /* =========================
-           FIELD NOTES
-        ========================= */
+           START HERE
+        ========================== */
 
-        .cards {
+        .start-box {
+            border: 1px solid #263342;
+            background: #0c1118;
+            border-radius: 10px;
+            padding: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .start-box h3 {
+            color: #ffffff;
+            font-size: 1.35rem;
+            margin-bottom: 8px;
+        }
+
+        .start-box p {
+            color: #8995a5;
+            max-width: 700px;
+        }
+
+        /* =========================
+           LEARNING AREAS
+        ========================== */
+
+        .learning-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 18px;
         }
 
-        .card {
-            background: var(--panel);
-            border: 1px solid var(--border);
+        .learning-card {
+            background: #0c1118;
+            border: 1px solid #202b38;
             border-radius: 9px;
-            padding: 25px;
-            position: relative;
-            transition: 0.25s ease;
+            padding: 27px;
+            transition: 0.25s;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: #3d485a;
-            background: var(--panel-light);
+        .learning-card:hover {
+            transform: translateY(-4px);
+            border-color: #425365;
         }
 
-        .card-tag {
-            color: var(--accent);
-            font-family: "Courier New", monospace;
-            font-size: 0.7rem;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
+        .card-number {
+            font-family: monospace;
+            color: #566476;
+            font-size: 0.8rem;
+            margin-bottom: 18px;
         }
 
-        .card h3 {
-            font-size: 1.25rem;
-            margin-bottom: 10px;
+        .learning-card h3 {
+            color: #ffffff;
+            margin-bottom: 8px;
+            font-size: 1.15rem;
         }
 
-        .card p {
-            color: var(--muted);
-            font-size: 0.9rem;
+        .learning-card p {
+            color: #8591a1;
+            font-size: 0.92rem;
         }
 
-        .card-footer {
-            margin-top: 25px;
-            padding-top: 15px;
-            border-top: 1px solid var(--border);
-            color: var(--muted);
-            font-family: "Courier New", monospace;
-            font-size: 0.72rem;
+        .card-link {
+            display: inline-block;
+            margin-top: 18px;
+            color: #6ee7b7;
+            font-family: monospace;
+            font-size: 0.82rem;
         }
 
         /* =========================
-           CASE FILE
-        ========================= */
+           LATEST ARTICLES
+        ========================== */
 
-        .case-file {
+        .articles {
             display: grid;
-            grid-template-columns: 0.8fr 1.2fr;
-            gap: 25px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
         }
 
-        .case-meta {
-            background: var(--panel);
-            border: 1px solid var(--border);
+        .article-card {
+            border: 1px solid #202b38;
+            background: #0c1118;
             border-radius: 9px;
-            padding: 30px;
+            padding: 27px;
+            transition: 0.25s;
         }
 
-        .case-label {
-            color: var(--muted);
-            font-size: 0.7rem;
-            font-family: "Courier New", monospace;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 20px;
+        .article-card:hover {
+            border-color: #425365;
+            transform: translateY(-3px);
         }
 
-        .case-value {
-            margin-top: 5px;
-            font-family: "Courier New", monospace;
-            color: var(--text);
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #647183;
+            font-family: monospace;
+            font-size: 0.75rem;
+            margin-bottom: 20px;
         }
 
-        .case-status {
-            color: var(--accent);
+        .article-card h3 {
+            color: #ffffff;
+            font-size: 1.2rem;
+            line-height: 1.4;
+            margin-bottom: 12px;
         }
 
-        .case-content {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: 9px;
-            padding: 35px;
-        }
-
-        .case-content h3 {
-            font-size: 1.7rem;
-            margin-bottom: 15px;
-        }
-
-        .case-content p {
-            color: var(--muted);
-            margin-bottom: 25px;
+        .article-card p {
+            color: #8793a2;
+            font-size: 0.9rem;
         }
 
         .read-more {
             display: inline-block;
-            color: var(--accent);
-            font-family: "Courier New", monospace;
-            font-size: 0.85rem;
+            margin-top: 20px;
+            color: #6ee7b7;
+            font-size: 0.88rem;
         }
 
         /* =========================
-           CONNECTION MAP
-        ========================= */
+           CASE FILES
+        ========================== */
 
-        .connection-map {
-            min-height: 350px;
-            border: 1px solid var(--border);
+        .case-files {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .case {
+            border: 1px solid #202b38;
+            background: #0c1118;
             border-radius: 9px;
-            background: var(--panel);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
+            padding: 28px;
         }
 
-        .connection-map::before {
-            content: "";
-            position: absolute;
-            width: 500px;
-            height: 1px;
-            background: var(--border);
-            transform: rotate(20deg);
+        .case-status {
+            display: inline-block;
+            font-family: monospace;
+            font-size: 0.72rem;
+            color: #6ee7b7;
+            border: 1px solid #28483d;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-bottom: 17px;
         }
 
-        .connection-map::after {
-            content: "";
-            position: absolute;
-            width: 500px;
-            height: 1px;
-            background: var(--border);
-            transform: rotate(-20deg);
+        .case h3 {
+            color: #ffffff;
+            margin-bottom: 8px;
         }
 
-        .node {
-            position: absolute;
-            padding: 14px 20px;
-            border: 1px solid var(--border);
-            background: var(--panel-light);
-            border-radius: 6px;
-            font-family: "Courier New", monospace;
-            font-size: 0.78rem;
-            z-index: 2;
+        .case p {
+            color: #8793a2;
+            font-size: 0.9rem;
         }
 
-        .node.main {
-            border-color: var(--accent);
-            color: var(--accent);
+        /* =========================
+           PHILOSOPHY
+        ========================== */
+
+        .philosophy {
+            border-top: 1px solid #1d2733;
+            border-bottom: 1px solid #1d2733;
+            text-align: center;
+            padding: 100px 20px;
         }
 
-        .node.one {
-            top: 22%;
-            left: 15%;
+        .philosophy blockquote {
+            max-width: 800px;
+            margin: auto;
+            color: #ffffff;
+            font-size: clamp(1.7rem, 4vw, 3rem);
+            line-height: 1.25;
+            letter-spacing: -1px;
         }
 
-        .node.two {
-            top: 22%;
-            right: 15%;
+        .philosophy blockquote span {
+            color: #6ee7b7;
         }
 
-        .node.three {
-            bottom: 20%;
-            left: 18%;
-        }
-
-        .node.four {
-            bottom: 20%;
-            right: 18%;
-        }
-
-        .node.main {
-            top: 42%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        .philosophy p {
+            color: #6e7b8c;
+            margin-top: 25px;
         }
 
         /* =========================
            ABOUT
-        ========================= */
+        ========================== */
 
-        .about {
+        .about-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 60px;
-            align-items: center;
         }
 
-        .about h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
+        .about-text p {
+            color: #8c98a8;
+            margin-bottom: 18px;
         }
 
-        .about p {
-            color: var(--muted);
-            margin-bottom: 15px;
+        .about-terminal {
+            background: #0c1118;
+            border: 1px solid #202b38;
+            border-radius: 9px;
+            padding: 25px;
+            font-family: monospace;
+            font-size: 0.85rem;
         }
 
-        .quote {
-            border-left: 2px solid var(--accent);
-            padding-left: 20px;
-            color: var(--text);
-            font-family: "Courier New", monospace;
-            font-size: 1rem;
+        .about-terminal div {
+            margin-bottom: 12px;
+        }
+
+        .key {
+            color: #6ee7b7;
+        }
+
+        .value {
+            color: #c5ccd6;
         }
 
         /* =========================
            FOOTER
-        ========================= */
+        ========================== */
 
         footer {
-            border-top: 1px solid var(--border);
-            padding: 35px 25px;
+            border-top: 1px solid #1d2733;
+            padding: 35px 0;
+            color: #647183;
+            font-size: 0.85rem;
         }
 
         .footer-inner {
-            max-width: 1150px;
-            margin: auto;
             display: flex;
             justify-content: space-between;
+            align-items: center;
             gap: 20px;
-            color: var(--muted);
-            font-size: 0.8rem;
         }
 
         .footer-links {
@@ -527,12 +503,12 @@
         }
 
         .footer-links a:hover {
-            color: var(--accent);
+            color: #6ee7b7;
         }
 
         /* =========================
            MOBILE
-        ========================= */
+        ========================== */
 
         @media (max-width: 850px) {
 
@@ -541,53 +517,35 @@
             }
 
             .hero {
-                padding-top: 70px;
+                padding: 60px 0;
             }
 
             .hero-grid,
-            .case-file,
-            .about {
+            .about-grid {
                 grid-template-columns: 1fr;
             }
 
-            .cards {
+            .learning-grid,
+            .articles {
                 grid-template-columns: 1fr;
+            }
+
+            .case-files {
+                grid-template-columns: 1fr;
+            }
+
+            .start-box {
+                flex-direction: column;
+                align-items: flex-start;
             }
 
             .hero h1 {
-                letter-spacing: -2px;
-            }
-
-            .section-header {
-                display: block;
-            }
-
-            .section-header p {
-                margin-top: 15px;
-            }
-
-            .connection-map {
-                min-height: 300px;
-            }
-
-            .node.one {
-                left: 5%;
-            }
-
-            .node.two {
-                right: 5%;
-            }
-
-            .node.three {
-                left: 5%;
-            }
-
-            .node.four {
-                right: 5%;
+                font-size: 3rem;
             }
 
             .footer-inner {
                 flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
@@ -595,439 +553,632 @@
 
 <body>
 
-    <!-- =========================
-         NAVIGATION
-    ========================== -->
+<!-- =========================
+     NAVIGATION
+========================== -->
 
-    <nav>
-        <div class="nav-inner">
+<nav>
+    <div class="container nav-inner">
 
-            <a href="#" class="logo">
-                KS<span>CybSec</span>
-            </a>
+        <a href="#" class="logo">
+            KS<span>CybSec</span>
+        </a>
 
-            <div class="nav-links">
-                <a href="#field-notes">Field Notes</a>
-                <a href="#case-files">Case Files</a>
-                <a href="#projects">Projects</a>
-                <a href="#about">About</a>
+        <ul class="nav-links">
+            <li><a href="#learn">Learn</a></li>
+            <li><a href="#articles">Articles</a></li>
+            <li><a href="#cases">Case Files</a></li>
+            <li><a href="#about">About</a></li>
+        </ul>
+
+    </div>
+</nav>
+
+
+<!-- =========================
+     HERO
+========================== -->
+
+<header class="hero">
+
+    <div class="container hero-grid">
+
+        <div>
+
+            <div class="eyebrow">
+                KSCYBSEC / CYBERSECURITY LEARNING LAB
             </div>
 
-        </div>
-    </nav>
+            <h1>
+                Cybersecurity<br>
+                <span>without the blah blah.</span>
+            </h1>
 
-
-    <!-- =========================
-         HERO
-    ========================== -->
-
-    <header class="hero">
-
-        <div class="hero-grid">
-
-            <div>
-
-                <div class="eyebrow mono">
-                    CYBERSECURITY / OSINT / SOC
-                </div>
-
-                <h1>
-                    Every investigation<br>
-                    starts with a <span>question.</span>
-                </h1>
-
-                <p class="hero-description">
-                    KSCybSec is a cybersecurity field lab where I document
-                    investigations, security concepts, hands-on learning,
-                    projects and the things I discover along the way.
-                </p>
-
-                <div class="hero-buttons">
-                    <a href="#field-notes" class="button primary">
-                        ENTER THE LAB →
-                    </a>
-
-                    <a href="#about" class="button">
-                        ABOUT KSCybSec
-                    </a>
-                </div>
-
-            </div>
-
-
-            <!-- TERMINAL -->
-
-            <div class="terminal">
-
-                <div class="terminal-header">
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-
-                    <div class="terminal-title mono">
-                        kscybsec@field-lab
-                    </div>
-                </div>
-
-                <div class="terminal-body">
-
-                    <div class="terminal-line">
-                        <span class="prompt">$</span>
-                        whoami
-                    </div>
-
-                    <div class="terminal-line output">
-                        KSCybSec
-                    </div>
-
-                    <div class="terminal-line">
-                        <span class="prompt">$</span>
-                        focus
-                    </div>
-
-                    <div class="terminal-line output">
-                        OSINT / SOC / Cybersecurity
-                    </div>
-
-                    <div class="terminal-line">
-                        <span class="prompt">$</span>
-                        status
-                    </div>
-
-                    <div class="terminal-line output status">
-                        [ ACTIVE ] — continuously learning
-                    </div>
-
-                    <div class="terminal-line">
-                        <span class="prompt">$</span>
-                        mission
-                    </div>
-
-                    <div class="terminal-line output">
-                        Learn → Investigate → Document
-                    </div>
-
-                    <div class="terminal-line">
-                        <span class="prompt">$</span>
-                        _
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </header>
-
-
-    <!-- =========================
-         FIELD NOTES
-    ========================== -->
-
-    <section id="field-notes">
-
-        <div class="section-header">
-
-            <div>
-                <div class="section-number">
-                    01 / FIELD NOTES
-                </div>
-
-                <h2>Things worth investigating.</h2>
-            </div>
-
-            <p>
-                Practical notes from cybersecurity learning,
-                investigations and hands-on experiments.
+            <p class="hero-description">
+                Simple explanations. Practical examples. Useful tools.
+                Learn cybersecurity concepts without getting buried in unnecessary jargon.
             </p>
 
-        </div>
+            <div class="hero-buttons">
+                <a href="#articles" class="btn btn-primary">
+                    Start Learning →
+                </a>
 
-
-        <div class="cards">
-
-            <a href="#" class="card">
-
-                <div class="card-tag">
-                    OSINT / NOTE_001
-                </div>
-
-                <h3>
-                    Following Digital Footprints
-                </h3>
-
-                <p>
-                    How small pieces of publicly available information
-                    can become meaningful when properly connected and verified.
-                </p>
-
-                <div class="card-footer">
-                    READ NOTE →
-                </div>
-
-            </a>
-
-
-            <a href="#" class="card">
-
-                <div class="card-tag">
-                    SOC / NOTE_002
-                </div>
-
-                <h3>
-                    Understanding Alert Triage
-                </h3>
-
-                <p>
-                    A beginner-friendly look at what happens when
-                    a security alert reaches a SOC analyst.
-                </p>
-
-                <div class="card-footer">
-                    READ NOTE →
-                </div>
-
-            </a>
-
-
-            <a href="#" class="card">
-
-                <div class="card-tag">
-                    NETWORK / NOTE_003
-                </div>
-
-                <h3>
-                    What Nmap Actually Reveals
-                </h3>
-
-                <p>
-                    Moving beyond simply seeing open ports and learning
-                    how scan results become useful security information.
-                </p>
-
-                <div class="card-footer">
-                    READ NOTE →
-                </div>
-
-            </a>
+                <a href="#learn" class="btn btn-secondary">
+                    Explore Topics
+                </a>
+            </div>
 
         </div>
 
-    </section>
+
+        <!-- TERMINAL -->
+
+        <div class="terminal">
+
+            <div class="terminal-header">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+
+                <span class="terminal-title">
+                    kscybsec@lab:~
+                </span>
+            </div>
+
+            <div class="terminal-body">
+
+                <div class="terminal-line">
+                    <span class="prompt">$</span>
+                    <span class="command">start-learning</span>
+                </div>
+
+                <div class="terminal-line output">
+                    Initializing learning environment...
+                </div>
+
+                <div class="terminal-line output">
+                    ✓ Fundamentals
+                </div>
+
+                <div class="terminal-line output">
+                    ✓ OSINT
+                </div>
+
+                <div class="terminal-line output">
+                    ✓ SOC
+                </div>
+
+                <div class="terminal-line output">
+                    ✓ Networking
+                </div>
+
+                <div class="terminal-line output">
+                    ✓ Linux & Windows
+                </div>
+
+                <div class="terminal-line">
+                    <span class="prompt">$</span>
+                    <span class="command">learn --no-blah-blah</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
 
 
-    <!-- =========================
-         CASE FILE
-    ========================== -->
+<!-- =========================
+     START HERE
+========================== -->
 
-    <section id="case-files">
+<section>
 
-        <div class="section-header">
+    <div class="container">
+
+        <div class="section-label">
+            / START HERE
+        </div>
+
+        <h2 class="section-title">
+            New to cybersecurity?
+        </h2>
+
+        <p class="section-description">
+            Don't know where to begin? Start with the basics and build
+            your knowledge one concept at a time.
+        </p>
+
+
+        <div class="start-box">
 
             <div>
-                <div class="section-number">
-                    02 / CASE FILES
-                </div>
-
-                <h2>Investigations & write-ups.</h2>
-            </div>
-
-            <p>
-                CTFs, OSINT investigations and practical
-                cybersecurity exercises documented as case files.
-            </p>
-
-        </div>
-
-
-        <div class="case-file">
-
-            <div class="case-meta">
-
-                <div class="case-label">
-                    Case
-                </div>
-
-                <div class="case-value">
-                    #001
-                </div>
-
-                <div class="case-label">
-                    Category
-                </div>
-
-                <div class="case-value">
-                    OSINT
-                </div>
-
-                <div class="case-label">
-                    Status
-                </div>
-
-                <div class="case-value case-status">
-                    SOLVED
-                </div>
-
-                <div class="case-label">
-                    Method
-                </div>
-
-                <div class="case-value">
-                    Research / Verification
-                </div>
-
-            </div>
-
-
-            <div class="case-content">
-
-                <div class="card-tag">
-                    INVESTIGATION LOG
-                </div>
-
                 <h3>
-                    The First Digital Footprint
+                    Begin with Cybersecurity Fundamentals
                 </h3>
 
                 <p>
-                    Every investigation begins with a starting point.
-                    This case explores how publicly available clues can
-                    be collected, cross-referenced and verified without
-                    relying on assumptions.
+                    Understand the core ideas first — then move into
+                    OSINT, SOC, networking, Linux and practical investigations.
+                </p>
+            </div>
+
+            <a href="#learn" class="btn btn-primary">
+                Start Here →
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     LEARNING AREAS
+========================== -->
+
+<section id="learn">
+
+    <div class="container">
+
+        <div class="section-label">
+            / LEARNING AREAS
+        </div>
+
+        <h2 class="section-title">
+            What do you want to learn?
+        </h2>
+
+        <p class="section-description">
+            Choose a topic and learn it through simple explanations,
+            examples and practical techniques.
+        </p>
+
+
+        <div class="learning-grid">
+
+            <div class="learning-card">
+
+                <div class="card-number">01 / OSINT</div>
+
+                <h3>
+                    Open Source Intelligence
+                </h3>
+
+                <p>
+                    Learn how investigators find, verify and connect
+                    publicly available information.
+                </p>
+
+                <a href="#" class="card-link">
+                    Explore OSINT →
+                </a>
+
+            </div>
+
+
+            <div class="learning-card">
+
+                <div class="card-number">02 / SOC</div>
+
+                <h3>
+                    Security Operations
+                </h3>
+
+                <p>
+                    Understand alerts, logs, incidents, triage,
+                    monitoring and the fundamentals of SOC work.
+                </p>
+
+                <a href="#" class="card-link">
+                    Explore SOC →
+                </a>
+
+            </div>
+
+
+            <div class="learning-card">
+
+                <div class="card-number">03 / NETWORKS</div>
+
+                <h3>
+                    Networking
+                </h3>
+
+                <p>
+                    Learn IP addresses, ports, protocols, TCP,
+                    UDP, DNS and network enumeration.
+                </p>
+
+                <a href="#" class="card-link">
+                    Explore Networking →
+                </a>
+
+            </div>
+
+
+            <div class="learning-card">
+
+                <div class="card-number">04 / LINUX</div>
+
+                <h3>
+                    Linux for Cybersecurity
+                </h3>
+
+                <p>
+                    Learn useful Linux commands and concepts
+                    commonly used in cybersecurity.
+                </p>
+
+                <a href="#" class="card-link">
+                    Explore Linux →
+                </a>
+
+            </div>
+
+
+            <div class="learning-card">
+
+                <div class="card-number">05 / WINDOWS</div>
+
+                <h3>
+                    Windows Security
+                </h3>
+
+                <p>
+                    Understand Windows commands, users, processes,
+                    networking and basic security investigation.
+                </p>
+
+                <a href="#" class="card-link">
+                    Explore Windows →
+                </a>
+
+            </div>
+
+
+            <div class="learning-card">
+
+                <div class="card-number">06 / FUNDAMENTALS</div>
+
+                <h3>
+                    Cybersecurity Basics
+                </h3>
+
+                <p>
+                    Build the foundation: threats, vulnerabilities,
+                    authentication, encryption and security principles.
+                </p>
+
+                <a href="#" class="card-link">
+                    Explore Basics →
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     LATEST ARTICLES
+========================== -->
+
+<section id="articles">
+
+    <div class="container">
+
+        <div class="section-label">
+            / LATEST ARTICLES
+        </div>
+
+        <h2 class="section-title">
+            Learn something new.
+        </h2>
+
+        <p class="section-description">
+            Short, practical guides designed to help you understand
+            a concept and actually use it.
+        </p>
+
+
+        <div class="articles">
+
+            <!-- ARTICLE 1 -->
+
+            <article class="article-card">
+
+                <div class="article-meta">
+                    <span>OSINT</span>
+                    <span>BEGINNER</span>
+                </div>
+
+                <h3>
+                    What Is OSINT? A Beginner's Guide to Open Source Intelligence
+                </h3>
+
+                <p>
+                    What OSINT really means, how investigations work,
+                    common techniques, useful tools and how to verify findings.
                 </p>
 
                 <a href="#" class="read-more">
-                    OPEN CASE FILE →
+                    Read article →
+                </a>
+
+            </article>
+
+
+            <!-- ARTICLE 2 -->
+
+            <article class="article-card">
+
+                <div class="article-meta">
+                    <span>NETWORKING</span>
+                    <span>BEGINNER</span>
+                </div>
+
+                <h3>
+                    TCP vs UDP: What's the Difference?
+                </h3>
+
+                <p>
+                    Understand TCP and UDP without getting lost
+                    in networking terminology.
+                </p>
+
+                <a href="#" class="read-more">
+                    Coming soon →
+                </a>
+
+            </article>
+
+
+            <!-- ARTICLE 3 -->
+
+            <article class="article-card">
+
+                <div class="article-meta">
+                    <span>LINUX</span>
+                    <span>BEGINNER</span>
+                </div>
+
+                <h3>
+                    Linux Commands Every Cybersecurity Beginner Should Know
+                </h3>
+
+                <p>
+                    A practical collection of commands you can actually
+                    use while learning cybersecurity.
+                </p>
+
+                <a href="#" class="read-more">
+                    Coming soon →
+                </a>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     PHILOSOPHY
+========================== -->
+
+<section class="philosophy">
+
+    <blockquote>
+        "Every investigation starts with a question.
+        <span>Every skill starts with understanding.</span>"
+    </blockquote>
+
+    <p>
+        Learn the concept. Understand the reason. Then try it yourself.
+    </p>
+
+</section>
+
+
+<!-- =========================
+     CASE FILES
+========================== -->
+
+<section id="cases">
+
+    <div class="container">
+
+        <div class="section-label">
+            / CASE FILES
+        </div>
+
+        <h2 class="section-title">
+            Learn from real investigations.
+        </h2>
+
+        <p class="section-description">
+            Practical write-ups, investigations and lab experiences —
+            focused on what was learned, not just the final answer.
+        </p>
+
+
+        <div class="case-files">
+
+            <div class="case">
+
+                <span class="case-status">
+                    COMPLETED
+                </span>
+
+                <h3>
+                    OSINT Investigation
+                </h3>
+
+                <p>
+                    A practical investigation showing how publicly
+                    available clues can be connected and verified.
+                </p>
+
+                <a href="#" class="read-more">
+                    Case file →
+                </a>
+
+            </div>
+
+
+            <div class="case">
+
+                <span class="case-status">
+                    FIELD NOTES
+                </span>
+
+                <h3>
+                    SOC Learning Notes
+                </h3>
+
+                <p>
+                    Practical notes from learning alert triage,
+                    incident reporting and SOC fundamentals.
+                </p>
+
+                <a href="#" class="read-more">
+                    View notes →
                 </a>
 
             </div>
 
         </div>
 
-    </section>
+    </div>
+
+</section>
 
 
-    <!-- =========================
-         PROJECTS / CONNECTION MAP
-    ========================== -->
+<!-- =========================
+     ABOUT
+========================== -->
 
-    <section id="projects">
+<section id="about">
 
-        <div class="section-header">
+    <div class="container">
 
-            <div>
-                <div class="section-number">
-                    03 / THE LAB
+        <div class="about-grid">
+
+            <div class="about-text">
+
+                <div class="section-label">
+                    / ABOUT KSCYBSEC
                 </div>
 
-                <h2>Where the pieces connect.</h2>
-            </div>
-
-            <p>
-                Cybersecurity isn't one isolated skill.
-                Different areas connect to form the bigger picture.
-            </p>
-
-        </div>
-
-
-        <div class="connection-map">
-
-            <div class="node one">
-                OSINT
-            </div>
-
-            <div class="node two">
-                SOC
-            </div>
-
-            <div class="node three">
-                NETWORKS
-            </div>
-
-            <div class="node four">
-                LINUX
-            </div>
-
-            <div class="node main">
-                CYBERSECURITY
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         ABOUT
-    ========================== -->
-
-    <section id="about">
-
-        <div class="about">
-
-            <div>
-
-                <div class="section-number">
-                    04 / ABOUT
-                </div>
-
-                <h2>
-                    Built while learning.
+                <h2 class="section-title">
+                    Learn. Investigate. Understand.
                 </h2>
 
                 <p>
-                    KSCybSec is a personal cybersecurity space focused
-                    on learning through investigation, documentation
-                    and hands-on practice.
+                    KSCybSec is a cybersecurity learning space built
+                    around one simple idea: cybersecurity concepts
+                    shouldn't have to be difficult to understand.
                 </p>
 
                 <p>
-                    The goal isn't to collect certificates or memorize
-                    tools. It's to understand how things work, investigate
-                    problems and document the process.
+                    The goal is to break down concepts into simple
+                    explanations, practical examples and useful
+                    resources — especially for people starting their
+                    cybersecurity journey.
+                </p>
+
+                <p>
+                    No unnecessary jargon. No endless theory.
+                    Just enough explanation to understand what is
+                    happening and why it matters.
                 </p>
 
             </div>
 
 
-            <div class="quote">
+            <div class="about-terminal">
 
-                "The interesting part isn't finding
-                the answer. It's understanding how
-                you got there."
+                <div>
+                    <span class="key">project:</span>
+                    <span class="value">KSCybSec</span>
+                </div>
+
+                <div>
+                    <span class="key">focus:</span>
+                    <span class="value">Cybersecurity Education</span>
+                </div>
+
+                <div>
+                    <span class="key">topics:</span>
+                    <span class="value">OSINT / SOC / Networks</span>
+                </div>
+
+                <div>
+                    <span class="key">approach:</span>
+                    <span class="value">Simple + Practical</span>
+                </div>
+
+                <div>
+                    <span class="key">philosophy:</span>
+                    <span class="value">Understand first.</span>
+                </div>
+
+                <div>
+                    <span class="key">status:</span>
+                    <span class="value">Learning & Building</span>
+                </div>
 
             </div>
 
         </div>
 
-    </section>
+    </div>
+
+</section>
 
 
-    <!-- =========================
-         FOOTER
-    ========================== -->
+<!-- =========================
+     FOOTER
+========================== -->
 
-    <footer>
+<footer>
 
-        <div class="footer-inner">
+    <div class="container footer-inner">
 
-            <div class="mono">
-                © 2026 KSCybSec
-            </div>
+        <div>
+            © 2026 KSCybSec
+        </div>
 
-            <div class="footer-links">
-                <a href="#">GitHub</a>
-                <a href="#">LinkedIn</a>
-                <a href="mailto:your-email@example.com">
-                    Contact
-                </a>
-            </div>
+        <div class="footer-links">
+
+            <a href="https://github.com/KSCybSec" target="_blank">
+                GitHub
+            </a>
+
+            <a href="#" target="_blank">
+                LinkedIn
+            </a>
+
+            <a href="mailto:your-email@example.com">
+                Contact
+            </a>
 
         </div>
 
-    </footer>
+    </div>
+
+</footer>
 
 </body>
 </html>
+```
