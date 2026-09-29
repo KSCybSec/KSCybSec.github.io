@@ -4,49 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>KSCybSec — Cybersecurity Knowledge Lab</title>
+    <title>KSCybSec — Cybersecurity, Explained Simply</title>
 
     <meta name="description"
-          content="KSCybSec is a cybersecurity knowledge lab covering OSINT, SOC, networking, Linux, Windows and cybersecurity fundamentals through practical explanations and investigations.">
-
-    <meta name="keywords"
-          content="cybersecurity, OSINT, SOC, networking, Linux, Windows, cybersecurity fundamentals, KSCybSec">
+        content="KSCybSec is a friendly cybersecurity learning blog covering OSINT, SOC, networking, Linux, Windows and cybersecurity fundamentals.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
 
     <style>
 
         /* =========================================================
-           KSCYBSEC — DIGITAL EVIDENCE / SIGNAL LAB
+           KSCYBSEC
+           FRIENDLY CYBERSECURITY BLOG
            ========================================================= */
 
         :root {
-            --paper: #f4f0e8;
-            --paper-light: #faf8f3;
+            --bg: #f7f8fb;
+            --surface: #ffffff;
+            --surface-soft: #eef2f7;
 
-            --ink: #171923;
-            --ink-soft: #292b38;
+            --navy: #101827;
+            --navy-2: #182338;
 
-            --muted: #777984;
-            --line: #d8d3c8;
+            --text: #151b27;
+            --muted: #687386;
+            --border: #dfe4eb;
 
-            --violet: #7567f8;
-            --violet-dark: #5c4fe0;
+            --cyan: #24b7d8;
+            --cyan-soft: #dff7fb;
 
-            --orange: #e58b5b;
-            --cyan: #55aeb5;
+            --coral: #ff705f;
+            --coral-soft: #fff0ed;
 
-            --white: #ffffff;
+            --purple: #8174f7;
+            --purple-soft: #eeebff;
 
             --mono: "DM Mono", monospace;
+            --body: "Inter", sans-serif;
             --display: "Space Grotesk", sans-serif;
 
-            --max-width: 1240px;
+            --max: 1180px;
         }
+
+
+        /* =========================================================
+           RESET
+           ========================================================= */
 
         * {
             margin: 0;
@@ -59,23 +66,11 @@
         }
 
         body {
-            background: var(--paper);
-            color: var(--ink);
-            font-family: var(--display);
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--body);
+            line-height: 1.6;
             overflow-x: hidden;
-        }
-
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            opacity: 0.25;
-            z-index: 999;
-            background-image:
-                radial-gradient(rgba(23,25,35,.12) 0.6px, transparent 0.6px);
-            background-size: 5px 5px;
-            mix-blend-mode: multiply;
         }
 
         a {
@@ -87,9 +82,60 @@
             font: inherit;
         }
 
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
         .container {
-            width: min(var(--max-width), calc(100% - 48px));
+            width: min(var(--max), calc(100% - 40px));
             margin: auto;
+        }
+
+
+        /* =========================================================
+           SUBTLE BACKGROUND
+           ========================================================= */
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -2;
+
+            background-image:
+                linear-gradient(
+                    rgba(16,24,39,.025) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(16,24,39,.025) 1px,
+                    transparent 1px
+                );
+
+            background-size: 40px 40px;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            right: -250px;
+            top: 100px;
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(36,183,216,.08),
+                    transparent 68%
+                );
+
+            pointer-events: none;
+            z-index: -1;
         }
 
 
@@ -97,95 +143,104 @@
            NAVIGATION
            ========================================================= */
 
-        nav {
-            height: 82px;
-            border-bottom: 1px solid var(--line);
-            display: flex;
-            align-items: center;
-            position: relative;
-            z-index: 20;
-            background: rgba(244, 240, 232, 0.88);
-            backdrop-filter: blur(12px);
+        .navbar {
+            height: 76px;
+            background: rgba(247,248,251,.88);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .nav-inner {
-            width: min(var(--max-width), calc(100% - 48px));
-            margin: auto;
+            height: 100%;
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
         }
 
-        .brand {
+        .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-weight: 700;
-            letter-spacing: -0.04em;
+            gap: 11px;
+
+            font-family: var(--display);
             font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -.04em;
         }
 
-        .brand-mark {
-            width: 28px;
-            height: 28px;
-            border: 1.5px solid var(--ink);
+        .logo-icon {
+            width: 31px;
+            height: 31px;
+            border-radius: 9px;
+
+            background: var(--navy);
             position: relative;
             overflow: hidden;
         }
 
-        .brand-mark::before {
+        .logo-icon::before {
             content: "";
             position: absolute;
-            width: 8px;
-            height: 8px;
-            background: var(--violet);
+
+            width: 13px;
+            height: 13px;
+
+            background: var(--cyan);
+            border-radius: 50%;
+
             left: 5px;
             top: 5px;
         }
 
-        .brand-mark::after {
+        .logo-icon::after {
             content: "";
             position: absolute;
-            width: 15px;
-            height: 1px;
-            background: var(--orange);
+
+            width: 16px;
+            height: 3px;
+
+            background: var(--coral);
+
             right: -2px;
-            bottom: 6px;
+            bottom: 7px;
+
             transform: rotate(-35deg);
         }
 
         .nav-links {
             display: flex;
-            align-items: center;
-            gap: 34px;
-            font-family: var(--mono);
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
+            gap: 30px;
 
-        .nav-links a {
-            position: relative;
+            font-size: 13px;
+            font-weight: 500;
             color: var(--muted);
         }
 
-        .nav-links a::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: -7px;
-            width: 0;
-            height: 1px;
-            background: var(--violet);
-            transition: width .3s ease;
+        .nav-links a {
+            transition: color .2s ease;
         }
 
         .nav-links a:hover {
-            color: var(--ink);
+            color: var(--text);
         }
 
-        .nav-links a:hover::after {
-            width: 100%;
+        .nav-cta {
+            padding: 9px 15px;
+
+            border: 1px solid var(--border);
+            border-radius: 8px;
+
+            background: var(--surface);
+
+            color: var(--text) !important;
+        }
+
+        .nav-cta:hover {
+            border-color: var(--cyan);
         }
 
 
@@ -194,544 +249,772 @@
            ========================================================= */
 
         .hero {
-            min-height: calc(100vh - 82px);
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
+            padding: 90px 0 100px;
         }
 
         .hero-grid {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            opacity: .55;
-
-            background-image:
-                linear-gradient(to right,
-                    transparent 0,
-                    transparent calc(50% - 1px),
-                    var(--line) 50%,
-                    transparent calc(50% + 1px)
-                ),
-                linear-gradient(var(--line) 1px, transparent 1px);
-
-            background-size: 100% 100%, 100% 90px;
-        }
-
-        .hero::after {
-            content: "";
-            position: absolute;
-            width: 650px;
-            height: 650px;
-            border-radius: 50%;
-            background: radial-gradient(
-                circle,
-                rgba(117,103,248,.13),
-                rgba(117,103,248,0) 70%
-            );
-            right: -200px;
-            top: 50%;
-            transform: translateY(-50%);
-            pointer-events: none;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
             display: grid;
             grid-template-columns: 1.1fr .9fr;
             gap: 70px;
             align-items: center;
         }
 
-        .hero-label {
-            display: flex;
+        .eyebrow {
+            display: inline-flex;
             align-items: center;
-            gap: 12px;
+            gap: 9px;
+
             font-family: var(--mono);
-            font-size: 11px;
-            letter-spacing: .12em;
+            font-size: 10px;
+            letter-spacing: .08em;
             color: var(--muted);
-            text-transform: uppercase;
-            margin-bottom: 30px;
+
+            margin-bottom: 22px;
         }
 
-        .hero-label span:first-child {
-            width: 8px;
-            height: 8px;
-            background: var(--violet);
-            display: inline-block;
+        .eyebrow-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--cyan);
+
+            box-shadow:
+                0 0 0 5px rgba(36,183,216,.12);
         }
 
         .hero h1 {
-            font-size: clamp(55px, 7vw, 96px);
-            line-height: .9;
+            font-family: var(--display);
+            font-size: clamp(52px, 7vw, 86px);
+            line-height: .95;
             letter-spacing: -.065em;
-            max-width: 850px;
+            max-width: 720px;
         }
 
-        .hero h1 .accent {
-            color: var(--violet);
+        .hero h1 span {
+            color: var(--cyan);
         }
 
         .hero-description {
-            margin-top: 35px;
-            max-width: 580px;
-            font-size: 18px;
-            line-height: 1.7;
+            max-width: 570px;
+            margin-top: 27px;
+
             color: var(--muted);
+            font-size: 17px;
+            line-height: 1.75;
         }
 
-        .hero-actions {
+        .hero-buttons {
             display: flex;
-            gap: 14px;
-            margin-top: 40px;
+            gap: 12px;
+            margin-top: 34px;
             flex-wrap: wrap;
         }
 
-        .btn {
-            padding: 15px 20px;
-            border: 1px solid var(--ink);
-            font-family: var(--mono);
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: .08em;
-            transition: .25s ease;
+        .button {
             display: inline-flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border-radius: 9px;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            transition:
+                transform .25s ease,
+                box-shadow .25s ease,
+                background .25s ease;
         }
 
-        .btn-primary {
-            background: var(--ink);
-            color: var(--white);
+        .button-primary {
+            background: var(--navy);
+            color: white;
+
+            box-shadow:
+                0 7px 20px rgba(16,24,39,.12);
         }
 
-        .btn-primary:hover {
-            background: var(--violet);
-            border-color: var(--violet);
+        .button-primary:hover {
             transform: translateY(-2px);
+            background: var(--navy-2);
+
+            box-shadow:
+                0 12px 25px rgba(16,24,39,.18);
         }
 
-        .btn-secondary:hover {
-            background: var(--white);
+        .button-secondary {
+            border: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        .button-secondary:hover {
             transform: translateY(-2px);
+            border-color: var(--cyan);
         }
 
 
         /* =========================================================
-           SIGNAL MAP
+           HERO VISUAL
            ========================================================= */
 
-        .signal-map {
-            height: 460px;
+        .hero-visual {
+            min-height: 430px;
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #121d31,
+                    #0b1220
+                );
+
             position: relative;
-            border-left: 1px solid var(--line);
-            border-bottom: 1px solid var(--line);
+            overflow: hidden;
+
+            box-shadow:
+                0 25px 60px rgba(16,24,39,.16);
         }
 
-        .signal-map::before {
-            content: "LIVE KNOWLEDGE MAP";
+        .hero-visual::before {
+            content: "";
+
             position: absolute;
-            top: 0;
-            left: 20px;
+            width: 280px;
+            height: 280px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(36,183,216,.27),
+                    transparent 68%
+                );
+
+            right: -80px;
+            top: -80px;
+        }
+
+        .hero-visual::after {
+            content: "";
+
+            position: absolute;
+            width: 250px;
+            height: 250px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,112,95,.16),
+                    transparent 70%
+                );
+
+            left: -80px;
+            bottom: -80px;
+        }
+
+        .visual-grid {
+            position: absolute;
+            inset: 0;
+
+            background-image:
+                linear-gradient(
+                    rgba(255,255,255,.04) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(255,255,255,.04) 1px,
+                    transparent 1px
+                );
+
+            background-size: 42px 42px;
+        }
+
+        .visual-top {
+            position: absolute;
+            top: 20px;
+            left: 22px;
+            right: 22px;
+
+            display: flex;
+            justify-content: space-between;
+
             font-family: var(--mono);
             font-size: 9px;
-            color: var(--muted);
-            letter-spacing: .12em;
+            color: #77849a;
         }
 
-        .signal-line {
+        .visual-status {
+            color: #66d6e8;
+        }
+
+        .signal-network {
+            position: absolute;
+            inset: 70px 40px 40px;
+        }
+
+        .connection {
             position: absolute;
             height: 1px;
-            background: var(--ink);
+            background: rgba(255,255,255,.28);
             transform-origin: left;
         }
 
-        .line-1 {
-            width: 260px;
-            left: 80px;
-            top: 145px;
+        .connection.one {
+            width: 170px;
+            left: 65px;
+            top: 95px;
             transform: rotate(18deg);
         }
 
-        .line-2 {
-            width: 220px;
-            left: 190px;
-            top: 220px;
-            transform: rotate(-27deg);
+        .connection.two {
+            width: 150px;
+            left: 160px;
+            top: 130px;
+            transform: rotate(-35deg);
         }
 
-        .line-3 {
-            width: 170px;
-            left: 140px;
-            top: 310px;
+        .connection.three {
+            width: 190px;
+            left: 150px;
+            top: 210px;
             transform: rotate(12deg);
         }
 
-        .line-4 {
-            width: 150px;
-            left: 280px;
-            top: 185px;
+        .connection.four {
+            width: 120px;
+            left: 260px;
+            top: 145px;
             transform: rotate(58deg);
         }
 
-        .node {
+        .signal-node {
             position: absolute;
-            width: 12px;
-            height: 12px;
-            border: 2px solid var(--ink);
-            background: var(--paper);
+
+            width: 14px;
+            height: 14px;
+
             border-radius: 50%;
-            z-index: 2;
-            animation: pulse 3s infinite ease-in-out;
+            background: var(--cyan);
+
+            box-shadow:
+                0 0 0 7px rgba(36,183,216,.12);
+
+            animation: nodePulse 3s ease-in-out infinite;
         }
 
-        .node::after {
-            content: "";
+        .signal-node.coral {
+            background: var(--coral);
+            box-shadow:
+                0 0 0 7px rgba(255,112,95,.11);
+        }
+
+        .signal-node.purple {
+            background: var(--purple);
+            box-shadow:
+                0 0 0 7px rgba(129,116,247,.11);
+        }
+
+        .node-a {
+            left: 55px;
+            top: 89px;
+        }
+
+        .node-b {
+            left: 220px;
+            top: 140px;
+        }
+
+        .node-c {
+            left: 125px;
+            top: 205px;
+        }
+
+        .node-d {
+            left: 315px;
+            top: 215px;
+        }
+
+        .node-e {
+            left: 275px;
+            top: 80px;
+        }
+
+        .visual-tag {
             position: absolute;
-            inset: -7px;
-            border: 1px solid transparent;
-            border-radius: 50%;
-            animation: ripple 3s infinite;
-        }
 
-        .node.violet {
-            background: var(--violet);
-            border-color: var(--violet);
-        }
+            padding: 6px 9px;
 
-        .node.orange {
-            background: var(--orange);
-            border-color: var(--orange);
-        }
+            border: 1px solid rgba(255,255,255,.13);
+            background: rgba(255,255,255,.05);
 
-        .node-1 {
-            left: 70px;
-            top: 137px;
-        }
+            border-radius: 6px;
 
-        .node-2 {
-            left: 245px;
-            top: 198px;
-        }
-
-        .node-3 {
-            left: 140px;
-            top: 295px;
-        }
-
-        .node-4 {
-            left: 365px;
-            top: 325px;
-        }
-
-        .node-5 {
-            left: 325px;
-            top: 125px;
-        }
-
-        .signal-label {
-            position: absolute;
             font-family: var(--mono);
-            font-size: 10px;
-            letter-spacing: .06em;
-            color: var(--muted);
+            font-size: 8px;
+            color: #a4afbf;
         }
 
-        .label-1 {
-            left: 50px;
-            top: 165px;
+        .tag-one {
+            left: 25px;
+            bottom: 28px;
         }
 
-        .label-2 {
-            left: 255px;
-            top: 220px;
+        .tag-two {
+            right: 25px;
+            bottom: 28px;
         }
 
-        .label-3 {
-            left: 90px;
-            top: 325px;
-        }
-
-        .label-4 {
-            left: 380px;
-            top: 345px;
-        }
-
-        @keyframes pulse {
+        @keyframes nodePulse {
             0%, 100% {
                 transform: scale(1);
             }
+
             50% {
-                transform: scale(1.25);
-            }
-        }
-
-        @keyframes ripple {
-            0% {
-                inset: -4px;
-                opacity: .7;
-            }
-            100% {
-                inset: -15px;
-                opacity: 0;
+                transform: scale(1.18);
             }
         }
 
 
         /* =========================================================
-           MARQUEE
+           START HERE
            ========================================================= */
 
-        .marquee {
-            border-top: 1px solid var(--line);
-            border-bottom: 1px solid var(--line);
-            overflow: hidden;
-            white-space: nowrap;
-            padding: 14px 0;
-            font-family: var(--mono);
-            font-size: 10px;
-            letter-spacing: .12em;
-            color: var(--muted);
+        .start {
+            padding: 80px 0;
         }
 
-        .marquee-track {
-            display: inline-block;
-            animation: marquee 25s linear infinite;
-        }
-
-        .marquee strong {
-            color: var(--violet);
-            font-weight: 500;
-        }
-
-        @keyframes marquee {
-            from {
-                transform: translateX(0);
-            }
-
-            to {
-                transform: translateX(-50%);
-            }
-        }
-
-
-        /* =========================================================
-           INTRO
-           ========================================================= */
-
-        .intro {
-            padding: 140px 0;
-        }
-
-        .section-number {
-            font-family: var(--mono);
-            font-size: 11px;
-            color: var(--violet);
-            letter-spacing: .12em;
-            margin-bottom: 20px;
-        }
-
-        .intro-grid {
-            display: grid;
-            grid-template-columns: .8fr 1.2fr;
-            gap: 100px;
-        }
-
-        .intro h2 {
-            font-size: clamp(40px, 5vw, 65px);
-            line-height: .98;
-            letter-spacing: -.05em;
-        }
-
-        .intro-text {
-            font-size: 21px;
-            line-height: 1.65;
-            color: var(--muted);
-            max-width: 650px;
-        }
-
-        .intro-text strong {
-            color: var(--ink);
-        }
-
-
-        /* =========================================================
-           FEATURED GUIDE
-           ========================================================= */
-
-        .featured {
-            padding: 100px 0 150px;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: end;
-            margin-bottom: 40px;
-        }
-
-        .section-header h2 {
-            font-size: 48px;
-            letter-spacing: -.05em;
-        }
-
-        .section-header a {
-            font-family: var(--mono);
-            font-size: 11px;
-            color: var(--muted);
-            border-bottom: 1px solid var(--muted);
-            padding-bottom: 5px;
-        }
-
-        .guide {
-            border: 1px solid var(--ink);
-            background: var(--paper-light);
-            display: grid;
-            grid-template-columns: 1fr 1.25fr;
-            min-height: 510px;
-            position: relative;
-            overflow: hidden;
-            transition: transform .4s ease, box-shadow .4s ease;
-        }
-
-        .guide:hover {
-            transform: translateY(-5px);
-            box-shadow: 12px 12px 0 var(--violet);
-        }
-
-        .guide-left {
-            padding: 55px;
-            border-right: 1px solid var(--line);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .guide-meta {
-            display: flex;
-            justify-content: space-between;
-            font-family: var(--mono);
-            font-size: 10px;
-            color: var(--muted);
-        }
-
-        .guide-left h3 {
-            font-size: clamp(40px, 5vw, 65px);
-            line-height: .94;
-            letter-spacing: -.06em;
-            max-width: 450px;
-        }
-
-        .guide-left h3 span {
-            color: var(--violet);
-        }
-
-        .guide-description {
-            color: var(--muted);
-            line-height: 1.7;
-            max-width: 430px;
-        }
-
-        .guide-link {
-            margin-top: 30px;
-            display: inline-flex;
-            align-items: center;
-            gap: 15px;
-            font-family: var(--mono);
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: .08em;
-        }
-
-        .guide-link span {
-            transition: transform .3s ease;
-        }
-
-        .guide:hover .guide-link span {
-            transform: translateX(8px);
-        }
-
-        .guide-right {
-            position: relative;
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(117,103,248,.08),
-                    transparent 60%
-                );
-            overflow: hidden;
-        }
-
-        .case-file {
-            position: absolute;
-            width: 70%;
-            height: 62%;
-            left: 15%;
-            top: 19%;
-            border: 1px solid var(--ink);
-            background: var(--paper);
-            padding: 30px;
-            transform: rotate(-3deg);
-            box-shadow: 18px 18px 0 rgba(23,25,35,.08);
-        }
-
-        .case-header {
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--line);
-            padding-bottom: 12px;
-            font-family: var(--mono);
-            font-size: 9px;
-            color: var(--muted);
-        }
-
-        .case-body {
-            margin-top: 30px;
-        }
-
-        .case-subject {
-            font-family: var(--mono);
-            font-size: 12px;
-            color: var(--muted);
-            margin-bottom: 8px;
-        }
-
-        .case-username {
-            font-size: 35px;
-            letter-spacing: -.04em;
+        .section-heading {
             margin-bottom: 35px;
         }
 
-        .evidence-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
+        .section-label {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .08em;
+            color: var(--cyan);
+
+            margin-bottom: 9px;
         }
 
-        .evidence {
-            border: 1px solid var(--line);
-            padding: 13px;
+        .section-heading h2 {
+            font-family: var(--display);
+            font-size: 38px;
+            letter-spacing: -.045em;
+        }
+
+        .start-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 13px;
+        }
+
+        .start-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+
+            padding: 23px;
+
+            min-height: 170px;
+
+            transition:
+                transform .25s ease,
+                box-shadow .25s ease,
+                border-color .25s ease;
+        }
+
+        .start-card:hover {
+            transform: translateY(-5px);
+
+            border-color: var(--cyan);
+
+            box-shadow:
+                0 15px 30px rgba(16,24,39,.08);
+        }
+
+        .start-icon {
+            width: 35px;
+            height: 35px;
+
+            border-radius: 9px;
+
+            display: grid;
+            place-items: center;
+
+            margin-bottom: 25px;
+
+            font-family: var(--mono);
+            font-size: 12px;
+        }
+
+        .icon-blue {
+            background: var(--cyan-soft);
+            color: #087c98;
+        }
+
+        .icon-coral {
+            background: var(--coral-soft);
+            color: #c94e3e;
+        }
+
+        .icon-purple {
+            background: var(--purple-soft);
+            color: #6253dc;
+        }
+
+        .icon-dark {
+            background: var(--navy);
+            color: white;
+        }
+
+        .start-card h3 {
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .start-card p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .start-arrow {
+            margin-top: 18px;
+            display: inline-block;
+            color: var(--muted);
+            transition: transform .2s ease;
+        }
+
+        .start-card:hover .start-arrow {
+            transform: translateX(5px);
+            color: var(--cyan);
+        }
+
+
+        /* =========================================================
+           FEATURED ARTICLE
+           ========================================================= */
+
+        .featured {
+            padding: 100px 0;
+        }
+
+        .featured-box {
+            background: var(--navy);
+            color: white;
+
+            border-radius: 22px;
+
+            display: grid;
+            grid-template-columns: 1fr .9fr;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 25px 55px rgba(16,24,39,.14);
+        }
+
+        .featured-content {
+            padding: 55px;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+
             font-family: var(--mono);
             font-size: 9px;
-            color: var(--muted);
-            position: relative;
+            color: #8490a3;
         }
 
-        .evidence::before {
-            content: "";
+        .meta-dot {
             width: 5px;
             height: 5px;
-            background: var(--violet);
-            position: absolute;
-            top: 10px;
-            right: 10px;
+            border-radius: 50%;
+            background: var(--cyan);
         }
 
-        .evidence.orange::before {
-            background: var(--orange);
+        .featured-content h2 {
+            margin-top: 28px;
+
+            font-family: var(--display);
+            font-size: clamp(42px, 5vw, 65px);
+            line-height: .98;
+            letter-spacing: -.06em;
+        }
+
+        .featured-content h2 span {
+            color: var(--cyan);
+        }
+
+        .featured-content p {
+            color: #a7b1c0;
+            max-width: 480px;
+
+            margin-top: 23px;
+
+            font-size: 15px;
+            line-height: 1.75;
+        }
+
+        .read-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+
+            margin-top: 30px;
+
+            padding: 12px 16px;
+
+            border-radius: 8px;
+
+            background: white;
+            color: var(--navy);
+
+            font-size: 12px;
+            font-weight: 600;
+
+            transition: transform .2s ease;
+        }
+
+        .read-button:hover {
+            transform: translateY(-2px);
+        }
+
+
+        /* FEATURED VISUAL */
+
+        .featured-art {
+            min-height: 440px;
+            position: relative;
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at 50% 45%,
+                    rgba(36,183,216,.16),
+                    transparent 42%
+                );
+        }
+
+        .orbit {
+            position: absolute;
+
+            border: 1px solid rgba(255,255,255,.11);
+            border-radius: 50%;
+
+            left: 50%;
+            top: 50%;
+
+            transform: translate(-50%, -50%);
+        }
+
+        .orbit.one {
+            width: 250px;
+            height: 250px;
+        }
+
+        .orbit.two {
+            width: 170px;
+            height: 170px;
+        }
+
+        .orbit.three {
+            width: 340px;
+            height: 340px;
+        }
+
+        .orbit-node {
+            position: absolute;
+
+            width: 12px;
+            height: 12px;
+
+            border-radius: 50%;
+
+            background: var(--cyan);
+
+            top: 50%;
+            left: -6px;
+
+            box-shadow:
+                0 0 20px rgba(36,183,216,.65);
+        }
+
+        .orbit-node.coral {
+            background: var(--coral);
+            box-shadow:
+                0 0 20px rgba(255,112,95,.55);
+        }
+
+        .center-symbol {
+            position: absolute;
+
+            left: 50%;
+            top: 50%;
+
+            transform: translate(-50%, -50%);
+
+            width: 72px;
+            height: 72px;
+
+            border-radius: 20px;
+
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.14);
+
+            display: grid;
+            place-items: center;
+
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--cyan);
+        }
+
+
+        /* =========================================================
+           LATEST ARTICLES
+           ========================================================= */
+
+        .latest {
+            padding: 90px 0 110px;
+        }
+
+        .latest-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+
+            margin-bottom: 35px;
+        }
+
+        .latest-header h2 {
+            font-family: var(--display);
+            font-size: 40px;
+            letter-spacing: -.05em;
+        }
+
+        .view-all {
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .article-card {
+            background: var(--surface);
+
+            border: 1px solid var(--border);
+            border-radius: 15px;
+
+            overflow: hidden;
+
+            transition:
+                transform .3s ease,
+                box-shadow .3s ease;
+        }
+
+        .article-card:hover {
+            transform: translateY(-6px);
+
+            box-shadow:
+                0 18px 35px rgba(16,24,39,.09);
+        }
+
+        .article-image {
+            height: 165px;
+
+            position: relative;
+            overflow: hidden;
+        }
+
+        .article-image::after {
+            content: "";
+
+            position: absolute;
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    120deg,
+                    transparent 20%,
+                    rgba(255,255,255,.14),
+                    transparent 70%
+                );
+
+            transform: translateX(-100%);
+            transition: transform .7s ease;
+        }
+
+        .article-card:hover .article-image::after {
+            transform: translateX(100%);
+        }
+
+        .image-osint {
+            background:
+                radial-gradient(circle at 30% 40%, #52d8e8, transparent 23%),
+                radial-gradient(circle at 75% 65%, #8174f7, transparent 25%),
+                #111c30;
+        }
+
+        .image-network {
+            background:
+                linear-gradient(130deg, #17263c, #245b75);
+        }
+
+        .image-soc {
+            background:
+                radial-gradient(circle at 70% 30%, #ff7765, transparent 22%),
+                #182033;
+        }
+
+        .article-content {
+            padding: 23px;
+        }
+
+        .article-tag {
+            font-family: var(--mono);
+            font-size: 9px;
+            color: var(--cyan);
+
+            text-transform: uppercase;
+        }
+
+        .article-content h3 {
+            margin-top: 12px;
+
+            font-family: var(--display);
+            font-size: 21px;
+            letter-spacing: -.035em;
+            line-height: 1.2;
+        }
+
+        .article-content p {
+            margin-top: 10px;
+
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .article-footer {
+            margin-top: 20px;
+
+            display: flex;
+            justify-content: space-between;
+
+            color: var(--muted);
+
+            font-family: var(--mono);
+            font-size: 9px;
         }
 
 
@@ -740,170 +1023,180 @@
            ========================================================= */
 
         .topics {
-            padding: 100px 0 150px;
-            background: var(--ink);
-            color: var(--white);
-            position: relative;
-            overflow: hidden;
-        }
+            padding: 100px 0;
 
-        .topics::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            opacity: .07;
+            background: var(--surface);
 
-            background-image:
-                linear-gradient(var(--white) 1px, transparent 1px),
-                linear-gradient(90deg, var(--white) 1px, transparent 1px);
-
-            background-size: 80px 80px;
-        }
-
-        .topics-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .topics .section-number {
-            color: var(--orange);
-        }
-
-        .topics h2 {
-            font-size: clamp(45px, 6vw, 80px);
-            line-height: .92;
-            letter-spacing: -.06em;
-            max-width: 700px;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
         }
 
         .topic-grid {
-            margin-top: 70px;
+            margin-top: 40px;
+
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            border-top: 1px solid rgba(255,255,255,.18);
-            border-left: 1px solid rgba(255,255,255,.18);
+            grid-template-columns: repeat(6, 1fr);
+
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
         }
 
         .topic {
-            min-height: 220px;
-            padding: 28px;
-            border-right: 1px solid rgba(255,255,255,.18);
-            border-bottom: 1px solid rgba(255,255,255,.18);
-            position: relative;
-            transition: background .3s ease;
+            padding: 25px 18px;
+
+            border-right: 1px solid var(--border);
+
+            transition:
+                background .25s ease;
+        }
+
+        .topic:last-child {
+            border-right: none;
         }
 
         .topic:hover {
-            background: rgba(255,255,255,.05);
+            background: var(--bg);
         }
 
         .topic-number {
             font-family: var(--mono);
             font-size: 9px;
-            color: #858796;
+            color: var(--muted);
         }
 
         .topic h3 {
-            margin-top: 45px;
-            font-size: 28px;
-            letter-spacing: -.04em;
+            margin-top: 35px;
+
+            font-family: var(--display);
+            font-size: 18px;
+            letter-spacing: -.03em;
         }
 
         .topic p {
-            margin-top: 10px;
-            color: #9295a4;
-            font-size: 14px;
-            line-height: 1.6;
+            margin-top: 7px;
+
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.5;
         }
 
-        .topic-mark {
-            position: absolute;
-            top: 28px;
-            right: 28px;
-            width: 9px;
-            height: 9px;
-        }
+        .topic-line {
+            margin-top: 18px;
 
-        .osint-mark {
-            background: var(--violet);
-        }
+            width: 25px;
+            height: 3px;
 
-        .soc-mark {
-            background: var(--orange);
-        }
+            border-radius: 5px;
 
-        .network-mark {
             background: var(--cyan);
         }
 
-        .linux-mark {
-            background: #d46c6c;
+        .topic:nth-child(2) .topic-line {
+            background: var(--coral);
         }
 
-        .windows-mark {
-            background: #69b5d8;
+        .topic:nth-child(3) .topic-line {
+            background: var(--purple);
         }
 
-        .fundamentals-mark {
-            background: #b59ae8;
+        .topic:nth-child(4) .topic-line {
+            background: #e0a34b;
+        }
+
+        .topic:nth-child(5) .topic-line {
+            background: #4e9bd4;
+        }
+
+        .topic:nth-child(6) .topic-line {
+            background: #8b94a3;
         }
 
 
         /* =========================================================
-           LEARNING LIBRARY
+           LEARNING PATH
            ========================================================= */
 
-        .library {
-            padding: 150px 0;
+        .paths {
+            padding: 110px 0;
         }
 
-        .library-grid {
-            margin-top: 55px;
+        .paths-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            border-top: 1px solid var(--line);
+            grid-template-columns: .8fr 1.2fr;
+            gap: 70px;
+            align-items: start;
         }
 
-        .library-item {
-            padding: 32px 0;
-            border-bottom: 1px solid var(--line);
+        .paths-intro h2 {
+            font-family: var(--display);
+            font-size: 45px;
+            line-height: 1;
+            letter-spacing: -.055em;
+        }
+
+        .paths-intro p {
+            margin-top: 20px;
+
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.7;
+            max-width: 400px;
+        }
+
+        .path {
             display: grid;
-            grid-template-columns: 70px 1fr auto;
-            gap: 25px;
-            align-items: center;
-            transition: padding .3s ease;
+            grid-template-columns: 45px 1fr;
+            gap: 18px;
+
+            position: relative;
+
+            padding-bottom: 34px;
         }
 
-        .library-item:hover {
-            padding-left: 15px;
+        .path:not(:last-child)::after {
+            content: "";
+
+            position: absolute;
+
+            left: 15px;
+            top: 32px;
+            bottom: 0;
+
+            width: 1px;
+
+            background: var(--border);
         }
 
-        .library-number {
+        .path-number {
+            width: 31px;
+            height: 31px;
+
+            border-radius: 50%;
+
+            background: var(--surface);
+
+            border: 1px solid var(--border);
+
+            display: grid;
+            place-items: center;
+
             font-family: var(--mono);
-            font-size: 10px;
-            color: var(--violet);
+            font-size: 9px;
+
+            position: relative;
+            z-index: 2;
         }
 
-        .library-item h3 {
-            font-size: 20px;
-            letter-spacing: -.025em;
+        .path h3 {
+            font-size: 16px;
         }
 
-        .library-item p {
+        .path p {
+            margin-top: 4px;
+
+            color: var(--muted);
             font-size: 13px;
-            color: var(--muted);
-            margin-top: 5px;
-        }
-
-        .library-arrow {
-            font-size: 20px;
-            color: var(--muted);
-            transition: transform .3s ease;
-        }
-
-        .library-item:hover .library-arrow {
-            transform: translateX(7px);
-            color: var(--violet);
         }
 
 
@@ -912,59 +1205,83 @@
            ========================================================= */
 
         .desk {
-            padding: 120px 0;
-            border-top: 1px solid var(--line);
+            padding: 100px 0;
+
+            background: var(--navy);
+            color: white;
         }
 
-        .desk-grid {
+        .desk-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 100px;
-            align-items: start;
+            gap: 80px;
+            align-items: center;
         }
 
         .desk h2 {
-            font-size: clamp(45px, 6vw, 75px);
-            line-height: .92;
+            font-family: var(--display);
+            font-size: clamp(42px, 5vw, 65px);
+            line-height: .98;
             letter-spacing: -.06em;
         }
 
-        .desk-intro {
-            color: var(--muted);
+        .desk h2 span {
+            color: var(--cyan);
+        }
+
+        .desk-description {
+            margin-top: 22px;
+
+            color: #9ca8ba;
+            max-width: 470px;
+
+            font-size: 14px;
             line-height: 1.7;
-            margin-top: 25px;
-            max-width: 480px;
         }
 
         .desk-list {
-            border-top: 1px solid var(--ink);
-        }
-
-        .desk-item {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .desk-card {
+            padding: 19px 20px;
+
+            border: 1px solid rgba(255,255,255,.11);
+            border-radius: 10px;
+
+            background: rgba(255,255,255,.035);
+
+            display: flex;
             align-items: center;
-            padding: 25px 0;
-            border-bottom: 1px solid var(--line);
+            justify-content: space-between;
+
+            transition:
+                background .25s ease,
+                transform .25s ease;
         }
 
-        .desk-item span:first-child {
+        .desk-card:hover {
+            background: rgba(255,255,255,.07);
+            transform: translateX(5px);
+        }
+
+        .desk-card small {
             font-family: var(--mono);
-            font-size: 11px;
-            color: var(--muted);
+            font-size: 9px;
+            color: #7f8b9e;
         }
 
-        .desk-item strong {
-            font-size: 18px;
+        .desk-card strong {
+            display: block;
+            margin-top: 4px;
+
+            font-size: 14px;
         }
 
-        .desk-item span:last-child {
-            color: var(--violet);
-            transition: transform .3s ease;
-        }
-
-        .desk-item:hover span:last-child {
-            transform: translateX(6px);
+        .desk-arrow {
+            color: var(--cyan);
         }
 
 
@@ -973,48 +1290,49 @@
            ========================================================= */
 
         .principle {
-            padding: 130px 0;
-            background: var(--violet);
-            color: var(--white);
-            position: relative;
-            overflow: hidden;
+            padding: 100px 0;
         }
 
-        .principle::after {
-            content: "LEARN → TRY → THINK → VERIFY";
-            position: absolute;
-            right: -80px;
-            bottom: 25px;
+        .principle-box {
+            padding: 55px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--cyan-soft),
+                    var(--purple-soft)
+                );
+
+            border-radius: 20px;
+
+            border: 1px solid #d9e5e8;
+
+            text-align: center;
+        }
+
+        .principle-box small {
             font-family: var(--mono);
-            font-size: 11px;
-            opacity: .35;
-            letter-spacing: .12em;
+            font-size: 9px;
+            color: var(--muted);
+            letter-spacing: .08em;
         }
 
-        .principle-inner {
-            max-width: 950px;
+        .principle-box h2 {
+            margin-top: 18px;
+
+            font-family: var(--display);
+            font-size: clamp(30px, 4vw, 48px);
+
+            letter-spacing: -.055em;
         }
 
-        .principle-label {
-            font-family: var(--mono);
-            font-size: 10px;
-            letter-spacing: .12em;
-            opacity: .7;
-        }
+        .principle-box p {
+            max-width: 560px;
 
-        .principle h2 {
-            margin-top: 35px;
-            font-size: clamp(45px, 7vw, 88px);
-            line-height: .94;
-            letter-spacing: -.065em;
-        }
+            margin: 18px auto 0;
 
-        .principle p {
-            margin-top: 30px;
-            font-size: 18px;
-            line-height: 1.6;
-            max-width: 600px;
-            opacity: .8;
+            color: var(--muted);
+            font-size: 14px;
         }
 
 
@@ -1023,30 +1341,30 @@
            ========================================================= */
 
         .about {
-            padding: 140px 0;
+            padding: 80px 0 110px;
         }
 
         .about-grid {
             display: grid;
-            grid-template-columns: .8fr 1.2fr;
-            gap: 100px;
+            grid-template-columns: .7fr 1.3fr;
+            gap: 70px;
         }
 
         .about h2 {
-            font-size: 55px;
-            letter-spacing: -.06em;
-            line-height: .95;
+            font-family: var(--display);
+            font-size: 43px;
+            line-height: 1;
+            letter-spacing: -.055em;
         }
 
-        .about-text {
-            font-size: 19px;
+        .about p {
             color: var(--muted);
-            line-height: 1.75;
-            max-width: 650px;
+            font-size: 15px;
+            line-height: 1.8;
         }
 
-        .about-text p + p {
-            margin-top: 25px;
+        .about p + p {
+            margin-top: 18px;
         }
 
 
@@ -1055,8 +1373,10 @@
            ========================================================= */
 
         footer {
-            border-top: 1px solid var(--line);
-            padding: 45px 0;
+            border-top: 1px solid var(--border);
+            background: var(--surface);
+
+            padding: 35px 0;
         }
 
         .footer-inner {
@@ -1066,41 +1386,41 @@
         }
 
         .footer-brand {
+            font-family: var(--display);
             font-weight: 700;
-            letter-spacing: -.04em;
         }
 
-        .footer-tag {
-            font-family: var(--mono);
-            font-size: 9px;
+        .footer-note {
             color: var(--muted);
-            margin-top: 7px;
+            font-size: 11px;
+            margin-top: 4px;
         }
 
         .footer-links {
             display: flex;
-            gap: 25px;
+            gap: 22px;
+
             font-family: var(--mono);
-            font-size: 10px;
-            text-transform: uppercase;
+            font-size: 9px;
             color: var(--muted);
         }
 
         .footer-links a:hover {
-            color: var(--violet);
+            color: var(--cyan);
         }
 
 
         /* =========================================================
-           REVEAL ANIMATION
+           SCROLL REVEAL
            ========================================================= */
 
         .reveal {
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(22px);
+
             transition:
-                opacity .8s ease,
-                transform .8s ease;
+                opacity .7s ease,
+                transform .7s ease;
         }
 
         .reveal.visible {
@@ -1113,146 +1433,136 @@
            RESPONSIVE
            ========================================================= */
 
-        @media (max-width: 900px) {
+        @media (max-width: 1000px) {
 
-            .hero-content,
-            .intro-grid,
-            .desk-grid,
+            .hero-grid,
+            .featured-box,
+            .paths-grid,
+            .desk-layout,
             .about-grid {
                 grid-template-columns: 1fr;
-                gap: 55px;
             }
 
-            .signal-map {
-                height: 350px;
+            .hero-visual {
+                min-height: 380px;
             }
 
-            .guide {
+            .start-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .article-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .topic-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .topic:nth-child(3) {
+                border-right: none;
+            }
+
+            .topic:nth-child(-n+3) {
+                border-bottom: 1px solid var(--border);
+            }
+
+            .featured-art {
+                min-height: 400px;
+            }
+        }
+
+
+        @media (max-width: 650px) {
+
+            .container {
+                width: min(100% - 28px, var(--max));
+            }
+
+            .navbar {
+                height: 68px;
+            }
+
+            .nav-links {
+                gap: 12px;
+                font-size: 10px;
+            }
+
+            .nav-links a:nth-child(2),
+            .nav-links a:nth-child(3) {
+                display: none;
+            }
+
+            .hero {
+                padding: 65px 0 75px;
+            }
+
+            .hero h1 {
+                font-size: 52px;
+            }
+
+            .hero-description {
+                font-size: 15px;
+            }
+
+            .hero-visual {
+                min-height: 330px;
+            }
+
+            .start,
+            .featured,
+            .latest,
+            .topics,
+            .paths,
+            .desk,
+            .principle,
+            .about {
+                padding-top: 70px;
+                padding-bottom: 70px;
+            }
+
+            .start-grid {
                 grid-template-columns: 1fr;
             }
 
-            .guide-left {
-                border-right: none;
-                border-bottom: 1px solid var(--line);
-            }
-
-            .guide-right {
-                min-height: 430px;
+            .article-grid {
+                grid-template-columns: 1fr;
             }
 
             .topic-grid {
                 grid-template-columns: 1fr 1fr;
             }
 
-            .library-grid {
-                grid-template-columns: 1fr;
+            .topic {
+                border-bottom: 1px solid var(--border);
             }
 
-            .hero {
-                padding: 100px 0;
-            }
-        }
-
-
-        @media (max-width: 600px) {
-
-            .container,
-            .nav-inner {
-                width: min(100% - 30px, var(--max-width));
+            .topic:nth-child(even) {
+                border-right: none;
             }
 
-            nav {
-                height: 70px;
+            .featured-content {
+                padding: 32px;
             }
 
-            .nav-links {
-                gap: 14px;
-                font-size: 9px;
+            .featured-art {
+                min-height: 340px;
             }
 
-            .nav-links a:nth-child(2) {
-                display: none;
-            }
-
-            .hero h1 {
-                font-size: 55px;
-            }
-
-            .hero-description {
-                font-size: 16px;
-            }
-
-            .signal-map {
-                height: 300px;
-            }
-
-            .line-1 {
-                width: 180px;
-            }
-
-            .line-2 {
-                width: 150px;
-            }
-
-            .line-3 {
-                width: 130px;
-            }
-
-            .line-4 {
-                width: 110px;
-            }
-
-            .node-4 {
-                left: 260px;
-            }
-
-            .label-4 {
-                left: 270px;
-            }
-
-            .intro,
-            .featured,
-            .library,
-            .about {
-                padding: 90px 0;
-            }
-
-            .section-header {
-                align-items: start;
-                gap: 20px;
+            .latest-header {
+                align-items: flex-start;
                 flex-direction: column;
+                gap: 10px;
             }
 
-            .section-header h2 {
-                font-size: 40px;
-            }
-
-            .guide-left {
-                padding: 30px;
-            }
-
-            .case-file {
-                width: 84%;
-                left: 8%;
-            }
-
-            .topic-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .library-item {
-                grid-template-columns: 45px 1fr auto;
-                gap: 12px;
-            }
-
-            .library-item h3 {
-                font-size: 17px;
+            .principle-box {
+                padding: 35px 22px;
             }
 
             .footer-inner {
-                flex-direction: column;
                 align-items: flex-start;
-                gap: 25px;
+                flex-direction: column;
+                gap: 20px;
             }
 
             .footer-links {
@@ -1266,108 +1576,160 @@
 
 <body>
 
+
 <!-- =========================================================
      NAVIGATION
      ========================================================= -->
 
-<nav>
-    <div class="nav-inner">
+<header class="navbar">
 
-        <a href="index.html" class="brand">
-            <span class="brand-mark"></span>
+    <div class="container nav-inner">
+
+        <a href="index.html" class="logo">
+
+            <span class="logo-icon"></span>
+
             KSCybSec
+
         </a>
 
-        <div class="nav-links">
-            <a href="#guides">Guides</a>
-            <a href="#topics">Topics</a>
-            <a href="#desk">Investigation Desk</a>
-            <a href="#about">About</a>
-        </div>
+
+        <nav class="nav-links">
+
+            <a href="#latest">
+                Articles
+            </a>
+
+            <a href="#topics">
+                Topics
+            </a>
+
+            <a href="#desk">
+                Investigations
+            </a>
+
+            <a href="#about">
+                About
+            </a>
+
+            <a href="#start" class="nav-cta">
+                Start Here
+            </a>
+
+        </nav>
 
     </div>
-</nav>
+
+</header>
 
 
 <!-- =========================================================
      HERO
      ========================================================= -->
 
+<main>
+
 <section class="hero">
 
-    <div class="hero-grid"></div>
+    <div class="container hero-grid">
 
-    <div class="container">
+        <div class="hero-content reveal">
 
-        <div class="hero-content">
+            <div class="eyebrow">
 
-            <div class="hero-copy reveal">
+                <span class="eyebrow-dot"></span>
 
-                <div class="hero-label">
-                    <span></span>
-                    Cybersecurity Knowledge Lab
-                </div>
-
-                <h1>
-                    Understand
-                    <br>
-                    cybersecurity.
-                    <br>
-                    <span class="accent">One concept</span>
-                    <br>
-                    at a time.
-                </h1>
-
-                <p class="hero-description">
-                    Practical guides, clear explanations and hands-on
-                    investigations covering the concepts behind modern
-                    cybersecurity.
-                </p>
-
-                <div class="hero-actions">
-
-                    <a href="#guides" class="btn btn-primary">
-                        Explore Guides
-                        <span>→</span>
-                    </a>
-
-                    <a href="#topics" class="btn btn-secondary">
-                        Browse Topics
-                    </a>
-
-                </div>
+                CYBERSECURITY KNOWLEDGE BLOG
 
             </div>
 
 
-            <!-- SIGNAL VISUAL -->
+            <h1>
 
-            <div class="signal-map reveal">
+                Cybersecurity,
+                <br>
 
-                <div class="signal-line line-1"></div>
-                <div class="signal-line line-2"></div>
-                <div class="signal-line line-3"></div>
-                <div class="signal-line line-4"></div>
+                <span>explained simply.</span>
 
-                <div class="node node-1 violet"></div>
-                <div class="node node-2"></div>
-                <div class="node node-3 orange"></div>
-                <div class="node node-4"></div>
-                <div class="node node-5 violet"></div>
+            </h1>
 
-                <div class="signal-label label-1">
-                    QUESTION
+
+            <p class="hero-description">
+
+                Learn OSINT, SOC, networking, Linux, Windows
+                and cybersecurity fundamentals through practical
+                explanations, examples and investigations.
+
+            </p>
+
+
+            <div class="hero-buttons">
+
+                <a href="#start"
+                   class="button button-primary">
+
+                    Start Learning
+
+                    <span>→</span>
+
+                </a>
+
+
+                <a href="#latest"
+                   class="button button-secondary">
+
+                    Explore Articles
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- VISUAL -->
+
+        <div class="hero-visual reveal">
+
+            <div class="visual-grid"></div>
+
+            <div class="visual-top">
+
+                <span>
+                    KSCYBSEC / KNOWLEDGE MAP
+                </span>
+
+                <span class="visual-status">
+                    ● ONLINE
+                </span>
+
+            </div>
+
+
+            <div class="signal-network">
+
+                <div class="connection one"></div>
+                <div class="connection two"></div>
+                <div class="connection three"></div>
+                <div class="connection four"></div>
+
+
+                <div class="signal-node node-a"></div>
+
+                <div class="signal-node coral node-b"></div>
+
+                <div class="signal-node purple node-c"></div>
+
+                <div class="signal-node node-d"></div>
+
+                <div class="signal-node coral node-e"></div>
+
+
+                <div class="visual-tag tag-one">
+                    LEARN → TRY → THINK
                 </div>
 
-                <div class="signal-label label-2">
-                    SIGNAL
-                </div>
-
-                <div class="signal-label label-3">
-                    EVIDENCE
-                </div>
-
-                <div class="signal-label label-4">
+                <div class="visual-tag tag-two">
                     VERIFY
                 </div>
 
@@ -1381,101 +1743,119 @@
 
 
 <!-- =========================================================
-     MARQUEE
+     START HERE
      ========================================================= -->
 
-<div class="marquee">
-
-    <div class="marquee-track">
-
-        LEARN
-        <strong>→</strong>
-        TRY
-        <strong>→</strong>
-        THINK
-        <strong>→</strong>
-        VERIFY
-        <strong>→</strong>
-
-        OSINT
-        <strong>•</strong>
-        SOC
-        <strong>•</strong>
-        NETWORKING
-        <strong>•</strong>
-        LINUX
-        <strong>•</strong>
-        WINDOWS
-        <strong>•</strong>
-        FUNDAMENTALS
-
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-        LEARN
-        <strong>→</strong>
-        TRY
-        <strong>→</strong>
-        THINK
-        <strong>→</strong>
-        VERIFY
-        <strong>→</strong>
-
-    </div>
-
-</div>
-
-
-<!-- =========================================================
-     INTRO
-     ========================================================= -->
-
-<section class="intro">
+<section class="start" id="start">
 
     <div class="container">
 
-        <div class="intro-grid">
+        <div class="section-heading reveal">
 
-            <div class="reveal">
+            <div class="section-label">
+                NEW HERE?
+            </div>
 
-                <div class="section-number">
-                    00 / WHY THIS EXISTS
+            <h2>
+                Start where you are.
+            </h2>
+
+        </div>
+
+
+        <div class="start-grid">
+
+
+            <a href="#topics"
+               class="start-card reveal">
+
+                <div class="start-icon icon-blue">
+                    01
                 </div>
 
-                <h2>
-                    Don't just
-                    memorize
-                    cybersecurity.
-                </h2>
-
-            </div>
-
-
-            <div class="intro-text reveal">
+                <h3>
+                    I'm completely new
+                </h3>
 
                 <p>
-                    Cybersecurity can feel like a wall of tools,
-                    commands and unfamiliar terminology.
+                    Build your cybersecurity foundation
+                    without getting overwhelmed.
                 </p>
 
-                <br>
+                <span class="start-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <a href="#topics"
+               class="start-card reveal">
+
+                <div class="start-icon icon-purple">
+                    02
+                </div>
+
+                <h3>
+                    I want OSINT
+                </h3>
 
                 <p>
-                    KSCybSec takes a different approach.
-                    Start with a question. Understand the concept.
-                    Follow the evidence. Then try it yourself.
+                    Learn how public information can be
+                    found, connected and verified.
                 </p>
 
-                <br>
+                <span class="start-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <a href="#topics"
+               class="start-card reveal">
+
+                <div class="start-icon icon-coral">
+                    03
+                </div>
+
+                <h3>
+                    I want SOC skills
+                </h3>
 
                 <p>
-                    <strong>
-                        The goal isn't to make cybersecurity
-                        sound complicated.
-                    </strong>
-                    It's to make it understandable.
+                    Understand alerts, logs, investigation
+                    and security operations.
                 </p>
 
-            </div>
+                <span class="start-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <a href="#desk"
+               class="start-card reveal">
+
+                <div class="start-icon icon-dark">
+                    04
+                </div>
+
+                <h3>
+                    I want practical work
+                </h3>
+
+                <p>
+                    Follow investigations and learn
+                    through hands-on examples.
+                </p>
+
+                <span class="start-arrow">
+                    →
+                </span>
+
+            </a>
 
         </div>
 
@@ -1485,124 +1865,98 @@
 
 
 <!-- =========================================================
-     FEATURED GUIDE
+     FEATURED ARTICLE
      ========================================================= -->
 
-<section class="featured" id="guides">
+<section class="featured">
 
     <div class="container">
 
-        <div class="section-header reveal">
+        <div class="section-heading reveal">
 
-            <div>
-
-                <div class="section-number">
-                    01 / FEATURED GUIDE
-                </div>
-
-                <h2>
-                    Start here.
-                </h2>
-
+            <div class="section-label">
+                FEATURED
             </div>
-
-            <a href="articles/what-is-osint.html">
-                VIEW ALL GUIDES →
-            </a>
 
         </div>
 
 
         <a href="articles/what-is-osint.html"
-           class="guide reveal">
-
-            <div class="guide-left">
-
-                <div class="guide-meta">
-                    <span>GUIDE 001</span>
-                    <span>OSINT</span>
-                </div>
+           class="featured-box reveal">
 
 
-                <div>
+            <div class="featured-content">
 
-                    <h3>
-                        What Is
-                        <span>OSINT?</span>
-                    </h3>
+                <div class="article-meta">
 
-                    <p class="guide-description">
+                    <span>
+                        GUIDE 001
+                    </span>
 
-                        You don't always need access to discover
-                        something.
+                    <span class="meta-dot"></span>
 
-                        Sometimes the information is already sitting
-                        in public.
+                    <span>
+                        OSINT
+                    </span>
 
-                        The real skill is understanding what the
-                        pieces actually tell you.
+                    <span class="meta-dot"></span>
 
-                    </p>
-
-                    <div class="guide-link">
-                        BEGIN INVESTIGATION
-                        <span>→</span>
-                    </div>
+                    <span>
+                        BEGINNER
+                    </span>
 
                 </div>
+
+
+                <h2>
+
+                    What Is
+                    <span>OSINT?</span>
+
+                </h2>
+
+
+                <p>
+
+                    You don't need to hack something
+                    to discover interesting information.
+
+                    Sometimes the information is already
+                    sitting in public.
+
+                    The real skill is understanding what
+                    the pieces actually tell you.
+
+                </p>
+
+
+                <span class="read-button">
+
+                    Read the guide
+
+                    <span>→</span>
+
+                </span>
 
             </div>
 
 
-            <div class="guide-right">
+            <div class="featured-art">
 
-                <div class="case-file">
+                <div class="orbit one">
+                    <span class="orbit-node"></span>
+                </div>
 
-                    <div class="case-header">
-                        <span>CASE FILE 001</span>
-                        <span>TRAINING</span>
-                    </div>
+                <div class="orbit two">
+                    <span class="orbit-node coral"></span>
+                </div>
 
-                    <div class="case-body">
+                <div class="orbit three">
+                    <span class="orbit-node"></span>
+                </div>
 
-                        <div class="case-subject">
-                            SUBJECT
-                        </div>
-
-                        <div class="case-username">
-                            shadowfox23
-                        </div>
-
-                        <div class="evidence-row">
-
-                            <div class="evidence">
-                                SOURCE
-                                <br><br>
-                                SEARCH ENGINE
-                            </div>
-
-                            <div class="evidence orange">
-                                SOURCE
-                                <br><br>
-                                SOCIAL PROFILE
-                            </div>
-
-                            <div class="evidence orange">
-                                LEAD
-                                <br><br>
-                                USERNAME
-                            </div>
-
-                            <div class="evidence">
-                                STATUS
-                                <br><br>
-                                VERIFY
-                            </div>
-
-                        </div>
-
-                    </div>
-
+                <div class="center-symbol">
+                    OSINT
                 </div>
 
             </div>
@@ -1615,24 +1969,178 @@
 
 
 <!-- =========================================================
+     LATEST ARTICLES
+     ========================================================= -->
+
+<section class="latest" id="latest">
+
+    <div class="container">
+
+        <div class="latest-header reveal">
+
+            <div>
+
+                <div class="section-label">
+                    LATEST
+                </div>
+
+                <h2>
+                    Learn something new.
+                </h2>
+
+            </div>
+
+            <a href="#" class="view-all">
+                VIEW ALL ARTICLES →
+            </a>
+
+        </div>
+
+
+        <div class="article-grid">
+
+
+            <a href="articles/what-is-osint.html"
+               class="article-card reveal">
+
+                <div class="article-image image-osint"></div>
+
+                <div class="article-content">
+
+                    <div class="article-tag">
+                        OSINT
+                    </div>
+
+                    <h3>
+                        What Is OSINT?
+                    </h3>
+
+                    <p>
+                        Finding public information is easy.
+                        Understanding it is the real skill.
+                    </p>
+
+                    <div class="article-footer">
+
+                        <span>
+                            BEGINNER
+                        </span>
+
+                        <span>
+                            8 MIN READ
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+
+            <a href="#"
+               class="article-card reveal">
+
+                <div class="article-image image-network"></div>
+
+                <div class="article-content">
+
+                    <div class="article-tag">
+                        NETWORKING
+                    </div>
+
+                    <h3>
+                        TCP vs UDP
+                    </h3>
+
+                    <p>
+                        Two protocols. Different behaviour.
+                        Let's understand why.
+                    </p>
+
+                    <div class="article-footer">
+
+                        <span>
+                            BEGINNER
+                        </span>
+
+                        <span>
+                            6 MIN READ
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+
+            <a href="#"
+               class="article-card reveal">
+
+                <div class="article-image image-soc"></div>
+
+                <div class="article-content">
+
+                    <div class="article-tag">
+                        SOC
+                    </div>
+
+                    <h3>
+                        What Does a SOC Analyst Do?
+                    </h3>
+
+                    <p>
+                        An alert arrives. What happens
+                        next?
+                    </p>
+
+                    <div class="article-footer">
+
+                        <span>
+                            BEGINNER
+                        </span>
+
+                        <span>
+                            7 MIN READ
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
      TOPICS
      ========================================================= -->
 
 <section class="topics" id="topics">
 
-    <div class="container topics-content">
+    <div class="container">
 
-        <div class="section-number">
-            02 / KNOWLEDGE AREAS
+        <div class="section-heading reveal">
+
+            <div class="section-label">
+                EXPLORE
+            </div>
+
+            <h2>
+                Choose a topic.
+            </h2>
+
         </div>
-
-        <h2>
-            Follow your
-            curiosity.
-        </h2>
 
 
         <div class="topic-grid">
+
 
             <a href="#" class="topic reveal">
 
@@ -1640,14 +2148,15 @@
                     01
                 </span>
 
-                <span class="topic-mark osint-mark"></span>
-
-                <h3>OSINT</h3>
+                <h3>
+                    OSINT
+                </h3>
 
                 <p>
-                    Find, connect and verify information
-                    from publicly available sources.
+                    Find. Connect. Verify.
                 </p>
+
+                <div class="topic-line"></div>
 
             </a>
 
@@ -1658,14 +2167,15 @@
                     02
                 </span>
 
-                <span class="topic-mark soc-mark"></span>
-
-                <h3>SOC</h3>
+                <h3>
+                    SOC
+                </h3>
 
                 <p>
-                    Understand alerts, logs, incidents
-                    and the thinking behind security operations.
+                    Detect. Investigate. Respond.
                 </p>
+
+                <div class="topic-line"></div>
 
             </a>
 
@@ -1676,14 +2186,15 @@
                     03
                 </span>
 
-                <span class="topic-mark network-mark"></span>
-
-                <h3>Networking</h3>
+                <h3>
+                    Networking
+                </h3>
 
                 <p>
-                    Understand how devices communicate,
-                    from packets to protocols.
+                    Connect. Communicate. Understand.
                 </p>
+
+                <div class="topic-line"></div>
 
             </a>
 
@@ -1694,14 +2205,15 @@
                     04
                 </span>
 
-                <span class="topic-mark linux-mark"></span>
-
-                <h3>Linux</h3>
+                <h3>
+                    Linux
+                </h3>
 
                 <p>
-                    Learn the systems, commands and concepts
-                    behind Linux environments.
+                    Commands. Files. Systems.
                 </p>
+
+                <div class="topic-line"></div>
 
             </a>
 
@@ -1712,14 +2224,15 @@
                     05
                 </span>
 
-                <span class="topic-mark windows-mark"></span>
-
-                <h3>Windows</h3>
+                <h3>
+                    Windows
+                </h3>
 
                 <p>
-                    Explore Windows systems, processes,
-                    users and security concepts.
+                    Users. Processes. Events.
                 </p>
+
+                <div class="topic-line"></div>
 
             </a>
 
@@ -1730,14 +2243,15 @@
                     06
                 </span>
 
-                <span class="topic-mark fundamentals-mark"></span>
-
-                <h3>Fundamentals</h3>
+                <h3>
+                    Fundamentals
+                </h3>
 
                 <p>
-                    Build the foundation that makes
-                    everything else easier to understand.
+                    Build the foundation.
                 </p>
+
+                <div class="topic-line"></div>
 
             </a>
 
@@ -1749,106 +2263,147 @@
 
 
 <!-- =========================================================
-     LEARNING LIBRARY
+     LEARNING PATH
      ========================================================= -->
 
-<section class="library">
+<section class="paths">
 
-    <div class="container">
+    <div class="container paths-grid">
 
-        <div class="section-number">
-            03 / LEARNING LIBRARY
-        </div>
 
-        <div class="section-header">
+        <div class="paths-intro reveal">
+
+            <div class="section-label">
+                LEARNING PATH
+            </div>
 
             <h2>
-                Pick a concept.
+                Not sure what
+                to learn next?
             </h2>
+
+            <p>
+
+                You don't need to know everything
+                before you begin.
+
+                Follow the path one concept at a time.
+
+            </p>
 
         </div>
 
 
-        <div class="library-grid">
+        <div class="path-list">
 
-            <a href="#" class="library-item reveal">
 
-                <span class="library-number">
-                    001
-                </span>
+            <div class="path reveal">
 
-                <div>
-                    <h3>TCP vs UDP</h3>
-                    <p>
-                        What actually changes between the two?
-                    </p>
+                <div class="path-number">
+                    01
                 </div>
 
-                <span class="library-arrow">
-                    →
-                </span>
-
-            </a>
-
-
-            <a href="#" class="library-item reveal">
-
-                <span class="library-number">
-                    002
-                </span>
-
                 <div>
-                    <h3>Linux Commands</h3>
+
+                    <h3>
+                        Cybersecurity Fundamentals
+                    </h3>
+
                     <p>
-                        The commands you'll actually use.
+                        Learn the basic ideas behind
+                        cybersecurity.
                     </p>
+
                 </div>
 
-                <span class="library-arrow">
-                    →
-                </span>
-
-            </a>
+            </div>
 
 
-            <a href="#" class="library-item reveal">
+            <div class="path reveal">
 
-                <span class="library-number">
-                    003
-                </span>
-
-                <div>
-                    <h3>What Happens When You Type a URL?</h3>
-                    <p>
-                        Follow the request from browser to server.
-                    </p>
+                <div class="path-number">
+                    02
                 </div>
 
-                <span class="library-arrow">
-                    →
-                </span>
-
-            </a>
-
-
-            <a href="#" class="library-item reveal">
-
-                <span class="library-number">
-                    004
-                </span>
-
                 <div>
-                    <h3>What Does a SOC Analyst Do?</h3>
+
+                    <h3>
+                        Networking Basics
+                    </h3>
+
                     <p>
-                        Follow an alert through a SOC workflow.
+                        Understand how devices communicate.
                     </p>
+
                 </div>
 
-                <span class="library-arrow">
-                    →
-                </span>
+            </div>
 
-            </a>
+
+            <div class="path reveal">
+
+                <div class="path-number">
+                    03
+                </div>
+
+                <div>
+
+                    <h3>
+                        Linux & Windows
+                    </h3>
+
+                    <p>
+                        Get comfortable with the systems
+                        you'll encounter.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="path reveal">
+
+                <div class="path-number">
+                    04
+                </div>
+
+                <div>
+
+                    <h3>
+                        OSINT & SOC
+                    </h3>
+
+                    <p>
+                        Start investigating real-world
+                        security problems.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="path reveal">
+
+                <div class="path-number">
+                    05
+                </div>
+
+                <div>
+
+                    <h3>
+                        Hands-on Practice
+                    </h3>
+
+                    <p>
+                        Put the concepts into practice.
+                    </p>
+
+                </div>
+
+            </div>
+
 
         </div>
 
@@ -1863,80 +2418,99 @@
 
 <section class="desk" id="desk">
 
-    <div class="container">
+    <div class="container desk-layout">
 
-        <div class="desk-grid">
 
-            <div class="reveal">
+        <div class="reveal">
 
-                <div class="section-number">
-                    04 / INVESTIGATION DESK
-                </div>
-
-                <h2>
-                    Learn by
-                    following
-                    the evidence.
-                </h2>
-
-                <p class="desk-intro">
-
-                    Some things are easier to understand when
-                    you stop reading definitions and start
-                    investigating a problem.
-
-                </p>
-
+            <div class="section-label">
+                INVESTIGATION DESK
             </div>
 
+            <h2>
 
-            <div class="desk-list reveal">
+                Sometimes
+                you learn best
+                by <span>investigating.</span>
 
-                <a href="#" class="desk-item">
+            </h2>
 
-                    <span>
-                        DESK 001
-                    </span>
+            <p class="desk-description">
+
+                Follow practical investigations,
+                explore clues and see how cybersecurity
+                concepts work outside a definition.
+
+            </p>
+
+        </div>
+
+
+        <div class="desk-list">
+
+
+            <a href="#" class="desk-card reveal">
+
+                <div>
+
+                    <small>
+                        OSINT / 001
+                    </small>
 
                     <strong>
                         OSINT Investigations
                     </strong>
 
-                    <span>→</span>
+                </div>
 
-                </a>
+                <span class="desk-arrow">
+                    →
+                </span>
+
+            </a>
 
 
-                <a href="#" class="desk-item">
+            <a href="#" class="desk-card reveal">
 
-                    <span>
-                        DESK 002
-                    </span>
+                <div>
+
+                    <small>
+                        SOC / 001
+                    </small>
 
                     <strong>
                         SOC Analysis
                     </strong>
 
-                    <span>→</span>
+                </div>
 
-                </a>
+                <span class="desk-arrow">
+                    →
+                </span>
+
+            </a>
 
 
-                <a href="#" class="desk-item">
+            <a href="#" class="desk-card reveal">
 
-                    <span>
-                        DESK 003
-                    </span>
+                <div>
+
+                    <small>
+                        LAB / 001
+                    </small>
 
                     <strong>
                         Lab Notes
                     </strong>
 
-                    <span>→</span>
+                </div>
 
-                </a>
+                <span class="desk-arrow">
+                    →
+                </span>
 
-            </div>
+            </a>
+
 
         </div>
 
@@ -1953,21 +2527,22 @@
 
     <div class="container">
 
-        <div class="principle-inner reveal">
+        <div class="principle-box reveal">
 
-            <div class="principle-label">
-                KSCYBSEC PRINCIPLE
-            </div>
+            <small>
+                THE KSCYBSEC APPROACH
+            </small>
 
             <h2>
-                Learn the concept.
-                Understand why it works.
-                Then try it yourself.
+                Learn → Try → Think → Verify
             </h2>
 
             <p>
-                Cybersecurity isn't a list of commands to memorize.
-                It's a way of thinking.
+
+                Don't just memorize what a tool does.
+                Understand the problem first, then learn
+                how the tool helps you solve it.
+
             </p>
 
         </div>
@@ -1983,49 +2558,50 @@
 
 <section class="about" id="about">
 
-    <div class="container">
+    <div class="container about-grid">
 
-        <div class="about-grid">
 
-            <div class="reveal">
+        <div class="reveal">
 
-                <div class="section-number">
-                    05 / ABOUT KSCYBSEC
-                </div>
-
-                <h2>
-                    A place to
-                    understand
-                    things.
-                </h2>
-
+            <div class="section-label">
+                ABOUT KSCYBSEC
             </div>
 
+            <h2>
+                Cybersecurity
+                doesn't have
+                to feel confusing.
+            </h2>
 
-            <div class="about-text reveal">
+        </div>
 
-                <p>
-                    KSCybSec is an independent cybersecurity
-                    learning space built around one simple idea:
-                    difficult concepts become easier when they're
-                    explained clearly.
-                </p>
 
-                <p>
-                    Here you'll find practical guides,
-                    investigations, technical concepts and
-                    hands-on learning material covering different
-                    areas of cybersecurity.
-                </p>
+        <div class="reveal">
 
-                <p>
-                    No unnecessary jargon.
-                    No pretending everything is complicated.
-                    Just concepts, questions, experiments and
-                    things worth understanding.
-                </p>
+            <p>
 
-            </div>
+                KSCybSec is an independent cybersecurity
+                learning blog built for people who want
+                to understand how things actually work.
+
+            </p>
+
+            <p>
+
+                From OSINT and SOC concepts to networking,
+                Linux and Windows, the goal is simple:
+                explain the idea clearly, show how it works,
+                and give you something practical to try.
+
+            </p>
+
+            <p>
+
+                Start with one concept.
+                Follow your curiosity.
+                Keep investigating.
+
+            </p>
 
         </div>
 
@@ -2034,44 +2610,43 @@
 </section>
 
 
+</main>
+
+
 <!-- =========================================================
      FOOTER
      ========================================================= -->
 
 <footer>
 
-    <div class="container">
+    <div class="container footer-inner">
 
-        <div class="footer-inner">
+        <div>
 
-            <div>
-
-                <div class="footer-brand">
-                    KSCybSec
-                </div>
-
-                <div class="footer-tag">
-                    CYBERSECURITY KNOWLEDGE LAB
-                </div>
-
+            <div class="footer-brand">
+                KSCybSec
             </div>
 
-
-            <div class="footer-links">
-
-                <a href="#">
-                    GitHub
-                </a>
-
-                <a href="#">
-                    LinkedIn
-                </a>
-
-                <a href="#">
-                    Contact
-                </a>
-
+            <div class="footer-note">
+                Cybersecurity, explained simply.
             </div>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="#">
+                GitHub
+            </a>
+
+            <a href="#">
+                LinkedIn
+            </a>
+
+            <a href="#">
+                Contact
+            </a>
 
         </div>
 
@@ -2081,12 +2656,12 @@
 
 
 <!-- =========================================================
-     SCROLL REVEAL
+     SCROLL ANIMATION
      ========================================================= -->
 
 <script>
 
-    const revealElements =
+    const elements =
         document.querySelectorAll(".reveal");
 
     const observer =
@@ -2111,8 +2686,11 @@
             }
         );
 
-    revealElements.forEach(element => {
+
+    elements.forEach(element => {
+
         observer.observe(element);
+
     });
 
 </script>
