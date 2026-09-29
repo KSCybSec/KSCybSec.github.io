@@ -4,29 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>What Is OSINT? | KSCybSec</title>
+    <title>What Is OSINT? — KSCybSec</title>
+    <meta name="description" content="A beginner-friendly introduction to OSINT, how investigators connect public information, and why a clue is not the same thing as proof.">
 
-    <meta name="description"
-          content="A beginner-friendly introduction to OSINT. Learn how open source intelligence works through a simple fictional investigation.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <meta name="keywords"
-          content="OSINT, Open Source Intelligence, cybersecurity, OSINT for beginners, cybersecurity beginners">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg: #090b0f;
-            --surface: #101318;
-            --surface-2: #141820;
-            --border: #252b34;
-
-            --text: #eef2f5;
-            --muted: #8d96a3;
-            --soft: #606a77;
-
-            --accent: #78e2b0;
-            --accent-soft: rgba(120, 226, 176, 0.08);
-
-            --max-width: 900px;
+            --bg: #070B14;
+            --section: #0B1120;
+            --card: #101827;
+            --card-soft: #0d1524;
+            --text: #E8EDF5;
+            --muted: #8995AA;
+            --cyan: #4DE8FF;
+            --violet: #8B7CFF;
+            --border: rgba(137, 149, 170, 0.14);
+            --border-bright: rgba(77, 232, 255, 0.28);
+            --max: 900px;
         }
 
         * {
@@ -40,16 +38,25 @@
         }
 
         body {
-            background: var(--bg);
+            background:
+                radial-gradient(circle at 75% 8%, rgba(77, 232, 255, 0.055), transparent 28%),
+                radial-gradient(circle at 15% 45%, rgba(139, 124, 255, 0.04), transparent 30%),
+                var(--bg);
             color: var(--text);
-            font-family:
-                Inter,
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                sans-serif;
-
+            font-family: "Inter", sans-serif;
             line-height: 1.75;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+            background-size: 80px 80px;
+            mask-image: linear-gradient(to bottom, black, transparent 75%);
         }
 
         a {
@@ -57,48 +64,41 @@
             text-decoration: none;
         }
 
-        /* ---------------- NAVIGATION ---------------- */
+        /* NAV */
 
         nav {
             position: sticky;
             top: 0;
             z-index: 100;
-
-            background: rgba(9, 11, 15, 0.92);
-            backdrop-filter: blur(12px);
-
-            border-bottom: 1px solid var(--border);
-        }
-
-        .nav-inner {
-            max-width: 1100px;
-            margin: auto;
-
-            padding: 18px 24px;
-
+            height: 72px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            padding: 0 6%;
+            background: rgba(7, 11, 20, 0.78);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--border);
         }
 
         .brand {
+            font-family: "Space Grotesk", sans-serif;
             font-weight: 700;
-            letter-spacing: -0.3px;
+            font-size: 1.25rem;
+            letter-spacing: -0.03em;
         }
 
         .brand span {
-            color: var(--accent);
+            color: var(--cyan);
         }
 
         .nav-links {
             display: flex;
-            gap: 24px;
+            gap: 28px;
+            color: var(--muted);
+            font-size: 0.9rem;
         }
 
         .nav-links a {
-            color: var(--muted);
-            font-size: 14px;
-
             transition: color 0.2s ease;
         }
 
@@ -106,433 +106,528 @@
             color: var(--text);
         }
 
-        /* ---------------- ARTICLE HEADER ---------------- */
+        /* ARTICLE HEADER */
 
         .article-header {
-            max-width: var(--max-width);
-            margin: auto;
-
-            padding: 90px 24px 55px;
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 105px 24px 75px;
         }
 
-        .guide-label {
-            display: inline-block;
+        .breadcrumb {
+            font-family: "DM Mono", monospace;
+            font-size: 0.72rem;
+            color: var(--muted);
+            margin-bottom: 28px;
+        }
 
-            color: var(--accent);
-            font-size: 13px;
-            font-weight: 700;
-
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-
-            margin-bottom: 20px;
+        .breadcrumb span {
+            color: var(--cyan);
         }
 
         .article-header h1 {
-            font-size: clamp(42px, 7vw, 70px);
-            line-height: 1.05;
-
-            letter-spacing: -2.5px;
-
-            margin-bottom: 20px;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: clamp(2.7rem, 7vw, 5rem);
+            line-height: 1.02;
+            letter-spacing: -0.055em;
+            max-width: 850px;
         }
 
-        .article-header .subtitle {
-            color: var(--muted);
+        .article-header h1 span {
+            color: var(--cyan);
+        }
 
-            font-size: 20px;
+        .subtitle {
             max-width: 700px;
-
-            margin-bottom: 28px;
+            margin-top: 28px;
+            font-size: 1.15rem;
+            color: var(--muted);
         }
 
         .meta {
             display: flex;
+            gap: 18px;
             flex-wrap: wrap;
-            gap: 10px;
+            margin-top: 35px;
+            font-family: "DM Mono", monospace;
+            font-size: 0.72rem;
+            color: var(--muted);
         }
 
         .meta span {
-            padding: 6px 12px;
-
+            padding: 7px 11px;
             border: 1px solid var(--border);
-            border-radius: 999px;
-
-            color: var(--muted);
-            font-size: 13px;
+            border-radius: 100px;
+            background: rgba(16, 24, 39, 0.5);
         }
 
-        /* ---------------- ARTICLE ---------------- */
+        /* READING */
 
-        main {
-            max-width: var(--max-width);
-            margin: auto;
+        article {
+            max-width: var(--max);
+            margin: 0 auto;
             padding: 0 24px 100px;
         }
 
-        .toc {
-            background: var(--surface);
-
-            border: 1px solid var(--border);
-            border-radius: 14px;
-
-            padding: 25px 28px;
-            margin-bottom: 55px;
+        .article-section {
+            margin-bottom: 82px;
         }
 
-        .toc-title {
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-
-        .toc ul {
-            list-style: none;
-        }
-
-        .toc li {
-            margin: 7px 0;
-        }
-
-        .toc a {
-            color: var(--muted);
-            font-size: 14px;
-        }
-
-        .toc a:hover {
-            color: var(--accent);
-        }
-
-        article {
-            font-size: 17px;
-        }
-
-        article section {
-            margin-bottom: 70px;
-        }
-
-        article h2 {
-            font-size: 31px;
-            line-height: 1.25;
-
-            letter-spacing: -0.8px;
-
-            margin-bottom: 22px;
-        }
-
-        article h3 {
-            font-size: 21px;
-            margin: 32px 0 12px;
-        }
-
-        article p {
+        .article-section h2 {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 1.9rem;
+            letter-spacing: -0.035em;
             margin-bottom: 20px;
         }
 
-        article ul {
-            margin: 0 0 24px 22px;
+        .article-section h3 {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 1.25rem;
+            margin-bottom: 12px;
         }
 
-        article li {
-            margin: 7px 0;
+        p {
+            color: #c3cad6;
+            margin-bottom: 18px;
         }
 
-        article strong {
+        strong {
             color: var(--text);
         }
 
-        /* ---------------- QUOTES ---------------- */
-
-        blockquote {
-            margin: 28px 0;
-
-            padding: 20px 24px;
-
-            border-left: 3px solid var(--accent);
-
-            background: var(--accent-soft);
-
-            color: var(--text);
-
-            font-size: 18px;
-            font-weight: 500;
-        }
-
-        /* ---------------- CODE ---------------- */
-
-        code {
-            font-family:
-                "SFMono-Regular",
-                Consolas,
-                "Liberation Mono",
-                monospace;
-
-            background: var(--surface-2);
-
-            border: 1px solid var(--border);
-
-            padding: 2px 6px;
-
-            border-radius: 5px;
-
-            font-size: 0.9em;
-        }
-
-        pre {
-            background: #07090c;
-
-            border: 1px solid var(--border);
-            border-radius: 12px;
-
-            padding: 20px;
-
-            overflow-x: auto;
-
-            margin: 22px 0 28px;
-        }
-
-        pre code {
-            background: none;
-            border: none;
-            padding: 0;
-
-            color: #d9e1e8;
-
-            font-size: 14px;
+        .lead {
+            font-size: 1.25rem;
             line-height: 1.7;
+            color: var(--text);
         }
 
-        /* ---------------- CALLOUT ---------------- */
+        /* SCENARIO */
 
-        .callout {
-            background: var(--surface);
-
+        .scenario {
+            position: relative;
+            margin: 35px 0;
+            padding: 30px;
+            background:
+                radial-gradient(circle at 85% 20%, rgba(77,232,255,0.08), transparent 35%),
+                var(--card);
             border: 1px solid var(--border);
-            border-radius: 14px;
+            border-radius: 18px;
+            overflow: hidden;
+        }
 
-            padding: 25px 27px;
+        .scenario::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(var(--cyan), transparent);
+        }
 
+        .scenario-label {
+            font-family: "DM Mono", monospace;
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.13em;
+            color: var(--cyan);
+            margin-bottom: 13px;
+        }
+
+        .scenario p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* DEFINITION */
+
+        .definition {
+            margin: 35px 0;
+            padding: 32px;
+            border: 1px solid var(--border-bright);
+            border-radius: 18px;
+            background: linear-gradient(
+                135deg,
+                rgba(77,232,255,0.045),
+                rgba(139,124,255,0.035)
+            );
+        }
+
+        .definition p {
+            font-size: 1.15rem;
+            color: var(--text);
+            margin: 0;
+        }
+
+        .definition code {
+            color: var(--cyan);
+        }
+
+        /* CLUE GRID */
+
+        .clue-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
             margin: 30px 0;
         }
 
-        .callout-title {
-            color: var(--accent);
-
-            font-weight: 700;
-
-            margin-bottom: 8px;
+        .clue {
+            padding: 23px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            transition: transform 0.25s ease, border-color 0.25s ease;
         }
 
-        /* ---------------- CHALLENGE ---------------- */
-
-        .challenge {
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(120, 226, 176, 0.08),
-                    rgba(120, 226, 176, 0.02)
-                );
-
-            border: 1px solid rgba(120, 226, 176, 0.25);
-
-            border-radius: 16px;
-
-            padding: 30px;
-
-            margin: 35px 0;
+        .clue:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-bright);
         }
 
-        .challenge-label {
-            color: var(--accent);
+        .clue-number {
+            font-family: "DM Mono", monospace;
+            color: var(--cyan);
+            font-size: 0.7rem;
+        }
 
-            font-size: 13px;
-            font-weight: 800;
+        .clue h3 {
+            margin-top: 12px;
+            font-size: 1rem;
+        }
 
-            letter-spacing: 0.08em;
+        .clue p {
+            font-size: 0.88rem;
+            margin: 0;
+        }
+
+        /* IMPORTANT BOX */
+
+        .important {
+            padding: 25px 28px;
+            margin: 30px 0;
+            border-radius: 14px;
+            background: rgba(139,124,255,0.045);
+            border: 1px solid rgba(139,124,255,0.18);
+        }
+
+        .important-title {
+            font-family: "DM Mono", monospace;
+            font-size: 0.72rem;
+            color: var(--violet);
             text-transform: uppercase;
-
-            margin-bottom: 10px;
+            letter-spacing: 0.1em;
+            margin-bottom: 9px;
         }
 
-        .challenge h3 {
-            margin-top: 0;
+        /* WORKFLOW */
+
+        .workflow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 30px 0;
         }
 
-        /* ---------------- TABLE ---------------- */
-
-        .table-wrapper {
-            overflow-x: auto;
-
-            margin: 28px 0;
+        .step {
+            flex: 1;
+            min-width: 125px;
+            padding: 18px;
+            text-align: center;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
         }
 
-        table {
+        .step-number {
+            display: block;
+            font-family: "DM Mono", monospace;
+            color: var(--cyan);
+            font-size: 0.65rem;
+            margin-bottom: 7px;
+        }
+
+        .step strong {
+            font-size: 0.88rem;
+        }
+
+        /* TABLE */
+
+        .evidence-table {
             width: 100%;
-
             border-collapse: collapse;
-
-            background: var(--surface);
-
+            margin: 28px 0;
+            overflow: hidden;
+            border-radius: 12px;
             border: 1px solid var(--border);
         }
 
-        th,
-        td {
+        .evidence-table th,
+        .evidence-table td {
+            padding: 15px;
             text-align: left;
-
-            padding: 14px 16px;
-
             border-bottom: 1px solid var(--border);
-
-            font-size: 14px;
         }
 
-        th {
-            color: var(--accent);
-
-            font-weight: 700;
-
-            background: var(--surface-2);
+        .evidence-table th {
+            background: var(--card);
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 0.88rem;
         }
 
-        td {
+        .evidence-table td {
             color: var(--muted);
+            font-size: 0.86rem;
+            background: rgba(16,24,39,0.35);
         }
 
-        tr:last-child td {
+        .evidence-table tr:last-child td {
             border-bottom: none;
         }
 
-        /* ---------------- FLOW ---------------- */
+        /* INTERACTIVE CHALLENGE */
 
-        .flow {
-            display: grid;
-
-            grid-template-columns:
-                repeat(6, 1fr);
-
-            gap: 8px;
-
-            margin: 30px 0;
+        .challenge {
+            margin: 35px 0;
+            padding: 30px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
         }
 
-        .flow-item {
-            background: var(--surface);
+        .challenge-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
 
+        .challenge-tag {
+            font-family: "DM Mono", monospace;
+            color: var(--cyan);
+            font-size: 0.68rem;
+            text-transform: uppercase;
+        }
+
+        .challenge-question {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 1.25rem;
+            margin-bottom: 20px;
+        }
+
+        .choice {
+            width: 100%;
+            text-align: left;
+            padding: 15px 17px;
+            margin: 7px 0;
             border: 1px solid var(--border);
-
             border-radius: 10px;
-
-            padding: 13px 8px;
-
-            text-align: center;
-
-            font-size: 13px;
-
+            background: var(--card-soft);
             color: var(--muted);
+            cursor: pointer;
+            font-family: "Inter", sans-serif;
+            transition: 0.2s ease;
         }
 
-        .flow-item strong {
+        .choice:hover {
+            border-color: var(--border-bright);
+            color: var(--text);
+        }
+
+        .choice.correct {
+            border-color: rgba(77,232,255,0.5);
+            color: var(--cyan);
+        }
+
+        .choice.wrong {
+            border-color: rgba(255,100,120,0.4);
+            color: #ff9aa8;
+        }
+
+        .answer {
+            display: none;
+            margin-top: 18px;
+            padding: 17px;
+            border-radius: 10px;
+            background: rgba(77,232,255,0.045);
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .answer.show {
             display: block;
-
-            color: var(--accent);
-
-            margin-bottom: 3px;
         }
 
-        /* ---------------- NEXT GUIDE ---------------- */
+        /* TOOLS */
 
-        .next-guide {
-            margin-top: 80px;
+        .tool-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 25px;
+        }
 
-            background: var(--surface);
-
+        .tool {
+            padding: 19px;
             border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--card);
+        }
 
-            border-radius: 16px;
+        .tool strong {
+            display: block;
+            margin-bottom: 5px;
+        }
 
-            padding: 32px;
+        .tool span {
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        /* CHEATSHEET */
+
+        .cheatsheet {
+            display: grid;
+            gap: 1px;
+            margin-top: 28px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .cheat-row {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            gap: 20px;
+            padding: 17px 19px;
+            background: var(--card);
+        }
+
+        .cheat-row strong {
+            font-family: "DM Mono", monospace;
+            font-size: 0.78rem;
+            color: var(--cyan);
+        }
+
+        .cheat-row span {
+            color: var(--muted);
+            font-size: 0.86rem;
+        }
+
+        /* NEXT */
+
+        .next-article {
+            margin-top: 90px;
+            padding: 35px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background:
+                radial-gradient(circle at 90% 10%, rgba(139,124,255,0.08), transparent 35%),
+                var(--card);
         }
 
         .next-label {
-            color: var(--accent);
-
-            font-size: 12px;
-            font-weight: 800;
-
-            letter-spacing: 0.08em;
+            font-family: "DM Mono", monospace;
+            font-size: 0.68rem;
+            color: var(--cyan);
             text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
 
+        .next-article h2 {
+            margin-top: 10px;
             margin-bottom: 10px;
         }
 
-        .next-guide h2 {
-            margin-bottom: 10px;
+        .next-article p {
+            margin-bottom: 22px;
         }
 
-        .next-guide p {
-            color: var(--muted);
+        .next-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--cyan);
+            font-weight: 600;
         }
 
-        /* ---------------- FOOTER ---------------- */
+        .next-link:hover {
+            text-decoration: underline;
+        }
+
+        /* FOOTER */
 
         footer {
             border-top: 1px solid var(--border);
-
-            padding: 35px 24px;
-
+            padding: 45px 6%;
+            color: var(--muted);
             text-align: center;
-
-            color: var(--soft);
-
-            font-size: 13px;
+            font-size: 0.82rem;
         }
 
-        /* ---------------- MOBILE ---------------- */
+        footer strong {
+            color: var(--text);
+        }
+
+        /* REVEAL */
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* RESPONSIVE */
 
         @media (max-width: 700px) {
 
-            .nav-inner {
-                padding: 15px 18px;
+            nav {
+                padding: 0 20px;
             }
 
             .nav-links {
-                gap: 13px;
-            }
-
-            .nav-links a {
-                font-size: 12px;
+                display: none;
             }
 
             .article-header {
-                padding: 65px 20px 45px;
+                padding: 75px 20px 55px;
             }
 
-            main {
+            article {
                 padding: 0 20px 70px;
             }
 
             .article-header h1 {
-                letter-spacing: -1.5px;
+                font-size: 2.8rem;
             }
 
-            article {
-                font-size: 16px;
+            .clue-grid,
+            .tool-list {
+                grid-template-columns: 1fr;
             }
 
-            article h2 {
-                font-size: 27px;
+            .workflow {
+                flex-direction: column;
             }
 
-            .flow {
-                grid-template-columns:
-                    repeat(2, 1fr);
+            .step {
+                min-width: 100%;
             }
 
-            .toc {
-                padding: 20px;
+            .cheat-row {
+                grid-template-columns: 1fr;
+                gap: 6px;
             }
 
-            .challenge {
+            .scenario,
+            .definition,
+            .challenge,
+            .next-article {
                 padding: 23px;
             }
         }
@@ -544,18 +639,12 @@
     <!-- NAVIGATION -->
 
     <nav>
-        <div class="nav-inner">
+        <a href="../index.html" class="brand">KS<span>CybSec</span></a>
 
-            <a href="../index.html" class="brand">
-                KS<span>CybSec</span>
-            </a>
-
-            <div class="nav-links">
-                <a href="../index.html">Home</a>
-                <a href="../index.html#topics">Topics</a>
-                <a href="../index.html#about">About</a>
-            </div>
-
+        <div class="nav-links">
+            <a href="../index.html">Home</a>
+            <a href="../index.html#topics">Topics</a>
+            <a href="../index.html#about">About</a>
         </div>
     </nav>
 
@@ -564,1434 +653,618 @@
 
     <header class="article-header">
 
-        <div class="guide-label">
-            Guide 001 · OSINT · Beginner
+        <div class="breadcrumb">
+            KSCybSec / <span>OSINT</span> / Article 001
         </div>
 
         <h1>
-            What Is OSINT?
+            What Is <span>OSINT?</span>
         </h1>
 
         <p class="subtitle">
-            A beginner-friendly introduction to Open Source Intelligence.
+            Finding information is easy. Figuring out what that information actually means is where things get interesting.
         </p>
 
         <div class="meta">
-            <span>10 min read</span>
+            <span>BEGINNER</span>
             <span>OSINT</span>
-            <span>Beginner</span>
+            <span>~8 MIN READ</span>
         </div>
 
     </header>
 
 
-    <!-- MAIN CONTENT -->
+    <!-- ARTICLE -->
 
-    <main>
+    <article>
 
-        <!-- TABLE OF CONTENTS -->
+        <!-- OPENING -->
 
-        <div class="toc">
+        <section class="article-section reveal">
 
-            <div class="toc-title">
-                In this guide
+            <p class="lead">
+                Try searching your own name.
+            </p>
+
+            <p>
+                Maybe an old profile appears. Maybe an abandoned account. Maybe a comment you completely forgot about.
+            </p>
+
+            <p>
+                You didn't break into anything.
+                You didn't bypass a password.
+                You simply looked at information that was already available.
+            </p>
+
+            <p>
+                That simple idea is the doorway into <strong>OSINT</strong>.
+            </p>
+
+        </section>
+
+
+        <!-- DEFINITION -->
+
+        <section class="article-section reveal">
+
+            <h2>So... what actually is OSINT?</h2>
+
+            <div class="definition">
+
+                <p>
+                    <strong>OSINT</strong> stands for
+                    <code>Open-Source Intelligence</code>.
+                    It is the process of collecting, connecting, evaluating, and verifying information from publicly available sources.
+                </p>
+
             </div>
 
-            <ul>
+            <p>
+                The important word isn't just <strong>open</strong>.
+                It's <strong>intelligence</strong>.
+            </p>
 
-                <li>
-                    <a href="#start">
-                        What OSINT actually means
-                    </a>
-                </li>
+            <p>
+                Finding a page is collection.
+                Understanding what that page tells you — and how reliable it is — is analysis.
+            </p>
 
-                <li>
-                    <a href="#investigation">
-                        A small investigation
-                    </a>
-                </li>
+        </section>
 
-                <li>
-                    <a href="#sources">
-                        Where OSINT information comes from
-                    </a>
-                </li>
 
-                <li>
-                    <a href="#workflow">
-                        How an OSINT investigation works
-                    </a>
-                </li>
+        <!-- INVESTIGATION -->
 
-                <li>
-                    <a href="#challenge">
-                        Quick challenge
-                    </a>
-                </li>
+        <section class="article-section reveal">
 
-                <li>
-                    <a href="#verify">
-                        Verification
-                    </a>
-                </li>
+            <h2>Let's investigate.</h2>
 
-                <li>
-                    <a href="#tools">
-                        OSINT tools
-                    </a>
-                </li>
+            <div class="scenario">
 
-                <li>
-                    <a href="#mindset">
-                        The OSINT mindset
-                    </a>
-                </li>
+                <div class="scenario-label">Fictional training scenario</div>
 
-                <li>
-                    <a href="#ethics">
-                        Responsible OSINT
-                    </a>
-                </li>
+                <p>
+                    Imagine you discover the username
+                    <strong>noxvale_17</strong>
+                    on a public website.
+                </p>
 
-                <li>
-                    <a href="#summary">
-                        Cheat sheet
-                    </a>
-                </li>
+                <p>
+                    You search the same username and discover accounts on two other platforms.
+                </p>
 
-            </ul>
+                <p>
+                    One profile mentions a programming project.
+                    Another contains a photograph with a recognizable landmark.
+                </p>
+
+                <p>
+                    Interesting?
+                    Definitely.
+                </p>
+
+                <p>
+                    Proof that all three accounts belong to the same person?
+                    <strong>Not yet.</strong>
+                </p>
+
+            </div>
+
+            <p>
+                This is one of the most important ideas in OSINT:
+            </p>
+
+            <div class="important">
+
+                <div class="important-title">Remember this</div>
+
+                <p>
+                    <strong>A clue is not the same thing as proof.</strong>
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- CLUES -->
+
+        <section class="article-section reveal">
+
+            <h2>One clue is rarely enough.</h2>
+
+            <p>
+                Good OSINT work is often about connecting several small pieces of information.
+            </p>
+
+            <div class="clue-grid">
+
+                <div class="clue">
+                    <div class="clue-number">01</div>
+                    <h3>Username</h3>
+                    <p>The same username appears on multiple public platforms.</p>
+                </div>
+
+                <div class="clue">
+                    <div class="clue-number">02</div>
+                    <h3>Context</h3>
+                    <p>Profiles mention similar interests, projects, or communities.</p>
+                </div>
+
+                <div class="clue">
+                    <div class="clue-number">03</div>
+                    <h3>Verification</h3>
+                    <p>Independent information supports the connection.</p>
+                </div>
+
+            </div>
+
+            <p>
+                The more independent pieces line up, the stronger your understanding becomes.
+                But uncertainty can still remain.
+            </p>
+
+        </section>
+
+
+        <!-- WORKFLOW -->
+
+        <section class="article-section reveal">
+
+            <h2>The OSINT mindset</h2>
+
+            <p>
+                Instead of randomly searching until something interesting appears, start with a question.
+            </p>
+
+            <div class="workflow">
+
+                <div class="step">
+                    <span class="step-number">01</span>
+                    <strong>Question</strong>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">02</span>
+                    <strong>Search</strong>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">03</span>
+                    <strong>Collect</strong>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">04</span>
+                    <strong>Connect</strong>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">05</span>
+                    <strong>Verify</strong>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">06</span>
+                    <strong>Report</strong>
+                </div>
+
+            </div>
+
+            <p>
+                The question controls the investigation.
+                Without one, you can collect hundreds of interesting facts and still learn nothing useful.
+            </p>
+
+        </section>
+
+
+        <!-- SOURCES -->
+
+        <section class="article-section reveal">
+
+            <h2>Where does the information come from?</h2>
+
+            <p>
+                Public information can exist in many places.
+                OSINT isn't limited to search engines.
+            </p>
+
+            <table class="evidence-table">
+
+                <thead>
+                    <tr>
+                        <th>Source</th>
+                        <th>What it might reveal</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Search engines</td>
+                        <td>Pages, documents, indexed content and references</td>
+                    </tr>
+
+                    <tr>
+                        <td>Social platforms</td>
+                        <td>Public profiles, posts, usernames and connections</td>
+                    </tr>
+
+                    <tr>
+                        <td>Websites</td>
+                        <td>Organizations, technologies, documents and contact information</td>
+                    </tr>
+
+                    <tr>
+                        <td>Public records</td>
+                        <td>Information legally made available to the public</td>
+                    </tr>
+
+                    <tr>
+                        <td>Technical sources</td>
+                        <td>Domains, DNS information, certificates and infrastructure clues</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+
+        <!-- MINI CHALLENGE -->
+
+        <section class="article-section reveal">
+
+            <h2>Quick check.</h2>
+
+            <p>
+                Let's see how you think before moving on.
+            </p>
+
+            <div class="challenge">
+
+                <div class="challenge-top">
+                    <span class="challenge-tag">Mini challenge</span>
+                    <span class="challenge-tag">Think first</span>
+                </div>
+
+                <div class="challenge-question">
+                    You find the username <strong>noxvale_17</strong> on GitHub and Reddit.
+                    Both accounts mention Chennai. What can you conclude?
+                </div>
+
+                <button class="choice" onclick="checkAnswer(this, false)">
+                    They definitely belong to the same person.
+                </button>
+
+                <button class="choice" onclick="checkAnswer(this, true)">
+                    They might belong to the same person, but more verification is needed.
+                </button>
+
+                <button class="choice" onclick="checkAnswer(this, false)">
+                    The Reddit account must have copied the GitHub username.
+                </button>
+
+                <div class="answer" id="challengeAnswer">
+                    Exactly. The information creates a useful lead, but it doesn't establish identity by itself.
+                    Look for additional independent evidence before treating the connection as confirmed.
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- VERIFICATION -->
+
+        <section class="article-section reveal">
+
+            <h2>Before you believe the clue...</h2>
+
+            <p>
+                This is where OSINT becomes more than searching.
+            </p>
+
+            <p>
+                Ask a few simple questions:
+            </p>
+
+            <div class="clue-grid">
+
+                <div class="clue">
+                    <div class="clue-number">ASK</div>
+                    <h3>Where did it come from?</h3>
+                    <p>Is this the original source or a copy?</p>
+                </div>
+
+                <div class="clue">
+                    <div class="clue-number">CHECK</div>
+                    <h3>When was it published?</h3>
+                    <p>Old information can create misleading conclusions.</p>
+                </div>
+
+                <div class="clue">
+                    <div class="clue-number">COMPARE</div>
+                    <h3>Can another source confirm it?</h3>
+                    <p>Independent confirmation makes a finding more useful.</p>
+                </div>
+
+            </div>
+
+            <p>
+                And perhaps the most important question:
+                <strong>Could there be another explanation?</strong>
+            </p>
+
+        </section>
+
+
+        <!-- TOOLS -->
+
+        <section class="article-section reveal">
+
+            <h2>Tools come later.</h2>
+
+            <p>
+                You don't need twenty tools to start learning OSINT.
+                The important skill is knowing what question you're trying to answer.
+            </p>
+
+            <div class="tool-list">
+
+                <div class="tool">
+                    <strong>Search engines</strong>
+                    <span>Discover public pages, documents and references.</span>
+                </div>
+
+                <div class="tool">
+                    <strong>Reverse image search</strong>
+                    <span>Find other appearances or sources for an image.</span>
+                </div>
+
+                <div class="tool">
+                    <strong>WHOIS / domain data</strong>
+                    <span>Investigate publicly available domain information.</span>
+                </div>
+
+                <div class="tool">
+                    <strong>VirusTotal</strong>
+                    <span>Explore information about files, URLs, domains and infrastructure.</span>
+                </div>
+
+            </div>
+
+            <p style="margin-top:25px;">
+                Tools change.
+                The reasoning behind them is what stays useful.
+            </p>
+
+        </section>
+
+
+        <!-- RESPONSIBILITY -->
+
+        <section class="article-section reveal">
+
+            <h2>Public doesn't always mean harmless.</h2>
+
+            <p>
+                Just because information is publicly accessible doesn't mean it should automatically be collected, exposed, or shared.
+            </p>
+
+            <p>
+                Responsible OSINT considers <strong>privacy, legality, context, accuracy, consent, and potential harm</strong>.
+            </p>
+
+            <p>
+                For learning, use your own accounts, fictional identities, public organizations, test data, or environments where you have permission.
+            </p>
+
+        </section>
+
+
+        <!-- MINDSET -->
+
+        <section class="article-section reveal">
+
+            <h2>The question that changes everything</h2>
+
+            <div class="scenario">
+
+                <div class="scenario-label">Old question</div>
+
+                <p>
+                    “What OSINT tool should I use?”
+                </p>
+
+                <div class="scenario-label" style="margin-top:25px;">Better question</div>
+
+                <p>
+                    “What am I actually trying to find out?”
+                </p>
+
+            </div>
+
+            <p>
+                Once you know the second answer, choosing a tool becomes much easier.
+            </p>
+
+        </section>
+
+
+        <!-- CHEAT SHEET -->
+
+        <section class="article-section reveal">
+
+            <h2>OSINT in one screen</h2>
+
+            <div class="cheatsheet">
+
+                <div class="cheat-row">
+                    <strong>OSINT</strong>
+                    <span>Open-Source Intelligence</span>
+                </div>
+
+                <div class="cheat-row">
+                    <strong>START WITH</strong>
+                    <span>A specific question</span>
+                </div>
+
+                <div class="cheat-row">
+                    <strong>COLLECT</strong>
+                    <span>Information from public sources</span>
+                </div>
+
+                <div class="cheat-row">
+                    <strong>CONNECT</strong>
+                    <span>Look for meaningful relationships between clues</span>
+                </div>
+
+                <div class="cheat-row">
+                    <strong>VERIFY</strong>
+                    <span>Check sources, dates and independent evidence</span>
+                </div>
+
+                <div class="cheat-row">
+                    <strong>REMEMBER</strong>
+                    <span>A clue is not automatically proof</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CLOSING -->
+
+        <section class="article-section reveal">
+
+            <h2>Now you know where the rabbit hole starts.</h2>
+
+            <p>
+                OSINT isn't about finding the most information.
+            </p>
+
+            <p>
+                It's about finding the <strong>right information</strong>, understanding its context, and knowing how confident you should be in what you've found.
+            </p>
+
+            <p>
+                Next time you discover an interesting clue, stop for a second and ask:
+            </p>
+
+            <div class="important">
+
+                <div class="important-title">Your OSINT question</div>
+
+                <p>
+                    <strong>
+                        “What do I actually know — and what am I only assuming?”
+                    </strong>
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- NEXT ARTICLE -->
+
+        <div class="next-article reveal">
+
+            <div class="next-label">Continue exploring</div>
+
+            <h2>Google Search Operators for OSINT</h2>
+
+            <p>
+                Search engines become much more useful when you know how to ask better questions.
+            </p>
+
+            <a href="google-search-operators-osint.html" class="next-link">
+                Read the next article →
+            </a>
 
         </div>
 
-
-        <article>
-
-
-            <!-- INTRO -->
-
-            <section id="start">
-
-                <p>
-                    Have you ever searched for your own name on Google?
-                </p>
-
-                <p>
-                    Maybe you found an old social media profile.
-                    Maybe an old photo showed up.
-                    Maybe you found something you completely forgot you had posted.
-                </p>
-
-                <p>
-                    You didn't hack anything.
-                </p>
-
-                <p>
-                    You just searched for information that was already publicly available.
-                </p>
-
-                <p>
-                    And that simple idea is where <strong>OSINT</strong> begins.
-                </p>
-
-
-                <h2>
-                    🔎 First things first: what does OSINT actually mean?
-                </h2>
-
-                <p>
-                    OSINT stands for <strong>Open Source Intelligence</strong>.
-                </p>
-
-                <p>
-                    Don't let the word <em>intelligence</em> make it sound complicated.
-                </p>
-
-                <p>
-                    At its simplest, OSINT is about:
-                </p>
-
-                <blockquote>
-                    Finding information from publicly available sources,
-                    connecting the pieces, and figuring out what they actually tell you.
-                </blockquote>
-
-                <p>
-                    Think of yourself as an investigator.
-                </p>
-
-                <p>
-                    You start with one small piece of information.
-                </p>
-
-                <p>
-                    Maybe it's:
-                </p>
-
-                <ul>
-                    <li>a username</li>
-                    <li>an email address</li>
-                    <li>a website</li>
-                    <li>an image</li>
-                    <li>a domain name</li>
-                    <li>a company</li>
-                    <li>an IP address</li>
-                </ul>
-
-                <p>
-                    Then you ask:
-                </p>
-
-                <blockquote>
-                    “What else can I find?”
-                </blockquote>
-
-                <p>
-                    That's when things start getting interesting.
-                </p>
-
-            </section>
-
-
-            <!-- INVESTIGATION -->
-
-            <section id="investigation">
-
-                <h2>
-                    🧩 Let's imagine a small investigation
-                </h2>
-
-                <div class="callout">
-
-                    <div class="callout-title">
-                        Fictional training example
-                    </div>
-
-                    <p>
-                        The usernames and accounts in this example are fictional
-                        and are being used only to demonstrate OSINT concepts.
-                    </p>
-
-                </div>
-
-                <p>
-                    Suppose you come across this username:
-                </p>
-
-                <pre><code>shadowfox23</code></pre>
-
-                <p>
-                    That's all you have.
-                </p>
-
-                <p>
-                    Not much, right?
-                </p>
-
-                <p>
-                    So you search for it.
-                </p>
-
-                <p>
-                    You find a GitHub account using
-                    <code>shadowfox23</code>.
-                </p>
-
-                <p>
-                    Interesting.
-                </p>
-
-                <p>
-                    The GitHub profile contains a link to another website.
-                </p>
-
-                <p>
-                    That website contains a profile picture.
-                </p>
-
-                <p>
-                    You search that image and discover that the same image
-                    appeared somewhere else years ago.
-                </p>
-
-                <p>
-                    Now you have several pieces of information.
-                </p>
-
-                <p>
-                    But here's the important part:
-                </p>
-
-                <p>
-                    <strong>You haven't proved anything yet.</strong>
-                </p>
-
-                <p>
-                    You've only found <strong>connections worth investigating</strong>.
-                </p>
-
-                <p>
-                    And that's a very important OSINT mindset.
-                </p>
-
-                <blockquote>
-                    A clue is not the same thing as proof.
-                </blockquote>
-
-            </section>
-
-
-            <!-- SOURCES -->
-
-            <section id="sources">
-
-                <h2>
-                    🌐 Where does OSINT information come from?
-                </h2>
-
-                <p>
-                    This is where beginners sometimes get confused.
-                </p>
-
-                <p>
-                    OSINT isn't one website or one tool.
-                </p>
-
-                <p>
-                    Information can come from many different places.
-                </p>
-
-
-                <h3>
-                    🔎 Search engines
-                </h3>
-
-                <p>
-                    Google, Bing and other search engines can help you discover
-                    publicly indexed pages.
-                </p>
-
-                <p>
-                    You can search for things like:
-                </p>
-
-                <pre><code>"shadowfox23"</code></pre>
-
-                <p>
-                    or:
-                </p>
-
-                <pre><code>"shadowfox23" github</code></pre>
-
-                <p>
-                    You aren't doing anything magical here.
-                </p>
-
-                <p>
-                    You're simply asking a search engine:
-                </p>
-
-                <blockquote>
-                    “Show me where this appears.”
-                </blockquote>
-
-
-                <h3>
-                    👤 Social media
-                </h3>
-
-                <p>
-                    Public profiles can contain useful clues such as:
-                </p>
-
-                <ul>
-                    <li>usernames</li>
-                    <li>profile names</li>
-                    <li>websites</li>
-                    <li>public posts</li>
-                    <li>profile images</li>
-                    <li>dates</li>
-                    <li>publicly shared interests</li>
-                </ul>
-
-                <p>
-                    One profile by itself might tell you very little.
-                </p>
-
-                <p>
-                    Several public profiles using the same username can
-                    become much more interesting.
-                </p>
-
-                <p>
-                    But again:
-                </p>
-
-                <blockquote>
-                    Same username ≠ automatically the same person.
-                </blockquote>
-
-
-                <h3>
-                    🌐 Public websites and records
-                </h3>
-
-                <p>
-                    Depending on the investigation and applicable laws,
-                    useful information can also come from:
-                </p>
-
-                <ul>
-                    <li>company websites</li>
-                    <li>government portals</li>
-                    <li>public documents</li>
-                    <li>news websites</li>
-                    <li>technical documentation</li>
-                    <li>domain registration information</li>
-                    <li>public repositories</li>
-                </ul>
-
-                <p>
-                    The source matters.
-                </p>
-
-                <p>
-                    So does how you interpret it.
-                </p>
-
-            </section>
-
-
-            <!-- WORKFLOW -->
-
-            <section id="workflow">
-
-                <h2>
-                    🕵️ So how does an OSINT investigation actually work?
-                </h2>
-
-                <p>
-                    There isn't one magical button called
-                    <strong>“Investigate.”</strong>
-                </p>
-
-                <p>
-                    Most investigations are more like this:
-                </p>
-
-
-                <div class="flow">
-
-                    <div class="flow-item">
-                        <strong>01</strong>
-                        Question
-                    </div>
-
-                    <div class="flow-item">
-                        <strong>02</strong>
-                        Search
-                    </div>
-
-                    <div class="flow-item">
-                        <strong>03</strong>
-                        Collect
-                    </div>
-
-                    <div class="flow-item">
-                        <strong>04</strong>
-                        Connect
-                    </div>
-
-                    <div class="flow-item">
-                        <strong>05</strong>
-                        Verify
-                    </div>
-
-                    <div class="flow-item">
-                        <strong>06</strong>
-                        Report
-                    </div>
-
-                </div>
-
-
-                <h3>
-                    1. Ask a question
-                </h3>
-
-                <p>
-                    Good investigations start with a question.
-                </p>
-
-                <p>
-                    Not:
-                </p>
-
-                <blockquote>
-                    “Let me search everything about this person.”
-                </blockquote>
-
-                <p>
-                    Instead:
-                </p>
-
-                <blockquote>
-                    “Is this username connected to this GitHub account?”
-                </blockquote>
-
-                <p>
-                    That's much more specific.
-                </p>
-
-                <p>
-                    A clear question gives your investigation a direction.
-                </p>
-
-
-                <h3>
-                    2. Search
-                </h3>
-
-                <p>
-                    Now you look for information related to your question.
-                </p>
-
-                <p>
-                    For our example:
-                </p>
-
-                <pre><code>"shadowfox23"</code></pre>
-
-                <p>
-                    Then perhaps:
-                </p>
-
-                <pre><code>"shadowfox23" github</code></pre>
-
-                <p>
-                    Then:
-                </p>
-
-                <pre><code>site:github.com "shadowfox23"</code></pre>
-
-                <p>
-                    That last search introduces something useful:
-                </p>
-
-                <p>
-                    <strong>Search operators.</strong>
-                </p>
-
-                <p>
-                    We'll cover those properly in another guide.
-                </p>
-
-
-                <h3>
-                    3. Collect
-                </h3>
-
-                <p>
-                    You find something useful.
-                </p>
-
-                <p>
-                    Don't immediately jump to a conclusion.
-                </p>
-
-                <p>
-                    Record it.
-                </p>
-
-
-                <div class="table-wrapper">
-
-                    <table>
-
-                        <thead>
-                            <tr>
-                                <th>Finding</th>
-                                <th>Source</th>
-                                <th>Why it matters</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-
-                            <tr>
-                                <td>Username <code>shadowfox23</code></td>
-                                <td>GitHub</td>
-                                <td>Possible identity clue</td>
-                            </tr>
-
-                            <tr>
-                                <td>Same username elsewhere</td>
-                                <td>Public profile</td>
-                                <td>Possible connection</td>
-                            </tr>
-
-                            <tr>
-                                <td>Same profile image</td>
-                                <td>Image search</td>
-                                <td>Potential supporting clue</td>
-                            </tr>
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-                <p>
-                    You're building an <strong>evidence trail</strong>.
-                </p>
-
-                <p>
-                    This is important because investigations can quickly become
-                    confusing when you have several tabs open and can't remember
-                    where a particular piece of information came from.
-                </p>
-
-
-                <h3>
-                    4. Connect
-                </h3>
-
-                <p>
-                    Now comes the fun part.
-                </p>
-
-                <p>
-                    You ask:
-                </p>
-
-                <blockquote>
-                    “Do these pieces actually connect?”
-                </blockquote>
-
-                <p>
-                    Maybe two accounts use the same username.
-                </p>
-
-                <p>
-                    Maybe both link to the same website.
-                </p>
-
-                <p>
-                    Maybe the same public profile picture appears on both.
-                </p>
-
-                <p>
-                    Each connection gives you another clue.
-                </p>
-
-                <p>
-                    But don't force connections just because they look interesting.
-                </p>
-
-                <p>
-                    A good investigator should be comfortable saying:
-                </p>
-
-                <blockquote>
-                    “I don't have enough evidence yet.”
-                </blockquote>
-
-                <p>
-                    That's better than making a confident guess.
-                </p>
-
-            </section>
-
-
-            <!-- CHALLENGE -->
-
-            <section id="challenge">
-
-                <div class="challenge">
-
-                    <div class="challenge-label">
-                        🧠 Quick challenge
-                    </div>
-
-                    <h3>
-                        Would you call this a match?
-                    </h3>
-
-                    <p>
-                        Imagine you find this:
-                    </p>
-
-                    <p>
-                        <strong>GitHub</strong>
-                    </p>
-
-                    <pre><code>Username: shadowfox23
-Location: Chennai</code></pre>
-
-                    <p>
-                        And then you find:
-                    </p>
-
-                    <p>
-                        <strong>Reddit</strong>
-                    </p>
-
-                    <pre><code>Username: shadowfox23
-Location: Chennai</code></pre>
-
-                    <p>
-                        Would you say:
-                    </p>
-
-                    <blockquote>
-                        “It's definitely the same person.”
-                    </blockquote>
-
-                    <p>
-                        <strong>❌ Not yet.</strong>
-                    </p>
-
-                    <p>
-                        It could be the same person.
-                    </p>
-
-                    <p>
-                        But it could also be two different people who happen
-                        to use the same username and location.
-                    </p>
-
-                    <p>
-                        You need more evidence.
-                    </p>
-
-                    <p>
-                        Maybe both accounts link to the same website.
-                    </p>
-
-                    <p>
-                        Maybe they use the same unique profile image.
-                    </p>
-
-                    <p>
-                        Maybe one account references something that also
-                        appears on the other.
-                    </p>
-
-                    <p>
-                        Maybe there is another independent clue connecting them.
-                    </p>
-
-                    <p>
-                        That's how you increase confidence.
-                    </p>
-
-                </div>
-
-            </section>
-
-
-            <!-- VERIFY -->
-
-            <section id="verify">
-
-                <h2>
-                    🔍 5. Verify
-                </h2>
-
-                <p>
-                    This might be the most important step.
-                </p>
-
-                <p>
-                    You found information.
-                </p>
-
-                <p>
-                    Now ask:
-                </p>
-
-                <blockquote>
-                    “How do I know this is actually correct?”
-                </blockquote>
-
-                <p>
-                    This is where good OSINT differs from simply being
-                    good at Googling.
-                </p>
-
-                <p>
-                    Let's say you find an article claiming something happened
-                    in 2022.
-                </p>
-
-                <p>
-                    Before using it in your investigation, you might check:
-                </p>
-
-                <ul>
-                    <li>Who published it?</li>
-                    <li>When was it published?</li>
-                    <li>Is another reliable source reporting the same thing?</li>
-                    <li>Is the original source available?</li>
-                    <li>Could the information be outdated?</li>
-                    <li>
-                        Is the page actually talking about the same person
-                        or organisation?
-                    </li>
-                </ul>
-
-                <blockquote>
-                    Finding ≠ proving.
-                </blockquote>
-
-                <p>
-                    A search result is a starting point.
-                </p>
-
-                <p>
-                    It isn't automatically the final answer.
-                </p>
-
-            </section>
-
-
-            <!-- TOOLS -->
-
-            <section id="tools">
-
-                <h2>
-                    🛠️ What tools do OSINT investigators use?
-                </h2>
-
-                <p>
-                    You don't need 50 tools to start.
-                </p>
-
-                <p>
-                    In fact, learning <strong>why</strong> you're using a tool
-                    is more important than collecting tools.
-                </p>
-
-
-                <h3>
-                    🔎 Search engines
-                </h3>
-
-                <p>
-                    Useful for discovering publicly indexed information.
-                </p>
-
-                <p>
-                    Examples:
-                </p>
-
-                <ul>
-                    <li>Google</li>
-                    <li>Bing</li>
-                </ul>
-
-                <p>
-                    Start here more often than you might think.
-                </p>
-
-
-                <h3>
-                    🌐 WHOIS and domain information
-                </h3>
-
-                <p>
-                    Domain registration services can provide information
-                    about a domain's registration and related details,
-                    depending on what is publicly available.
-                </p>
-
-                <p>
-                    For example, you might investigate:
-                </p>
-
-                <pre><code>example.com</code></pre>
-
-                <p>
-                    and discover registration-related information.
-                </p>
-
-                <p>
-                    But privacy protection and modern registration practices
-                    mean you won't always see someone's personal details.
-                </p>
-
-                <p>
-                    That's normal.
-                </p>
-
-                <p>
-                    The goal isn't to force information out of a service.
-                </p>
-
-                <p>
-                    The goal is to understand what information is actually available.
-                </p>
-
-
-                <h3>
-                    🦠 VirusTotal
-                </h3>
-
-                <p>
-                    VirusTotal can be useful when investigating suspicious:
-                </p>
-
-                <ul>
-                    <li>files</li>
-                    <li>URLs</li>
-                    <li>domains</li>
-                    <li>IP addresses</li>
-                </ul>
-
-                <p>
-                    It can provide detections, reputation information,
-                    relationships and other security intelligence collected
-                    from multiple sources.
-                </p>
-
-                <p>
-                    For a SOC analyst, this can become especially useful
-                    when investigating suspicious indicators.
-                </p>
-
-                <p>
-                    But remember:
-                </p>
-
-                <blockquote>
-                    A tool result is evidence to investigate, not automatically
-                    the final verdict.
-                </blockquote>
-
-
-                <h3>
-                    🖼️ Reverse image search
-                </h3>
-
-                <p>
-                    You have an image.
-                </p>
-
-                <p>
-                    Instead of asking:
-                </p>
-
-                <blockquote>
-                    “What does this image show?”
-                </blockquote>
-
-                <p>
-                    you can ask:
-                </p>
-
-                <blockquote>
-                    “Where else has this image appeared?”
-                </blockquote>
-
-                <p>
-                    That's a completely different question.
-                </p>
-
-                <p>
-                    It can help you discover:
-                </p>
-
-                <ul>
-                    <li>older versions of an image</li>
-                    <li>other websites using it</li>
-                    <li>possible original sources</li>
-                    <li>related images</li>
-                </ul>
-
-            </section>
-
-
-            <!-- EXAMPLE -->
-
-            <section>
-
-                <h2>
-                    🧪 Let's try a harmless example
-                </h2>
-
-                <div class="callout">
-
-                    <div class="callout-title">
-                        Fictional training example
-                    </div>
-
-                    <p>
-                        The username and websites below are fictional.
-                    </p>
-
-                </div>
-
-                <p>
-                    Imagine you're investigating another fictional username:
-                </p>
-
-                <pre><code>cyberfox_42</code></pre>
-
-                <p>
-                    You search:
-                </p>
-
-                <pre><code>"cyberfox_42"</code></pre>
-
-                <p>
-                    You find:
-                </p>
-
-                <pre><code>GitHub
-Reddit
-A personal website</code></pre>
-
-                <p>
-                    Now you have three possible leads.
-                </p>
-
-                <p>
-                    You check GitHub.
-                </p>
-
-                <p>
-                    You find a link to:
-                </p>
-
-                <pre><code>cyberfox.example</code></pre>
-
-                <p>
-                    You check the website.
-                </p>
-
-                <p>
-                    It uses the same username.
-                </p>
-
-                <p>
-                    Interesting.
-                </p>
-
-                <p>
-                    Then you find a public profile picture that appears on both.
-                </p>
-
-                <p>
-                    Now you have several independent clues pointing
-                    in the same direction.
-                </p>
-
-                <p>
-                    Notice what we <strong>didn't</strong> do:
-                </p>
-
-                <ul>
-                    <li>We didn't hack an account.</li>
-                    <li>We didn't bypass a login.</li>
-                    <li>We didn't steal private information.</li>
-                </ul>
-
-                <p>
-                    We simply investigated information that was publicly available.
-                </p>
-
-                <p>
-                    That's the basic idea behind <strong>OSINT</strong>.
-                </p>
-
-            </section>
-
-
-            <!-- ETHICS -->
-
-            <section id="ethics">
-
-                <h2>
-                    ⚠️ Here's where beginners can go wrong
-                </h2>
-
-                <p>
-                    OSINT can be surprisingly powerful.
-                </p>
-
-                <p>
-                    That's exactly why you need to be careful.
-                </p>
-
-                <p>
-                    Just because information is publicly visible doesn't mean
-                    you should use it however you want.
-                </p>
-
-                <p>
-                    A responsible investigator should think about:
-                </p>
-
-                <ul>
-                    <li>privacy</li>
-                    <li>legality</li>
-                    <li>consent</li>
-                    <li>context</li>
-                    <li>accuracy</li>
-                    <li>potential harm</li>
-                </ul>
-
-                <p>
-                    And never assume that because you <em>can</em> find something,
-                    you automatically <em>should</em> use it.
-                </p>
-
-                <div class="callout">
-
-                    <div class="callout-title">
-                        Good practice for learning
-                    </div>
-
-                    <p>
-                        Stick to your own accounts, fictional identities,
-                        public organisations, test data, and authorised investigations.
-                    </p>
-
-                </div>
-
-            </section>
-
-
-            <!-- MINDSET -->
-
-            <section id="mindset">
-
-                <h2>
-                    🧠 A small OSINT mindset shift
-                </h2>
-
-                <p>
-                    Here's something I want you to remember.
-                </p>
-
-                <p>
-                    Beginners often ask:
-                </p>
-
-                <blockquote>
-                    “What tool should I use?”
-                </blockquote>
-
-                <p>
-                    A better question is:
-                </p>
-
-                <blockquote>
-                    “What am I trying to find out?”
-                </blockquote>
-
-
-                <h3>
-                    Question:
-                </h3>
-
-                <p>
-                    Who registered this domain?
-                </p>
-
-                <p>
-                    → Investigate available domain-registration information.
-                </p>
-
-
-                <h3>
-                    Question:
-                </h3>
-
-                <p>
-                    Where else does this username appear?
-                </p>
-
-                <p>
-                    → Search for username reuse.
-                </p>
-
-
-                <h3>
-                    Question:
-                </h3>
-
-                <p>
-                    Where did this image originally appear?
-                </p>
-
-                <p>
-                    → Investigate the image and its previous appearances.
-                </p>
-
-
-                <h3>
-                    Question:
-                </h3>
-
-                <p>
-                    Is this suspicious domain associated with known malicious activity?
-                </p>
-
-                <p>
-                    → Investigate security intelligence sources.
-                </p>
-
-                <p>
-                    The question determines the technique.
-                </p>
-
-                <p>
-                    <strong>Not the other way around.</strong>
-                </p>
-
-            </section>
-
-
-            <!-- SUMMARY -->
-
-            <section id="summary">
-
-                <h2>
-                    📌 OSINT in one picture
-                </h2>
-
-                <p>
-                    If you forget everything from this article, remember this:
-                </p>
-
-                <pre><code>              QUESTION
-                  ↓
-               SEARCH
-                  ↓
-              COLLECT
-                  ↓
-               CONNECT
-                  ↓
-               VERIFY
-                  ↓
-               REPORT</code></pre>
-
-                <p>
-                    And keep asking:
-                </p>
-
-                <blockquote>
-                    “What evidence supports this?”
-                </blockquote>
-
-                <p>
-                    That's a much better habit than simply collecting
-                    interesting information.
-                </p>
-
-
-                <h2>
-                    🧠 Quick OSINT cheat sheet
-                </h2>
-
-                <div class="table-wrapper">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-                                <th>Concept</th>
-                                <th>What it means</th>
-                            </tr>
-
-                        </thead>
-
-                        <tbody>
-
-                            <tr>
-                                <td><strong>OSINT</strong></td>
-                                <td>
-                                    Intelligence derived from publicly available information
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td><strong>Search operators</strong></td>
-                                <td>
-                                    Special commands that make searches more precise
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td><strong>Username investigation</strong></td>
-                                <td>
-                                    Looking for the same username across public platforms
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td><strong>Image OSINT</strong></td>
-                                <td>
-                                    Investigating an image's source and appearances
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td><strong>WHOIS</strong></td>
-                                <td>
-                                    A system/service category for accessing domain registration data
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td><strong>Verification</strong></td>
-                                <td>
-                                    Checking whether a finding is actually reliable
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td><strong>Evidence</strong></td>
-                                <td>
-                                    Information that supports a conclusion
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td><strong>Lead</strong></td>
-                                <td>
-                                    Something worth investigating further
-                                </td>
-                            </tr>
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </section>
-
-
-            <!-- CLOSING -->
-
-            <section>
-
-                <h2>
-                    🎯 One last thing
-                </h2>
-
-                <p>
-                    You don't need to become an OSINT expert overnight.
-                </p>
-
-                <p>
-                    Start with something simple.
-                </p>
-
-                <p>
-                    Take a <strong>fictional username</strong>.
-                </p>
-
-                <p>
-                    Search it.
-                </p>
-
-                <p>
-                    See where it appears.
-                </p>
-
-                <p>
-                    Compare the profiles.
-                </p>
-
-                <p>
-                    Look for connections.
-                </p>
-
-                <p>
-                    Then ask yourself:
-                </p>
-
-                <blockquote>
-                    “What do I actually know, and what am I only assuming?”
-                </blockquote>
-
-                <p>
-                    That last question will save you from a lot of bad conclusions.
-                </p>
-
-                <p>
-                    And honestly, that's one of the most important habits
-                    you can build in OSINT.
-                </p>
-
-                <blockquote>
-                    <strong>Don't just find information. Understand what it means.</strong>
-                </blockquote>
-
-            </section>
-
-
-            <!-- NEXT GUIDE -->
-
-            <div class="next-guide">
-
-                <div class="next-label">
-                    🚀 What's next?
-                </div>
-
-                <h2>
-                    Google Search Operators for OSINT
-                </h2>
-
-                <p>
-                    Now that you understand the basic idea of OSINT,
-                    let's make searching more interesting.
-                </p>
-
-                <p>
-                    You'll learn how to turn a normal search like:
-                </p>
-
-                <pre><code>cybersecurity github</code></pre>
-
-                <p>
-                    into something much more targeted.
-                </p>
-
-                <p>
-                    Because sometimes the trick isn't finding
-                    <strong>more</strong> information.
-                </p>
-
-                <p>
-                    It's finding the <strong>right</strong> information.
-                </p>
-
-            </div>
-
-
-        </article>
-
-    </main>
+    </article>
 
 
     <!-- FOOTER -->
 
     <footer>
-
-        <p>
-            © 2026 KSCybSec — Cybersecurity Knowledge Lab
-        </p>
-
-        <p>
-            Learn · Try · Think · Verify
-        </p>
-
+        <strong>KSCybSec</strong> — Cybersecurity knowledge, one clue at a time.
     </footer>
+
+
+    <script>
+
+        /* Scroll reveal */
+
+        const revealElements = document.querySelectorAll(".reveal");
+
+        const observer = new IntersectionObserver(
+            entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            {
+                threshold: 0.08
+            }
+        );
+
+        revealElements.forEach(element => observer.observe(element));
+
+
+        /* Mini challenge */
+
+        function checkAnswer(button, correct) {
+
+            const choices = document.querySelectorAll(".choice");
+            const answer = document.getElementById("challengeAnswer");
+
+            choices.forEach(choice => {
+                choice.disabled = true;
+            });
+
+            if (correct) {
+                button.classList.add("correct");
+                answer.innerHTML =
+                    "Exactly. The information creates a useful lead, but it doesn't establish identity by itself. Look for additional independent evidence before treating the connection as confirmed.";
+            } else {
+                button.classList.add("wrong");
+                answer.innerHTML =
+                    "Not quite. A matching username and location are clues, not proof. Other people can use the same username or live in the same place.";
+            }
+
+            answer.classList.add("show");
+        }
+
+    </script>
 
 </body>
 </html>
