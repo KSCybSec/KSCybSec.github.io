@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>What Is Cybersecurity? | KSCybSec</title>
+
+  <meta
+    name="description"
+    content="A simple, story-driven introduction to cybersecurity. Understand what cybersecurity really means through a suspicious email, a stolen password, and a security investigation."
+  >
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    :root {
+      --bg: #070B14;
+      --bg-soft: #0B1120;
+      --card: #101827;
+
+      --text: #E8EDF5;
+      --body: #C3CCDA;
+      --muted: #8995AA;
+
+      --cyan: #4DE8FF;
+      --violet: #8B7CFF;
+
+      --line: rgba(232, 237, 245, 0.09);
+      --cyan-line: rgba(77, 232, 255, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Inter", sans-serif;
+      line-height: 1.85;
+      overflow-x: hidden;
+    }
+
+    /* subtle atmosphere */
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+
+      background:
+        radial-gradient(
+          circle at 80% 0%,
+          rgba(77, 232, 255, 0.055),
+          transparent 28%
+        ),
+        radial-gradient(
+          circle at 10% 40%,
+          rgba(139, 124, 255, 0.035),
+          transparent 30%
+        );
+    }
+
+    /* ---------------- NAV ---------------- */
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+
+      height: 70px;
+      padding: 0 7%;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      background: rgba(7, 11, 20, 0.82);
+      backdrop-filter: blur(16px);
+
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .brand span {
+      color: var(--cyan);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+
+      transition: color 0.25s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    /* ---------------- ARTICLE HERO ---------------- */
+
+    .hero {
+      max-width: 920px;
+      margin: auto;
+      padding: 125px 24px 95px;
+      text-align: center;
+    }
+
+    .article-meta {
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+
+      color: var(--cyan);
+      margin-bottom: 25px;
+    }
+
+    .hero h1 {
+      font-family: "Space Grotesk", sans-serif;
+
+      font-size: clamp(3.2rem, 8vw, 6rem);
+      line-height: 0.98;
+
+      letter-spacing: -0.065em;
+
+      max-width: 850px;
+      margin: auto;
+    }
+
+    .hero h1 span {
+      color: var(--cyan);
+    }
+
+    .hero-intro {
+      max-width: 620px;
+      margin: 32px auto 0;
+
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.8;
+    }
+
+    .hero-line {
+      width: 90px;
+      height: 1px;
+
+      margin: 42px auto 0;
+
+      background: linear-gradient(
+        90deg,
+        transparent,
+        var(--cyan),
+        transparent
+      );
+    }
+
+    /* ---------------- READING PROGRESS ---------------- */
+
+    .progress {
+      position: fixed;
+      top: 70px;
+      left: 0;
+
+      height: 2px;
+      width: 0%;
+
+      background: var(--cyan);
+      z-index: 200;
+    }
+
+    /* ---------------- ARTICLE ---------------- */
+
+    article {
+      width: min(720px, calc(100% - 40px));
+      margin: auto;
+      padding-bottom: 120px;
+    }
+
+    article p {
+      color: var(--body);
+      font-size: 1.045rem;
+      margin-bottom: 24px;
+    }
+
+    article strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    article h2 {
+      font-family: "Space Grotesk", sans-serif;
+
+      font-size: clamp(1.9rem, 4vw, 2.65rem);
+      line-height: 1.15;
+
+      letter-spacing: -0.045em;
+
+      margin: 90px 0 30px;
+    }
+
+    article h2::after {
+      content: "";
+      display: block;
+
+      width: 35px;
+      height: 2px;
+
+      margin-top: 14px;
+
+      background: var(--cyan);
+    }
+
+    /* ---------------- OPENING ---------------- */
+
+    .opening {
+      padding-top: 10px;
+    }
+
+    .opening p:first-child {
+      font-family: "Space Grotesk", sans-serif;
+      color: var(--text);
+      font-size: 1.25rem;
+    }
+
+    /* ---------------- FAKE EMAIL ---------------- */
+
+    .email {
+      margin: 38px 0 42px;
+
+      padding: 27px 30px;
+
+      background: var(--card);
+
+      border: 1px solid var(--line);
+      border-left: 2px solid var(--cyan);
+
+      box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.18);
+    }
+
+    .email-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      margin-bottom: 18px;
+
+      font-family: "DM Mono", monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .email-warning {
+      color: var(--cyan);
+    }
+
+    .email-text {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.05rem;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .email-button {
+      display: inline-block;
+
+      margin-top: 18px;
+      padding: 9px 14px;
+
+      border: 1px solid var(--cyan-line);
+
+      color: var(--cyan);
+
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+    }
+
+    /* ---------------- STORY MOMENTS ---------------- */
+
+    .story-pause {
+      margin: 48px 0;
+
+      padding-left: 24px;
+
+      border-left: 1px solid var(--cyan-line);
+    }
+
+    .story-pause p {
+      color: var(--text);
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+
+    .story-pause small {
+      color: var(--muted);
+      font-family: "DM Mono", monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ---------------- QUESTION ---------------- */
+
+    .question {
+      margin: 48px 0;
+
+      padding: 28px 30px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(77, 232, 255, 0.045),
+          rgba(139, 124, 255, 0.025)
+        );
+
+      border: 1px solid var(--cyan-line);
+    }
+
+    .question-label {
+      font-family: "DM Mono", monospace;
+      font-size: 0.68rem;
+
+      color: var(--cyan);
+
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+
+      margin-bottom: 12px;
+    }
+
+    .question p {
+      margin: 0;
+
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.15rem;
+      color: var(--text);
+    }
+
+    /* ---------------- STORY QUOTE ---------------- */
+
+    .story-quote {
+      margin: 50px 0;
+
+      font-family: "Space Grotesk", sans-serif;
+
+      font-size: clamp(1.45rem, 4vw, 2rem);
+      line-height: 1.45;
+
+      color: var(--text);
+
+      padding: 5px 0 5px 27px;
+
+      border-left: 2px solid var(--violet);
+    }
+
+    /* ---------------- INLINE HIGHLIGHT ---------------- */
+
+    .highlight {
+      color: var(--cyan);
+    }
+
+    /* ---------------- TAKEAWAY ---------------- */
+
+    .takeaway {
+      margin-top: 90px;
+      padding: 38px 0;
+
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .takeaway-label {
+      font-family: "DM Mono", monospace;
+
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+
+      color: var(--cyan);
+
+      margin-bottom: 18px;
+    }
+
+    .takeaway p {
+      font-family: "Space Grotesk", sans-serif;
+
+      font-size: 1.35rem;
+      line-height: 1.55;
+
+      color: var(--text);
+    }
+
+    /* ---------------- NEXT ARTICLE ---------------- */
+
+    .next {
+      display: block;
+
+      margin-top: 100px;
+      padding: 38px;
+
+      background: var(--card);
+
+      border: 1px solid var(--line);
+
+      text-decoration: none;
+
+      transition:
+        transform 0.3s ease,
+        border-color 0.3s ease;
+    }
+
+    .next:hover {
+      transform: translateY(-4px);
+      border-color: var(--cyan-line);
+    }
+
+    .next-label {
+      font-family: "DM Mono", monospace;
+
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+
+      color: var(--cyan);
+
+      margin-bottom: 14px;
+    }
+
+    .next h2 {
+      margin: 0 0 15px;
+
+      font-size: 1.8rem;
+    }
+
+    .next h2::after {
+      display: none;
+    }
+
+    .next p {
+      margin: 0;
+
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .next-arrow {
+      display: inline-block;
+
+      margin-top: 22px;
+
+      font-family: "DM Mono", monospace;
+      font-size: 0.78rem;
+
+      color: var(--cyan);
+    }
+
+    /* ---------------- FOOTER ---------------- */
+
+    footer {
+      padding: 45px 7%;
+
+      border-top: 1px solid var(--line);
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .footer-brand {
+      font-family: "Space Grotesk", sans-serif;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .footer-brand span {
+      color: var(--cyan);
+    }
+
+    /* ---------------- REVEAL ---------------- */
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+
+      transition:
+        opacity 0.7s ease,
+        transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---------------- MOBILE ---------------- */
+
+    @media (max-width: 700px) {
+
+      nav {
+        height: 64px;
+        padding: 0 5%;
+      }
+
+      .nav-links {
+        gap: 15px;
+      }
+
+      .nav-links a:nth-child(n + 3) {
+        display: none;
+      }
+
+      .progress {
+        top: 64px;
+      }
+
+      .hero {
+        padding: 85px 20px 70px;
+      }
+
+      .hero h1 {
+        font-size: clamp(3rem, 15vw, 4.2rem);
+      }
+
+      article {
+        width: min(100% - 32px, 720px);
+      }
+
+      article p {
+        font-size: 1rem;
+      }
+
+      article h2 {
+        margin-top: 70px;
+      }
+
+      .email,
+      .question,
+      .next {
+        padding: 23px;
+      }
+
+      .story-quote {
+        padding-left: 20px;
+      }
+
+      footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVIGATION -->
+
+  <nav>
+
+    <a href="../index.html" class="brand">
+      KS<span>CybSec</span>
+    </a>
+
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../index.html#topics">Topics</a>
+      <a href="../index.html#about">About</a>
+    </div>
+
+  </nav>
+
+  <div class="progress" id="progress"></div>
+
+
+  <!-- HERO -->
+
+  <header class="hero reveal">
+
+    <div class="article-meta">
+      Beginner Path · 001
+    </div>
+
+    <h1>
+      What Is <span>Cybersecurity?</span>
+    </h1>
+
+    <p class="hero-intro">
+      Before we talk about tools, attacks and defenses,
+      let's start with something much simpler:
+      what are we actually trying to protect?
+    </p>
+
+    <div class="hero-line"></div>
+
+  </header>
+
+
+  <!-- ARTICLE -->
+
+  <article>
+
+    <!-- OPENING STORY -->
+
+    <section class="opening reveal">
+
+      <p>You open your laptop.</p>
+
+      <p>There's an email waiting for you.</p>
+
+      <div class="email">
+
+        <div class="email-top">
+          <span>INBOX</span>
+          <span class="email-warning">● URGENT</span>
+        </div>
+
+        <div class="email-text">
+          Your account will be suspended today.
+          Verify your password immediately.
+        </div>
+
+        <div class="email-button">
+          VERIFY ACCOUNT
+        </div>
+
+      </div>
+
+      <p>
+        You weren't expecting it.
+      </p>
+
+      <p>
+        But the email looks convincing. The logo looks right,
+        the wording sounds professional, and the button takes you
+        to a login page that looks exactly like the one you've used before.
+      </p>
+
+      <p>
+        So you enter your password.
+      </p>
+
+      <p>
+        The page loads.
+      </p>
+
+      <p>
+        Nothing seems wrong.
+      </p>
+
+      <p>
+        You close the tab and continue with your day.
+      </p>
+
+      <p>
+        A few minutes later, someone tries logging into your account.
+      </p>
+
+      <p>
+        Except this login doesn't look normal.
+      </p>
+
+      <p>
+        The security team notices it.
+      </p>
+
+      <p>
+        They check the account. They look at the login details.
+        They check what happened just before it.
+      </p>
+
+      <p>
+        Eventually, they find the problem.
+      </p>
+
+      <p>
+        The email you received was fake.
+      </p>
+
+      <p>
+        And suddenly, that simple email has turned into a
+        cybersecurity investigation.
+      </p>
+
+      <div class="story-quote">
+        But notice something.<br>
+        Nobody started by “hacking” anything.
+      </div>
+
+      <p>
+        Someone simply noticed that something didn't make sense
+        and started asking questions.
+      </p>
+
+      <div class="story-pause">
+
+        <small>The first question</small>
+
+        <p>What happened?</p>
+
+      </div>
+
+      <p>
+        That's where cybersecurity begins.
+      </p>
+
+    </section>
+
+
+    <!-- HOUSE ANALOGY -->
+
+    <section class="reveal">
+
+      <h2>Let's look at this differently</h2>
+
+      <p>
+        Forget the technical words for a moment.
+      </p>
+
+      <p>
+        Think about your house.
+      </p>
+
+      <p>
+        You have a door, so you lock it. You have windows,
+        so you make sure they're secure. You have things inside
+        that matter to you, so you don't just leave the front door
+        open and hope for the best.
+      </p>
+
+      <p>
+        Your computer isn't that different.
+      </p>
+
+      <p>
+        It has things that matter to you too.
+      </p>
+
+      <p>
+        Your accounts. Your photos. Your messages.
+        Your documents. Your passwords.
+      </p>
+
+      <p>
+        A company has even more to protect — customer information,
+        employee accounts, financial records and systems that keep
+        the business running.
+      </p>
+
+      <div class="question">
+
+        <div class="question-label">
+          Pause for a moment
+        </div>
+
+        <p>
+          What would you actually want to protect
+          if someone got access to your device?
+        </p>
+
+      </div>
+
+      <p>
+        Take a second and think about it.
+      </p>
+
+      <p>
+        That question is more important than it looks.
+      </p>
+
+      <p>
+        Because you can't protect something properly
+        if you don't know what matters.
+      </p>
+
+    </section>
+
+
+    <!-- STOLEN PASSWORD -->
+
+    <section class="reveal">
+
+      <h2>Now the story gets interesting</h2>
+
+      <p>
+        Let's go back to that stolen password.
+      </p>
+
+      <p>
+        The attacker has it.
+      </p>
+
+      <p>
+        They try to log in.
+      </p>
+
+      <p>
+        But the account has multi-factor authentication enabled.
+      </p>
+
+      <p>
+        The password is correct.
+      </p>
+
+      <p>
+        The second verification isn't.
+      </p>
+
+      <p>
+        The login gets blocked.
+      </p>
+
+      <p>
+        The security team sees the attempt.
+      </p>
+
+      <p>
+        Now they have something to investigate.
+      </p>
+
+      <p>
+        Maybe the employee really was trying to log in
+        from a new device.
+      </p>
+
+      <p>
+        Maybe someone else was trying to get into the account.
+      </p>
+
+      <p>
+        They don't guess.
+      </p>
+
+      <div class="story-quote">
+        They check.
+      </div>
+
+      <p>
+        And that's an important part of cybersecurity.
+      </p>
+
+      <p>
+        Sometimes the job is to stop something before it happens.
+        Sometimes it's noticing that something strange is happening.
+        And sometimes the problem has already happened — so now you
+        need to understand it, contain it and recover from it.
+      </p>
+
+      <p>
+        Cybersecurity covers all of those moments.
+      </p>
+
+    </section>
+
+
+    <!-- WHERE DOES HACKING FIT -->
+
+    <section class="reveal">
+
+      <h2>So where does hacking fit?</h2>
+
+      <p>
+        It turns out hacking is only one part of the picture.
+      </p>
+
+      <p>
+        A security professional might deliberately test a website
+        to see whether a feature can be abused.
+      </p>
+
+      <p>
+        Another person might spend their day watching security alerts
+        and investigating suspicious activity.
+      </p>
+
+      <p>
+        Someone else might examine a computer after an incident
+        to find out what happened.
+      </p>
+
+      <p>
+        Another person might investigate information that is
+        already publicly available.
+      </p>
+
+      <p>
+        Someone might spend their time securing cloud systems
+        or protecting applications.
+      </p>
+
+      <p>
+        Different jobs.
+      </p>
+
+      <p>
+        Different tools.
+      </p>
+
+      <div class="story-quote">
+        Same underlying question:
+        <span class="highlight">How can we make digital systems safer?</span>
+      </div>
+
+    </section>
+
+
+    <!-- SECOND QUESTION -->
+
+    <section class="reveal">
+
+      <h2>One more thing</h2>
+
+      <p>
+        Remember our attacker with the stolen password?
+      </p>
+
+      <div class="question">
+
+        <div class="question-label">
+          Your turn
+        </div>
+
+        <p>
+          Have they automatically won?
+        </p>
+
+      </div>
+
+      <p>
+        Not necessarily.
+      </p>
+
+      <p>
+        Maybe MFA stopped them.
+      </p>
+
+      <p>
+        Maybe the unusual login triggered an alert.
+      </p>
+
+      <p>
+        Maybe the account was locked before they could access
+        anything important.
+      </p>
+
+      <p>
+        That's why cybersecurity isn't about finding one magical
+        security tool.
+      </p>
+
+      <p>
+        It's about putting layers between an attacker and the thing
+        you're trying to protect.
+      </p>
+
+      <p>
+        If one layer fails, another might still catch the problem.
+      </p>
+
+    </section>
+
+
+    <!-- CONCLUSION -->
+
+    <section class="reveal">
+
+      <h2>And that's cybersecurity</h2>
+
+      <p>
+        Think back to the beginning.
+      </p>
+
+      <p>
+        One suspicious email.
+      </p>
+
+      <p>
+        One stolen password.
+      </p>
+
+      <p>
+        One unusual login.
+      </p>
+
+      <p>
+        Then questions.
+      </p>
+
+      <p>
+        What happened?
+      </p>
+
+      <p>
+        How did it happen?
+      </p>
+
+      <p>
+        Could we have prevented it?
+      </p>
+
+      <p>
+        How did we notice?
+      </p>
+
+      <p>
+        And what should we do now?
+      </p>
+
+      <p>
+        Those questions are going to follow us through almost
+        everything we learn in cybersecurity.
+      </p>
+
+      <p>
+        You don't need to know every tool yet.
+      </p>
+
+      <p>
+        You don't need to know how to hack a machine.
+      </p>
+
+      <p>
+        You just need to start looking at systems differently.
+      </p>
+
+      <p>
+        Because once you start asking
+        <strong>“What could go wrong?”</strong>,
+        cybersecurity starts becoming a lot more interesting.
+      </p>
+
+    </section>
+
+
+    <!-- TAKEAWAY -->
+
+    <section class="takeaway reveal">
+
+      <div class="takeaway-label">
+        Remember this
+      </div>
+
+      <p>
+        Cybersecurity starts with understanding what matters,
+        what could go wrong, and what we can do about it.
+      </p>
+
+    </section>
+
+
+    <!-- NEXT -->
+
+    <a
+      href="how-does-the-internet-work.html"
+      class="next reveal"
+    >
+
+      <div class="next-label">
+        Beginner Path · 002
+      </div>
+
+      <h2>
+        How Does the Internet Actually Work?
+      </h2>
+
+      <p>
+        That email had to travel somehow. You typed a website address,
+        pressed Enter, and somewhere another computer received your
+        request and sent something back.
+      </p>
+
+      <span class="next-arrow">
+        Let's follow that journey →
+      </span>
+
+    </a>
+
+  </article>
+
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <div class="footer-brand">
+      KS<span>CybSec</span>
+    </div>
+
+    <div>
+      Cybersecurity knowledge, one clue at a time.
+    </div>
+
+  </footer>
+
+
+  <script>
+
+    /* Scroll reveal */
+
+    const elements = document.querySelectorAll(".reveal");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+
+        entries.forEach((entry) => {
+
+          if (entry.isIntersecting) {
+
+            entry.target.classList.add("visible");
+
+            observer.unobserve(entry.target);
+
+          }
+
+        });
+
+      },
+      {
+        threshold: 0.08
+      }
+    );
+
+    elements.forEach((element) => {
+      observer.observe(element);
+    });
+
+
+    /* Reading progress */
+
+    const progress = document.getElementById("progress");
+
+    window.addEventListener("scroll", () => {
+
+      const scrollTop = window.scrollY;
+
+      const documentHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+
+      const percentage =
+        documentHeight > 0
+          ? (scrollTop / documentHeight) * 100
+          : 0;
+
+      progress.style.width = percentage + "%";
+
+    });
+
+  </script>
+
+</body>
+</html>
