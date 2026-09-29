@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="KSCybSec — Cybersecurity, OSINT, SOC, investigations, projects and field notes.">
+    <meta name="author" content="KSCybSec">
+
+    <title>KSCybSec | Cybersecurity Field Lab</title>
+
+    <style>
+        /* =========================
+           GLOBAL
+        ========================= */
+
+        :root {
+            --bg: #080a0f;
+            --panel: #0e1118;
+            --panel-light: #141923;
+            --border: #242b38;
+            --text: #e8edf5;
+            --muted: #8b95a7;
+            --accent: #64d8cb;
+            --accent-soft: rgba(100, 216, 203, 0.10);
+            --blue: #7aa7ff;
+            --danger: #ff7b7b;
+            --grid: rgba(255,255,255,0.025);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .mono {
+            font-family: "Courier New", Courier, monospace;
+        }
+
+        /* =========================
+           BACKGROUND
+        ========================= */
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, black, transparent 85%);
+            z-index: -1;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(14px);
+            background: rgba(8, 10, 15, 0.82);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-inner {
+            max-width: 1150px;
+            margin: auto;
+            padding: 18px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-family: "Courier New", monospace;
+            font-weight: bold;
+            font-size: 1.15rem;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .nav-links a {
+            transition: 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            max-width: 1150px;
+            margin: auto;
+            min-height: 88vh;
+            padding: 100px 25px 70px;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-grid {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .eyebrow {
+            color: var(--accent);
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 7vw, 6rem);
+            line-height: 0.95;
+            letter-spacing: -4px;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 span {
+            color: var(--accent);
+        }
+
+        .hero-description {
+            max-width: 650px;
+            color: var(--muted);
+            font-size: 1.05rem;
+            margin-bottom: 35px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            padding: 12px 20px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: "Courier New", monospace;
+            font-size: 0.85rem;
+            transition: 0.25s ease;
+        }
+
+        .button.primary {
+            background: var(--accent);
+            color: #07100f;
+            border-color: var(--accent);
+            font-weight: bold;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+        }
+
+        /* =========================
+           TERMINAL
+        ========================= */
+
+        .terminal {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+        }
+
+        .terminal-header {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--border);
+        }
+
+        .terminal-title {
+            margin-left: 8px;
+            color: var(--muted);
+            font-size: 0.75rem;
+        }
+
+        .terminal-body {
+            padding: 25px;
+            font-family: "Courier New", monospace;
+            font-size: 0.82rem;
+            min-height: 280px;
+        }
+
+        .terminal-line {
+            margin-bottom: 13px;
+        }
+
+        .prompt {
+            color: var(--accent);
+        }
+
+        .output {
+            color: var(--muted);
+            padding-left: 15px;
+        }
+
+        .status {
+            color: var(--blue);
+        }
+
+        /* =========================
+           SECTION
+        ========================= */
+
+        section {
+            max-width: 1150px;
+            margin: auto;
+            padding: 100px 25px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 30px;
+            margin-bottom: 35px;
+        }
+
+        .section-number {
+            color: var(--accent);
+            font-family: "Courier New", monospace;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+        }
+
+        .section-header h2 {
+            font-size: 2.3rem;
+            letter-spacing: -1px;
+        }
+
+        .section-header p {
+            color: var(--muted);
+            max-width: 500px;
+        }
+
+        /* =========================
+           FIELD NOTES
+        ========================= */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            padding: 25px;
+            position: relative;
+            transition: 0.25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #3d485a;
+            background: var(--panel-light);
+        }
+
+        .card-tag {
+            color: var(--accent);
+            font-family: "Courier New", monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .card-footer {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-family: "Courier New", monospace;
+            font-size: 0.72rem;
+        }
+
+        /* =========================
+           CASE FILE
+        ========================= */
+
+        .case-file {
+            display: grid;
+            grid-template-columns: 0.8fr 1.2fr;
+            gap: 25px;
+        }
+
+        .case-meta {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            padding: 30px;
+        }
+
+        .case-label {
+            color: var(--muted);
+            font-size: 0.7rem;
+            font-family: "Courier New", monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 20px;
+        }
+
+        .case-value {
+            margin-top: 5px;
+            font-family: "Courier New", monospace;
+            color: var(--text);
+        }
+
+        .case-status {
+            color: var(--accent);
+        }
+
+        .case-content {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            padding: 35px;
+        }
+
+        .case-content h3 {
+            font-size: 1.7rem;
+            margin-bottom: 15px;
+        }
+
+        .case-content p {
+            color: var(--muted);
+            margin-bottom: 25px;
+        }
+
+        .read-more {
+            display: inline-block;
+            color: var(--accent);
+            font-family: "Courier New", monospace;
+            font-size: 0.85rem;
+        }
+
+        /* =========================
+           CONNECTION MAP
+        ========================= */
+
+        .connection-map {
+            min-height: 350px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: var(--panel);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .connection-map::before {
+            content: "";
+            position: absolute;
+            width: 500px;
+            height: 1px;
+            background: var(--border);
+            transform: rotate(20deg);
+        }
+
+        .connection-map::after {
+            content: "";
+            position: absolute;
+            width: 500px;
+            height: 1px;
+            background: var(--border);
+            transform: rotate(-20deg);
+        }
+
+        .node {
+            position: absolute;
+            padding: 14px 20px;
+            border: 1px solid var(--border);
+            background: var(--panel-light);
+            border-radius: 6px;
+            font-family: "Courier New", monospace;
+            font-size: 0.78rem;
+            z-index: 2;
+        }
+
+        .node.main {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .node.one {
+            top: 22%;
+            left: 15%;
+        }
+
+        .node.two {
+            top: 22%;
+            right: 15%;
+        }
+
+        .node.three {
+            bottom: 20%;
+            left: 18%;
+        }
+
+        .node.four {
+            bottom: 20%;
+            right: 18%;
+        }
+
+        .node.main {
+            top: 42%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* =========================
+           ABOUT
+        ========================= */
+
+        .about {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .about p {
+            color: var(--muted);
+            margin-bottom: 15px;
+        }
+
+        .quote {
+            border-left: 2px solid var(--accent);
+            padding-left: 20px;
+            color: var(--text);
+            font-family: "Courier New", monospace;
+            font-size: 1rem;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 35px 25px;
+        }
+
+        .footer-inner {
+            max-width: 1150px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            color: var(--muted);
+            font-size: 0.8rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 850px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding-top: 70px;
+            }
+
+            .hero-grid,
+            .case-file,
+            .about {
+                grid-template-columns: 1fr;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                letter-spacing: -2px;
+            }
+
+            .section-header {
+                display: block;
+            }
+
+            .section-header p {
+                margin-top: 15px;
+            }
+
+            .connection-map {
+                min-height: 300px;
+            }
+
+            .node.one {
+                left: 5%;
+            }
+
+            .node.two {
+                right: 5%;
+            }
+
+            .node.three {
+                left: 5%;
+            }
+
+            .node.four {
+                right: 5%;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+
+    <nav>
+        <div class="nav-inner">
+
+            <a href="#" class="logo">
+                KS<span>CybSec</span>
+            </a>
+
+            <div class="nav-links">
+                <a href="#field-notes">Field Notes</a>
+                <a href="#case-files">Case Files</a>
+                <a href="#projects">Projects</a>
+                <a href="#about">About</a>
+            </div>
+
+        </div>
+    </nav>
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <header class="hero">
+
+        <div class="hero-grid">
+
+            <div>
+
+                <div class="eyebrow mono">
+                    CYBERSECURITY / OSINT / SOC
+                </div>
+
+                <h1>
+                    Every investigation<br>
+                    starts with a <span>question.</span>
+                </h1>
+
+                <p class="hero-description">
+                    KSCybSec is a cybersecurity field lab where I document
+                    investigations, security concepts, hands-on learning,
+                    projects and the things I discover along the way.
+                </p>
+
+                <div class="hero-buttons">
+                    <a href="#field-notes" class="button primary">
+                        ENTER THE LAB →
+                    </a>
+
+                    <a href="#about" class="button">
+                        ABOUT KSCybSec
+                    </a>
+                </div>
+
+            </div>
+
+
+            <!-- TERMINAL -->
+
+            <div class="terminal">
+
+                <div class="terminal-header">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+
+                    <div class="terminal-title mono">
+                        kscybsec@field-lab
+                    </div>
+                </div>
+
+                <div class="terminal-body">
+
+                    <div class="terminal-line">
+                        <span class="prompt">$</span>
+                        whoami
+                    </div>
+
+                    <div class="terminal-line output">
+                        KSCybSec
+                    </div>
+
+                    <div class="terminal-line">
+                        <span class="prompt">$</span>
+                        focus
+                    </div>
+
+                    <div class="terminal-line output">
+                        OSINT / SOC / Cybersecurity
+                    </div>
+
+                    <div class="terminal-line">
+                        <span class="prompt">$</span>
+                        status
+                    </div>
+
+                    <div class="terminal-line output status">
+                        [ ACTIVE ] — continuously learning
+                    </div>
+
+                    <div class="terminal-line">
+                        <span class="prompt">$</span>
+                        mission
+                    </div>
+
+                    <div class="terminal-line output">
+                        Learn → Investigate → Document
+                    </div>
+
+                    <div class="terminal-line">
+                        <span class="prompt">$</span>
+                        _
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         FIELD NOTES
+    ========================== -->
+
+    <section id="field-notes">
+
+        <div class="section-header">
+
+            <div>
+                <div class="section-number">
+                    01 / FIELD NOTES
+                </div>
+
+                <h2>Things worth investigating.</h2>
+            </div>
+
+            <p>
+                Practical notes from cybersecurity learning,
+                investigations and hands-on experiments.
+            </p>
+
+        </div>
+
+
+        <div class="cards">
+
+            <a href="#" class="card">
+
+                <div class="card-tag">
+                    OSINT / NOTE_001
+                </div>
+
+                <h3>
+                    Following Digital Footprints
+                </h3>
+
+                <p>
+                    How small pieces of publicly available information
+                    can become meaningful when properly connected and verified.
+                </p>
+
+                <div class="card-footer">
+                    READ NOTE →
+                </div>
+
+            </a>
+
+
+            <a href="#" class="card">
+
+                <div class="card-tag">
+                    SOC / NOTE_002
+                </div>
+
+                <h3>
+                    Understanding Alert Triage
+                </h3>
+
+                <p>
+                    A beginner-friendly look at what happens when
+                    a security alert reaches a SOC analyst.
+                </p>
+
+                <div class="card-footer">
+                    READ NOTE →
+                </div>
+
+            </a>
+
+
+            <a href="#" class="card">
+
+                <div class="card-tag">
+                    NETWORK / NOTE_003
+                </div>
+
+                <h3>
+                    What Nmap Actually Reveals
+                </h3>
+
+                <p>
+                    Moving beyond simply seeing open ports and learning
+                    how scan results become useful security information.
+                </p>
+
+                <div class="card-footer">
+                    READ NOTE →
+                </div>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         CASE FILE
+    ========================== -->
+
+    <section id="case-files">
+
+        <div class="section-header">
+
+            <div>
+                <div class="section-number">
+                    02 / CASE FILES
+                </div>
+
+                <h2>Investigations & write-ups.</h2>
+            </div>
+
+            <p>
+                CTFs, OSINT investigations and practical
+                cybersecurity exercises documented as case files.
+            </p>
+
+        </div>
+
+
+        <div class="case-file">
+
+            <div class="case-meta">
+
+                <div class="case-label">
+                    Case
+                </div>
+
+                <div class="case-value">
+                    #001
+                </div>
+
+                <div class="case-label">
+                    Category
+                </div>
+
+                <div class="case-value">
+                    OSINT
+                </div>
+
+                <div class="case-label">
+                    Status
+                </div>
+
+                <div class="case-value case-status">
+                    SOLVED
+                </div>
+
+                <div class="case-label">
+                    Method
+                </div>
+
+                <div class="case-value">
+                    Research / Verification
+                </div>
+
+            </div>
+
+
+            <div class="case-content">
+
+                <div class="card-tag">
+                    INVESTIGATION LOG
+                </div>
+
+                <h3>
+                    The First Digital Footprint
+                </h3>
+
+                <p>
+                    Every investigation begins with a starting point.
+                    This case explores how publicly available clues can
+                    be collected, cross-referenced and verified without
+                    relying on assumptions.
+                </p>
+
+                <a href="#" class="read-more">
+                    OPEN CASE FILE →
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         PROJECTS / CONNECTION MAP
+    ========================== -->
+
+    <section id="projects">
+
+        <div class="section-header">
+
+            <div>
+                <div class="section-number">
+                    03 / THE LAB
+                </div>
+
+                <h2>Where the pieces connect.</h2>
+            </div>
+
+            <p>
+                Cybersecurity isn't one isolated skill.
+                Different areas connect to form the bigger picture.
+            </p>
+
+        </div>
+
+
+        <div class="connection-map">
+
+            <div class="node one">
+                OSINT
+            </div>
+
+            <div class="node two">
+                SOC
+            </div>
+
+            <div class="node three">
+                NETWORKS
+            </div>
+
+            <div class="node four">
+                LINUX
+            </div>
+
+            <div class="node main">
+                CYBERSECURITY
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         ABOUT
+    ========================== -->
+
+    <section id="about">
+
+        <div class="about">
+
+            <div>
+
+                <div class="section-number">
+                    04 / ABOUT
+                </div>
+
+                <h2>
+                    Built while learning.
+                </h2>
+
+                <p>
+                    KSCybSec is a personal cybersecurity space focused
+                    on learning through investigation, documentation
+                    and hands-on practice.
+                </p>
+
+                <p>
+                    The goal isn't to collect certificates or memorize
+                    tools. It's to understand how things work, investigate
+                    problems and document the process.
+                </p>
+
+            </div>
+
+
+            <div class="quote">
+
+                "The interesting part isn't finding
+                the answer. It's understanding how
+                you got there."
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <div class="footer-inner">
+
+            <div class="mono">
+                © 2026 KSCybSec
+            </div>
+
+            <div class="footer-links">
+                <a href="#">GitHub</a>
+                <a href="#">LinkedIn</a>
+                <a href="mailto:your-email@example.com">
+                    Contact
+                </a>
+            </div>
+
+        </div>
+
+    </footer>
+
+</body>
+</html>
