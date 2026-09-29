@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,19 +7,45 @@
     <title>KSCybSec — Cybersecurity Knowledge Lab</title>
 
     <meta name="description"
-        content="KSCybSec is a practical cybersecurity knowledge lab covering OSINT, SOC, networking, Linux, Windows and security fundamentals.">
+          content="KSCybSec is a cybersecurity knowledge lab covering OSINT, SOC, networking, Linux, Windows and cybersecurity fundamentals through practical explanations and investigations.">
+
+    <meta name="keywords"
+          content="cybersecurity, OSINT, SOC, networking, Linux, Windows, cybersecurity fundamentals, KSCybSec">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
 
     <style>
+
+        /* =========================================================
+           KSCYBSEC — DIGITAL EVIDENCE / SIGNAL LAB
+           ========================================================= */
+
         :root {
-            --bg: #090b0f;
-            --surface: #101318;
-            --surface-2: #141820;
-            --border: #252b34;
-            --text: #eef2f5;
-            --muted: #8d96a3;
-            --soft: #606a77;
-            --accent: #78e2b0;
-            --accent-dark: #163c2d;
+            --paper: #f4f0e8;
+            --paper-light: #faf8f3;
+
+            --ink: #171923;
+            --ink-soft: #292b38;
+
+            --muted: #777984;
+            --line: #d8d3c8;
+
+            --violet: #7567f8;
+            --violet-dark: #5c4fe0;
+
+            --orange: #e58b5b;
+            --cyan: #55aeb5;
+
+            --white: #ffffff;
+
+            --mono: "DM Mono", monospace;
+            --display: "Space Grotesk", sans-serif;
+
+            --max-width: 1240px;
         }
 
         * {
@@ -34,1093 +59,1316 @@
         }
 
         body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: Inter, "Segoe UI", Arial, sans-serif;
-            line-height: 1.7;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: var(--display);
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.25;
+            z-index: 999;
+            background-image:
+                radial-gradient(rgba(23,25,35,.12) 0.6px, transparent 0.6px);
+            background-size: 5px 5px;
+            mix-blend-mode: multiply;
         }
 
         a {
-            text-decoration: none;
             color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font: inherit;
         }
 
         .container {
-            width: min(1120px, 90%);
+            width: min(var(--max-width), calc(100% - 48px));
             margin: auto;
         }
 
-        /* =========================
+
+        /* =========================================================
            NAVIGATION
-        ========================== */
+           ========================================================= */
 
         nav {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid var(--border);
-            background: rgba(9, 11, 15, 0.9);
-            backdrop-filter: blur(14px);
+            height: 82px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            position: relative;
+            z-index: 20;
+            background: rgba(244, 240, 232, 0.88);
+            backdrop-filter: blur(12px);
         }
 
         .nav-inner {
-            height: 72px;
+            width: min(var(--max-width), calc(100% - 48px));
+            margin: auto;
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-family: monospace;
-            font-weight: bold;
-            font-size: 1.2rem;
-            letter-spacing: .5px;
+            gap: 12px;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            font-size: 20px;
         }
 
         .brand-mark {
-            width: 10px;
-            height: 10px;
-            background: var(--accent);
-            border-radius: 2px;
+            width: 28px;
+            height: 28px;
+            border: 1.5px solid var(--ink);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-mark::before {
+            content: "";
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--violet);
+            left: 5px;
+            top: 5px;
+        }
+
+        .brand-mark::after {
+            content: "";
+            position: absolute;
+            width: 15px;
+            height: 1px;
+            background: var(--orange);
+            right: -2px;
+            bottom: 6px;
+            transform: rotate(-35deg);
         }
 
         .nav-links {
             display: flex;
-            gap: 30px;
-            list-style: none;
-            color: var(--muted);
-            font-size: .9rem;
+            align-items: center;
+            gap: 34px;
+            font-family: var(--mono);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
         }
 
         .nav-links a {
-            transition: .2s ease;
+            position: relative;
+            color: var(--muted);
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -7px;
+            width: 0;
+            height: 1px;
+            background: var(--violet);
+            transition: width .3s ease;
         }
 
         .nav-links a:hover {
-            color: var(--accent);
+            color: var(--ink);
         }
 
-        /* =========================
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+
+        /* =========================================================
            HERO
-        ========================== */
+           ========================================================= */
 
         .hero {
+            min-height: calc(100vh - 82px);
+            display: flex;
+            align-items: center;
             position: relative;
-            padding: 125px 0 110px;
             overflow: hidden;
         }
 
-        .hero::before {
-            content: "";
+        .hero-grid {
             position: absolute;
             inset: 0;
             pointer-events: none;
+            opacity: .55;
 
             background-image:
-                linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+                linear-gradient(to right,
+                    transparent 0,
+                    transparent calc(50% - 1px),
+                    var(--line) 50%,
+                    transparent calc(50% + 1px)
+                ),
+                linear-gradient(var(--line) 1px, transparent 1px);
 
-            background-size: 55px 55px;
+            background-size: 100% 100%, 100% 90px;
+        }
 
-            mask-image: linear-gradient(
-                to bottom,
-                black,
-                transparent 85%
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 650px;
+            height: 650px;
+            border-radius: 50%;
+            background: radial-gradient(
+                circle,
+                rgba(117,103,248,.13),
+                rgba(117,103,248,0) 70%
             );
+            right: -200px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
         }
 
         .hero-content {
             position: relative;
-            max-width: 850px;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 1.1fr .9fr;
+            gap: 70px;
+            align-items: center;
         }
 
-        .eyebrow {
+        .hero-label {
             display: flex;
             align-items: center;
-            gap: 10px;
-
-            color: var(--accent);
-            font-family: monospace;
-            font-size: .78rem;
-            letter-spacing: 1.5px;
+            gap: 12px;
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: .12em;
+            color: var(--muted);
             text-transform: uppercase;
-
-            margin-bottom: 24px;
+            margin-bottom: 30px;
         }
 
-        .eyebrow-line {
-            width: 30px;
-            height: 1px;
-            background: var(--accent);
+        .hero-label span:first-child {
+            width: 8px;
+            height: 8px;
+            background: var(--violet);
+            display: inline-block;
         }
 
         .hero h1 {
-            font-size: clamp(3rem, 7vw, 5.7rem);
-            line-height: 1.02;
-            letter-spacing: -3px;
-            max-width: 900px;
-            margin-bottom: 27px;
+            font-size: clamp(55px, 7vw, 96px);
+            line-height: .9;
+            letter-spacing: -.065em;
+            max-width: 850px;
         }
 
-        .hero h1 span {
-            color: var(--accent);
+        .hero h1 .accent {
+            color: var(--violet);
         }
 
-        .hero-text {
-            max-width: 680px;
+        .hero-description {
+            margin-top: 35px;
+            max-width: 580px;
+            font-size: 18px;
+            line-height: 1.7;
             color: var(--muted);
-            font-size: 1.12rem;
-            margin-bottom: 35px;
         }
 
         .hero-actions {
             display: flex;
-            gap: 12px;
+            gap: 14px;
+            margin-top: 40px;
             flex-wrap: wrap;
         }
 
-        .button {
+        .btn {
+            padding: 15px 20px;
+            border: 1px solid var(--ink);
+            font-family: var(--mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            transition: .25s ease;
             display: inline-flex;
             align-items: center;
-            padding: 12px 19px;
-            border: 1px solid var(--border);
-            border-radius: 5px;
-            font-size: .88rem;
-            transition: .2s ease;
+            gap: 12px;
         }
 
-        .button-primary {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: #08100c;
-            font-weight: 600;
+        .btn-primary {
+            background: var(--ink);
+            color: var(--white);
         }
 
-        .button-primary:hover {
-            opacity: .88;
+        .btn-primary:hover {
+            background: var(--violet);
+            border-color: var(--violet);
+            transform: translateY(-2px);
         }
 
-        .button-secondary:hover {
-            border-color: var(--accent);
-            color: var(--accent);
+        .btn-secondary:hover {
+            background: var(--white);
+            transform: translateY(-2px);
         }
 
-        /* =========================
-           SECTION
-        ========================== */
 
-        section {
-            padding: 95px 0;
+        /* =========================================================
+           SIGNAL MAP
+           ========================================================= */
+
+        .signal-map {
+            height: 460px;
+            position: relative;
+            border-left: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
         }
 
-        .section-heading {
-            display: flex;
-            justify-content: space-between;
-            align-items: end;
-            gap: 30px;
-            margin-bottom: 42px;
+        .signal-map::before {
+            content: "LIVE KNOWLEDGE MAP";
+            position: absolute;
+            top: 0;
+            left: 20px;
+            font-family: var(--mono);
+            font-size: 9px;
+            color: var(--muted);
+            letter-spacing: .12em;
+        }
+
+        .signal-line {
+            position: absolute;
+            height: 1px;
+            background: var(--ink);
+            transform-origin: left;
+        }
+
+        .line-1 {
+            width: 260px;
+            left: 80px;
+            top: 145px;
+            transform: rotate(18deg);
+        }
+
+        .line-2 {
+            width: 220px;
+            left: 190px;
+            top: 220px;
+            transform: rotate(-27deg);
+        }
+
+        .line-3 {
+            width: 170px;
+            left: 140px;
+            top: 310px;
+            transform: rotate(12deg);
+        }
+
+        .line-4 {
+            width: 150px;
+            left: 280px;
+            top: 185px;
+            transform: rotate(58deg);
+        }
+
+        .node {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border: 2px solid var(--ink);
+            background: var(--paper);
+            border-radius: 50%;
+            z-index: 2;
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        .node::after {
+            content: "";
+            position: absolute;
+            inset: -7px;
+            border: 1px solid transparent;
+            border-radius: 50%;
+            animation: ripple 3s infinite;
+        }
+
+        .node.violet {
+            background: var(--violet);
+            border-color: var(--violet);
+        }
+
+        .node.orange {
+            background: var(--orange);
+            border-color: var(--orange);
+        }
+
+        .node-1 {
+            left: 70px;
+            top: 137px;
+        }
+
+        .node-2 {
+            left: 245px;
+            top: 198px;
+        }
+
+        .node-3 {
+            left: 140px;
+            top: 295px;
+        }
+
+        .node-4 {
+            left: 365px;
+            top: 325px;
+        }
+
+        .node-5 {
+            left: 325px;
+            top: 125px;
+        }
+
+        .signal-label {
+            position: absolute;
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .06em;
+            color: var(--muted);
+        }
+
+        .label-1 {
+            left: 50px;
+            top: 165px;
+        }
+
+        .label-2 {
+            left: 255px;
+            top: 220px;
+        }
+
+        .label-3 {
+            left: 90px;
+            top: 325px;
+        }
+
+        .label-4 {
+            left: 380px;
+            top: 345px;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.25);
+            }
+        }
+
+        @keyframes ripple {
+            0% {
+                inset: -4px;
+                opacity: .7;
+            }
+            100% {
+                inset: -15px;
+                opacity: 0;
+            }
+        }
+
+
+        /* =========================================================
+           MARQUEE
+           ========================================================= */
+
+        .marquee {
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 14px 0;
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .12em;
+            color: var(--muted);
+        }
+
+        .marquee-track {
+            display: inline-block;
+            animation: marquee 25s linear infinite;
+        }
+
+        .marquee strong {
+            color: var(--violet);
+            font-weight: 500;
+        }
+
+        @keyframes marquee {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+
+        /* =========================================================
+           INTRO
+           ========================================================= */
+
+        .intro {
+            padding: 140px 0;
         }
 
         .section-number {
-            color: var(--accent);
-            font-family: monospace;
-            font-size: .75rem;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-        }
-
-        .section-title {
-            font-size: 2rem;
-            letter-spacing: -.8px;
-        }
-
-        .section-description {
-            color: var(--muted);
-            max-width: 560px;
-            font-size: .92rem;
-        }
-
-        /* =========================
-           TOPIC GRID
-        ========================== */
-
-        .topic-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1px;
-            background: var(--border);
-            border: 1px solid var(--border);
-        }
-
-        .topic {
-            background: var(--surface);
-            padding: 32px;
-            min-height: 220px;
-            position: relative;
-            transition: .2s ease;
-        }
-
-        .topic:hover {
-            background: var(--surface-2);
-        }
-
-        .topic-number {
-            color: var(--soft);
-            font-family: monospace;
-            font-size: .72rem;
-            margin-bottom: 35px;
-        }
-
-        .topic h3 {
-            font-size: 1.15rem;
-            margin-bottom: 9px;
-        }
-
-        .topic p {
-            color: var(--muted);
-            font-size: .86rem;
-        }
-
-        .topic-arrow {
-            position: absolute;
-            right: 25px;
-            bottom: 23px;
-            color: var(--accent);
-            font-family: monospace;
-            font-size: .78rem;
-        }
-
-        /* =========================
-           FEATURED ARTICLE
-        ========================== */
-
-        .featured {
-            border: 1px solid var(--border);
-            background: var(--surface);
-            display: grid;
-            grid-template-columns: 1.5fr .5fr;
-        }
-
-        .featured-main {
-            padding: 42px;
-        }
-
-        .article-label {
-            color: var(--accent);
-            font-family: monospace;
-            font-size: .72rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--violet);
+            letter-spacing: .12em;
             margin-bottom: 20px;
         }
 
-        .featured h3 {
-            font-size: 2rem;
-            line-height: 1.25;
-            letter-spacing: -.7px;
-            max-width: 700px;
-            margin-bottom: 16px;
+        .intro-grid {
+            display: grid;
+            grid-template-columns: .8fr 1.2fr;
+            gap: 100px;
         }
 
-        .featured p {
+        .intro h2 {
+            font-size: clamp(40px, 5vw, 65px);
+            line-height: .98;
+            letter-spacing: -.05em;
+        }
+
+        .intro-text {
+            font-size: 21px;
+            line-height: 1.65;
             color: var(--muted);
             max-width: 650px;
-            font-size: .93rem;
-            margin-bottom: 27px;
         }
 
-        .read-link {
-            color: var(--accent);
-            font-family: monospace;
-            font-size: .82rem;
+        .intro-text strong {
+            color: var(--ink);
         }
 
-        .featured-side {
-            border-left: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 30px;
+
+        /* =========================================================
+           FEATURED GUIDE
+           ========================================================= */
+
+        .featured {
+            padding: 100px 0 150px;
         }
 
-        .index-box {
-            width: 130px;
-            height: 130px;
-            border: 1px solid #35404c;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .index-box::before {
-            content: "";
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: var(--accent);
-            top: -5px;
-            left: -5px;
-        }
-
-        .index-box span {
-            color: var(--soft);
-            font-family: monospace;
-            font-size: .75rem;
-        }
-
-        /* =========================
-           ARTICLE LIST
-        ========================== */
-
-        .article-list {
-            border-top: 1px solid var(--border);
-        }
-
-        .article-row {
-            display: grid;
-            grid-template-columns: 90px 1fr 110px;
-            gap: 25px;
-            align-items: center;
-
-            padding: 24px 5px;
-            border-bottom: 1px solid var(--border);
-
-            transition: .2s ease;
-        }
-
-        .article-row:hover {
-            padding-left: 12px;
-        }
-
-        .article-index {
-            color: var(--soft);
-            font-family: monospace;
-            font-size: .75rem;
-        }
-
-        .article-row h3 {
-            font-size: 1rem;
-            margin-bottom: 3px;
-        }
-
-        .article-row p {
-            color: var(--muted);
-            font-size: .82rem;
-        }
-
-        .article-type {
-            color: var(--accent);
-            font-family: monospace;
-            font-size: .7rem;
-            text-align: right;
-        }
-
-        /* =========================
-           INVESTIGATION DESK
-        ========================== */
-
-        .desk {
-            border: 1px solid var(--border);
-            background: var(--surface);
-            padding: 40px;
-        }
-
-        .desk-top {
+        .section-header {
             display: flex;
             justify-content: space-between;
-            gap: 20px;
+            align-items: end;
+            margin-bottom: 40px;
+        }
+
+        .section-header h2 {
+            font-size: 48px;
+            letter-spacing: -.05em;
+        }
+
+        .section-header a {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--muted);
+            border-bottom: 1px solid var(--muted);
+            padding-bottom: 5px;
+        }
+
+        .guide {
+            border: 1px solid var(--ink);
+            background: var(--paper-light);
+            display: grid;
+            grid-template-columns: 1fr 1.25fr;
+            min-height: 510px;
+            position: relative;
+            overflow: hidden;
+            transition: transform .4s ease, box-shadow .4s ease;
+        }
+
+        .guide:hover {
+            transform: translateY(-5px);
+            box-shadow: 12px 12px 0 var(--violet);
+        }
+
+        .guide-left {
+            padding: 55px;
+            border-right: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .guide-meta {
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        .guide-left h3 {
+            font-size: clamp(40px, 5vw, 65px);
+            line-height: .94;
+            letter-spacing: -.06em;
+            max-width: 450px;
+        }
+
+        .guide-left h3 span {
+            color: var(--violet);
+        }
+
+        .guide-description {
+            color: var(--muted);
+            line-height: 1.7;
+            max-width: 430px;
+        }
+
+        .guide-link {
+            margin-top: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            font-family: var(--mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+        }
+
+        .guide-link span {
+            transition: transform .3s ease;
+        }
+
+        .guide:hover .guide-link span {
+            transform: translateX(8px);
+        }
+
+        .guide-right {
+            position: relative;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(117,103,248,.08),
+                    transparent 60%
+                );
+            overflow: hidden;
+        }
+
+        .case-file {
+            position: absolute;
+            width: 70%;
+            height: 62%;
+            left: 15%;
+            top: 19%;
+            border: 1px solid var(--ink);
+            background: var(--paper);
+            padding: 30px;
+            transform: rotate(-3deg);
+            box-shadow: 18px 18px 0 rgba(23,25,35,.08);
+        }
+
+        .case-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 12px;
+            font-family: var(--mono);
+            font-size: 9px;
+            color: var(--muted);
+        }
+
+        .case-body {
+            margin-top: 30px;
+        }
+
+        .case-subject {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .case-username {
+            font-size: 35px;
+            letter-spacing: -.04em;
             margin-bottom: 35px;
         }
 
-        .desk-status {
-            color: var(--accent);
-            font-family: monospace;
-            font-size: .72rem;
+        .evidence-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .evidence {
+            border: 1px solid var(--line);
+            padding: 13px;
+            font-family: var(--mono);
+            font-size: 9px;
+            color: var(--muted);
+            position: relative;
+        }
+
+        .evidence::before {
+            content: "";
+            width: 5px;
+            height: 5px;
+            background: var(--violet);
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .evidence.orange::before {
+            background: var(--orange);
+        }
+
+
+        /* =========================================================
+           TOPICS
+           ========================================================= */
+
+        .topics {
+            padding: 100px 0 150px;
+            background: var(--ink);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .topics::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            opacity: .07;
+
+            background-image:
+                linear-gradient(var(--white) 1px, transparent 1px),
+                linear-gradient(90deg, var(--white) 1px, transparent 1px);
+
+            background-size: 80px 80px;
+        }
+
+        .topics-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .topics .section-number {
+            color: var(--orange);
+        }
+
+        .topics h2 {
+            font-size: clamp(45px, 6vw, 80px);
+            line-height: .92;
+            letter-spacing: -.06em;
+            max-width: 700px;
+        }
+
+        .topic-grid {
+            margin-top: 70px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid rgba(255,255,255,.18);
+            border-left: 1px solid rgba(255,255,255,.18);
+        }
+
+        .topic {
+            min-height: 220px;
+            padding: 28px;
+            border-right: 1px solid rgba(255,255,255,.18);
+            border-bottom: 1px solid rgba(255,255,255,.18);
+            position: relative;
+            transition: background .3s ease;
+        }
+
+        .topic:hover {
+            background: rgba(255,255,255,.05);
+        }
+
+        .topic-number {
+            font-family: var(--mono);
+            font-size: 9px;
+            color: #858796;
+        }
+
+        .topic h3 {
+            margin-top: 45px;
+            font-size: 28px;
+            letter-spacing: -.04em;
+        }
+
+        .topic p {
+            margin-top: 10px;
+            color: #9295a4;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .topic-mark {
+            position: absolute;
+            top: 28px;
+            right: 28px;
+            width: 9px;
+            height: 9px;
+        }
+
+        .osint-mark {
+            background: var(--violet);
+        }
+
+        .soc-mark {
+            background: var(--orange);
+        }
+
+        .network-mark {
+            background: var(--cyan);
+        }
+
+        .linux-mark {
+            background: #d46c6c;
+        }
+
+        .windows-mark {
+            background: #69b5d8;
+        }
+
+        .fundamentals-mark {
+            background: #b59ae8;
+        }
+
+
+        /* =========================================================
+           LEARNING LIBRARY
+           ========================================================= */
+
+        .library {
+            padding: 150px 0;
+        }
+
+        .library-grid {
+            margin-top: 55px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-top: 1px solid var(--line);
+        }
+
+        .library-item {
+            padding: 32px 0;
+            border-bottom: 1px solid var(--line);
+            display: grid;
+            grid-template-columns: 70px 1fr auto;
+            gap: 25px;
+            align-items: center;
+            transition: padding .3s ease;
+        }
+
+        .library-item:hover {
+            padding-left: 15px;
+        }
+
+        .library-number {
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--violet);
+        }
+
+        .library-item h3 {
+            font-size: 20px;
+            letter-spacing: -.025em;
+        }
+
+        .library-item p {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 5px;
+        }
+
+        .library-arrow {
+            font-size: 20px;
+            color: var(--muted);
+            transition: transform .3s ease;
+        }
+
+        .library-item:hover .library-arrow {
+            transform: translateX(7px);
+            color: var(--violet);
+        }
+
+
+        /* =========================================================
+           INVESTIGATION DESK
+           ========================================================= */
+
+        .desk {
+            padding: 120px 0;
+            border-top: 1px solid var(--line);
         }
 
         .desk-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1px;
-            background: var(--border);
+            grid-template-columns: 1fr 1fr;
+            gap: 100px;
+            align-items: start;
         }
 
-        .desk-card {
-            background: var(--surface);
-            padding: 25px;
+        .desk h2 {
+            font-size: clamp(45px, 6vw, 75px);
+            line-height: .92;
+            letter-spacing: -.06em;
         }
 
-        .desk-card small {
-            color: var(--soft);
-            font-family: monospace;
-            font-size: .68rem;
-        }
-
-        .desk-card h3 {
-            font-size: 1rem;
-            margin: 12px 0 7px;
-        }
-
-        .desk-card p {
+        .desk-intro {
             color: var(--muted);
-            font-size: .8rem;
+            line-height: 1.7;
+            margin-top: 25px;
+            max-width: 480px;
         }
 
-        /* =========================
+        .desk-list {
+            border-top: 1px solid var(--ink);
+        }
+
+        .desk-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .desk-item span:first-child {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .desk-item strong {
+            font-size: 18px;
+        }
+
+        .desk-item span:last-child {
+            color: var(--violet);
+            transition: transform .3s ease;
+        }
+
+        .desk-item:hover span:last-child {
+            transform: translateX(6px);
+        }
+
+
+        /* =========================================================
            PRINCIPLE
-        ========================== */
+           ========================================================= */
 
         .principle {
-            padding: 110px 0;
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
+            padding: 130px 0;
+            background: var(--violet);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .principle::after {
+            content: "LEARN → TRY → THINK → VERIFY";
+            position: absolute;
+            right: -80px;
+            bottom: 25px;
+            font-family: var(--mono);
+            font-size: 11px;
+            opacity: .35;
+            letter-spacing: .12em;
         }
 
         .principle-inner {
-            display: grid;
-            grid-template-columns: .3fr 1fr;
-            gap: 45px;
+            max-width: 950px;
         }
 
         .principle-label {
-            color: var(--accent);
-            font-family: monospace;
-            font-size: .72rem;
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .12em;
+            opacity: .7;
         }
 
         .principle h2 {
-            font-size: clamp(2rem, 4vw, 3.3rem);
-            line-height: 1.15;
-            letter-spacing: -1.5px;
-            max-width: 800px;
+            margin-top: 35px;
+            font-size: clamp(45px, 7vw, 88px);
+            line-height: .94;
+            letter-spacing: -.065em;
         }
 
-        .principle h2 span {
-            color: var(--muted);
+        .principle p {
+            margin-top: 30px;
+            font-size: 18px;
+            line-height: 1.6;
+            max-width: 600px;
+            opacity: .8;
         }
 
-        /* =========================
+
+        /* =========================================================
            ABOUT
-        ========================== */
+           ========================================================= */
+
+        .about {
+            padding: 140px 0;
+        }
 
         .about-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 70px;
+            grid-template-columns: .8fr 1.2fr;
+            gap: 100px;
+        }
+
+        .about h2 {
+            font-size: 55px;
+            letter-spacing: -.06em;
+            line-height: .95;
         }
 
         .about-text {
+            font-size: 19px;
             color: var(--muted);
-            font-size: .94rem;
+            line-height: 1.75;
+            max-width: 650px;
         }
 
-        .about-text p {
-            margin-bottom: 18px;
+        .about-text p + p {
+            margin-top: 25px;
         }
 
-        .manifest {
-            border: 1px solid var(--border);
-            background: var(--surface);
-            padding: 28px;
-            font-family: monospace;
-            font-size: .8rem;
-        }
 
-        .manifest-row {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 14px;
-        }
-
-        .manifest-key {
-            color: var(--accent);
-            min-width: 90px;
-        }
-
-        .manifest-value {
-            color: #aeb7c2;
-        }
-
-        /* =========================
+        /* =========================================================
            FOOTER
-        ========================== */
+           ========================================================= */
 
         footer {
-            border-top: 1px solid var(--border);
-            padding: 35px 0;
+            border-top: 1px solid var(--line);
+            padding: 45px 0;
         }
 
         .footer-inner {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 20px;
         }
 
         .footer-brand {
-            font-family: monospace;
-            font-size: .85rem;
+            font-weight: 700;
+            letter-spacing: -.04em;
+        }
+
+        .footer-tag {
+            font-family: var(--mono);
+            font-size: 9px;
+            color: var(--muted);
+            margin-top: 7px;
         }
 
         .footer-links {
             display: flex;
-            gap: 22px;
+            gap: 25px;
+            font-family: var(--mono);
+            font-size: 10px;
+            text-transform: uppercase;
             color: var(--muted);
-            font-size: .8rem;
         }
 
         .footer-links a:hover {
-            color: var(--accent);
+            color: var(--violet);
         }
 
-        /* =========================
-           MOBILE
-        ========================== */
 
-        @media (max-width: 850px) {
+        /* =========================================================
+           REVEAL ANIMATION
+           ========================================================= */
 
-            .nav-links {
-                display: none;
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition:
+                opacity .8s ease,
+                transform .8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+
+        @media (max-width: 900px) {
+
+            .hero-content,
+            .intro-grid,
+            .desk-grid,
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 55px;
+            }
+
+            .signal-map {
+                height: 350px;
+            }
+
+            .guide {
+                grid-template-columns: 1fr;
+            }
+
+            .guide-left {
+                border-right: none;
+                border-bottom: 1px solid var(--line);
+            }
+
+            .guide-right {
+                min-height: 430px;
+            }
+
+            .topic-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .library-grid {
+                grid-template-columns: 1fr;
             }
 
             .hero {
-                padding: 85px 0;
+                padding: 100px 0;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .container,
+            .nav-inner {
+                width: min(100% - 30px, var(--max-width));
+            }
+
+            nav {
+                height: 70px;
+            }
+
+            .nav-links {
+                gap: 14px;
+                font-size: 9px;
+            }
+
+            .nav-links a:nth-child(2) {
+                display: none;
             }
 
             .hero h1 {
-                letter-spacing: -2px;
+                font-size: 55px;
             }
 
-            .section-heading {
-                display: block;
+            .hero-description {
+                font-size: 16px;
             }
 
-            .section-description {
-                margin-top: 12px;
+            .signal-map {
+                height: 300px;
+            }
+
+            .line-1 {
+                width: 180px;
+            }
+
+            .line-2 {
+                width: 150px;
+            }
+
+            .line-3 {
+                width: 130px;
+            }
+
+            .line-4 {
+                width: 110px;
+            }
+
+            .node-4 {
+                left: 260px;
+            }
+
+            .label-4 {
+                left: 270px;
+            }
+
+            .intro,
+            .featured,
+            .library,
+            .about {
+                padding: 90px 0;
+            }
+
+            .section-header {
+                align-items: start;
+                gap: 20px;
+                flex-direction: column;
+            }
+
+            .section-header h2 {
+                font-size: 40px;
+            }
+
+            .guide-left {
+                padding: 30px;
+            }
+
+            .case-file {
+                width: 84%;
+                left: 8%;
             }
 
             .topic-grid {
                 grid-template-columns: 1fr;
             }
 
-            .featured {
-                grid-template-columns: 1fr;
+            .library-item {
+                grid-template-columns: 45px 1fr auto;
+                gap: 12px;
             }
 
-            .featured-side {
-                display: none;
-            }
-
-            .article-row {
-                grid-template-columns: 50px 1fr;
-            }
-
-            .article-type {
-                display: none;
-            }
-
-            .desk-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .principle-inner {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .about-grid {
-                grid-template-columns: 1fr;
+            .library-item h3 {
+                font-size: 17px;
             }
 
             .footer-inner {
                 flex-direction: column;
                 align-items: flex-start;
+                gap: 25px;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
             }
         }
+
     </style>
 </head>
 
+
 <body>
 
-<!-- =========================
+<!-- =========================================================
      NAVIGATION
-========================== -->
+     ========================================================= -->
 
 <nav>
-    <div class="container nav-inner">
+    <div class="nav-inner">
 
-        <a href="#" class="brand">
+        <a href="index.html" class="brand">
             <span class="brand-mark"></span>
             KSCybSec
         </a>
 
-        <ul class="nav-links">
-            <li><a href="#topics">Topics</a></li>
-            <li><a href="#guides">Guides</a></li>
-            <li><a href="#cases">Investigations</a></li>
-            <li><a href="#about">About</a></li>
-        </ul>
+        <div class="nav-links">
+            <a href="#guides">Guides</a>
+            <a href="#topics">Topics</a>
+            <a href="#desk">Investigation Desk</a>
+            <a href="#about">About</a>
+        </div>
 
     </div>
 </nav>
 
 
-<!-- =========================
+<!-- =========================================================
      HERO
-========================== -->
+     ========================================================= -->
 
-<header class="hero">
+<section class="hero">
+
+    <div class="hero-grid"></div>
 
     <div class="container">
 
         <div class="hero-content">
 
-            <div class="eyebrow">
-                <span class="eyebrow-line"></span>
-                Cybersecurity Knowledge Lab
-            </div>
-
-            <h1>
-                Understand cybersecurity.
-                <span>One concept at a time.</span>
-            </h1>
-
-            <p class="hero-text">
-                Practical guides, clear explanations and hands-on
-                examples covering the concepts behind modern cybersecurity.
-                Built for people who want to understand how things actually work.
-            </p>
-
-            <div class="hero-actions">
-
-                <a href="#guides" class="button button-primary">
-                    Explore Guides →
-                </a>
-
-                <a href="#topics" class="button button-secondary">
-                    Browse Topics
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</header>
-
-
-<!-- =========================
-     TOPICS
-========================== -->
-
-<section id="topics">
-
-    <div class="container">
-
-        <div class="section-heading">
-
-            <div>
-                <div class="section-number">01 / TOPICS</div>
-
-                <h2 class="section-title">
-                    Build your foundation.
-                </h2>
-            </div>
-
-            <p class="section-description">
-                Start with the fundamentals, then move into the areas
-                that interest you.
-            </p>
-
-        </div>
-
-
-        <div class="topic-grid">
-
-            <a href="#" class="topic">
-
-                <div class="topic-number">01</div>
-
-                <h3>OSINT</h3>
-
-                <p>
-                    Learn how publicly available information can be
-                    discovered, connected and verified.
-                </p>
-
-                <span class="topic-arrow">Explore →</span>
-
-            </a>
-
-
-            <a href="#" class="topic">
-
-                <div class="topic-number">02</div>
-
-                <h3>SOC</h3>
-
-                <p>
-                    Understand alerts, logs, triage, incidents and
-                    the fundamentals of security operations.
-                </p>
-
-                <span class="topic-arrow">Explore →</span>
-
-            </a>
-
-
-            <a href="#" class="topic">
-
-                <div class="topic-number">03</div>
-
-                <h3>Networking</h3>
-
-                <p>
-                    Learn IPs, ports, protocols, DNS, TCP, UDP
-                    and the foundations of network security.
-                </p>
-
-                <span class="topic-arrow">Explore →</span>
-
-            </a>
-
-
-            <a href="#" class="topic">
-
-                <div class="topic-number">04</div>
-
-                <h3>Linux</h3>
-
-                <p>
-                    Learn the Linux commands and concepts that
-                    are useful in cybersecurity.
-                </p>
-
-                <span class="topic-arrow">Explore →</span>
-
-            </a>
-
-
-            <a href="#" class="topic">
-
-                <div class="topic-number">05</div>
-
-                <h3>Windows</h3>
-
-                <p>
-                    Understand Windows commands, users, processes,
-                    networking and security investigation.
-                </p>
-
-                <span class="topic-arrow">Explore →</span>
-
-            </a>
-
-
-            <a href="#" class="topic">
-
-                <div class="topic-number">06</div>
-
-                <h3>Fundamentals</h3>
-
-                <p>
-                    Build the core knowledge behind threats,
-                    vulnerabilities, authentication and security.
-                </p>
-
-                <span class="topic-arrow">Explore →</span>
-
-            </a>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     FEATURED GUIDE
-========================== -->
-
-<section id="guides">
-
-    <div class="container">
-
-        <div class="section-heading">
-
-            <div>
-                <div class="section-number">02 / FEATURED GUIDE</div>
-
-                <h2 class="section-title">
-                    Start here.
-                </h2>
-            </div>
-
-            <p class="section-description">
-                A beginner-friendly introduction to one of the
-                most useful areas of cybersecurity.
-            </p>
-
-        </div>
-
-
-        <article class="featured">
-
-            <div class="featured-main">
-
-                <div class="article-label">
-                    OSINT · Beginner
+            <div class="hero-copy reveal">
+
+                <div class="hero-label">
+                    <span></span>
+                    Cybersecurity Knowledge Lab
                 </div>
 
-                <h3>
-                    What Is OSINT? A Beginner's Guide to
-                    Open Source Intelligence
-                </h3>
+                <h1>
+                    Understand
+                    <br>
+                    cybersecurity.
+                    <br>
+                    <span class="accent">One concept</span>
+                    <br>
+                    at a time.
+                </h1>
 
-                <p>
-                    What OSINT actually means, where investigators
-                    find information, how clues are connected,
-                    how findings are verified and where to start
-                    with free tools.
+                <p class="hero-description">
+                    Practical guides, clear explanations and hands-on
+                    investigations covering the concepts behind modern
+                    cybersecurity.
                 </p>
-                <a href="articles/what-is-osint.html" class="read-link">
-                      Read the guide →
+
+                <div class="hero-actions">
+
+                    <a href="#guides" class="btn btn-primary">
+                        Explore Guides
+                        <span>→</span>
                     </a>
 
+                    <a href="#topics" class="btn btn-secondary">
+                        Browse Topics
+                    </a>
 
-
-
-
-            </div>
-
-
-            <div class="featured-side">
-
-                <div class="index-box">
-                    <span>GUIDE / 001</span>
-                </div>
-
-            </div>
-
-        </article>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     MORE GUIDES
-========================== -->
-
-<section>
-
-    <div class="container">
-
-        <div class="section-heading">
-
-            <div>
-                <div class="section-number">03 / LEARNING LIBRARY</div>
-
-                <h2 class="section-title">
-                    More guides.
-                </h2>
-            </div>
-
-            <p class="section-description">
-                Short explanations for concepts that are often
-                made harder than they need to be.
-            </p>
-
-        </div>
-
-
-        <div class="article-list">
-
-            <a href="#" class="article-row">
-
-                <div class="article-index">
-                    002
-                </div>
-
-                <div>
-                    <h3>
-                        TCP vs UDP: What's the Difference?
-                    </h3>
-
-                    <p>
-                        Understand the difference between the two
-                        without getting buried in networking jargon.
-                    </p>
-                </div>
-
-                <div class="article-type">
-                    NETWORKING
-                </div>
-
-            </a>
-
-
-            <a href="#" class="article-row">
-
-                <div class="article-index">
-                    003
-                </div>
-
-                <div>
-                    <h3>
-                        Linux Commands Every Cybersecurity Beginner Should Know
-                    </h3>
-
-                    <p>
-                        A practical introduction to commands you'll
-                        repeatedly encounter while learning cybersecurity.
-                    </p>
-                </div>
-
-                <div class="article-type">
-                    LINUX
-                </div>
-
-            </a>
-
-
-            <a href="#" class="article-row">
-
-                <div class="article-index">
-                    004
-                </div>
-
-                <div>
-                    <h3>
-                        What Happens When You Type a Website Address?
-                    </h3>
-
-                    <p>
-                        Follow the journey from your browser to DNS,
-                        the server and finally the webpage.
-                    </p>
-                </div>
-
-                <div class="article-type">
-                    NETWORKING
-                </div>
-
-            </a>
-
-
-            <a href="#" class="article-row">
-
-                <div class="article-index">
-                    005
-                </div>
-
-                <div>
-                    <h3>
-                        What Does a SOC Analyst Actually Do?
-                    </h3>
-
-                    <p>
-                        Understand alerts, investigation, triage
-                        and reporting through a simple example.
-                    </p>
-                </div>
-
-                <div class="article-type">
-                    SOC
-                </div>
-
-            </a>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     INVESTIGATION DESK
-========================== -->
-
-<section id="cases">
-
-    <div class="container">
-
-        <div class="desk">
-
-            <div class="desk-top">
-
-                <div>
-                    <div class="section-number">
-                        04 / INVESTIGATION DESK
-                    </div>
-
-                    <h2 class="section-title">
-                        Learn by investigating.
-                    </h2>
-                </div>
-
-                <div class="desk-status">
-                    FIELD NOTES / ACTIVE
                 </div>
 
             </div>
 
 
-            <div class="desk-grid">
+            <!-- SIGNAL VISUAL -->
 
-                <div class="desk-card">
+            <div class="signal-map reveal">
 
-                    <small>CASE 001</small>
+                <div class="signal-line line-1"></div>
+                <div class="signal-line line-2"></div>
+                <div class="signal-line line-3"></div>
+                <div class="signal-line line-4"></div>
 
-                    <h3>
-                        OSINT Investigations
-                    </h3>
+                <div class="node node-1 violet"></div>
+                <div class="node node-2"></div>
+                <div class="node node-3 orange"></div>
+                <div class="node node-4"></div>
+                <div class="node node-5 violet"></div>
 
-                    <p>
-                        Walk through investigations and learn
-                        how clues become evidence.
-                    </p>
-
+                <div class="signal-label label-1">
+                    QUESTION
                 </div>
 
-
-                <div class="desk-card">
-
-                    <small>CASE 002</small>
-
-                    <h3>
-                        SOC Analysis
-                    </h3>
-
-                    <p>
-                        Break down alerts and security events
-                        to understand the investigation process.
-                    </p>
-
+                <div class="signal-label label-2">
+                    SIGNAL
                 </div>
 
+                <div class="signal-label label-3">
+                    EVIDENCE
+                </div>
 
-                <div class="desk-card">
-
-                    <small>CASE 003</small>
-
-                    <h3>
-                        Lab Notes
-                    </h3>
-
-                    <p>
-                        Practical lessons from cybersecurity
-                        labs, tools and experiments.
-                    </p>
-
+                <div class="signal-label label-4">
+                    VERIFY
                 </div>
 
             </div>
@@ -1132,105 +1380,100 @@
 </section>
 
 
-<!-- =========================
-     PRINCIPLE
-========================== -->
+<!-- =========================================================
+     MARQUEE
+     ========================================================= -->
 
-<div class="principle">
+<div class="marquee">
 
-    <div class="container principle-inner">
+    <div class="marquee-track">
 
-        <div class="principle-label">
-            KSCYBSEC / PRINCIPLE
-        </div>
+        LEARN
+        <strong>→</strong>
+        TRY
+        <strong>→</strong>
+        THINK
+        <strong>→</strong>
+        VERIFY
+        <strong>→</strong>
 
-        <h2>
-            Learn the concept.
-            <span>Understand why it works.
-            Then try it yourself.</span>
-        </h2>
+        OSINT
+        <strong>•</strong>
+        SOC
+        <strong>•</strong>
+        NETWORKING
+        <strong>•</strong>
+        LINUX
+        <strong>•</strong>
+        WINDOWS
+        <strong>•</strong>
+        FUNDAMENTALS
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+        LEARN
+        <strong>→</strong>
+        TRY
+        <strong>→</strong>
+        THINK
+        <strong>→</strong>
+        VERIFY
+        <strong>→</strong>
 
     </div>
 
 </div>
 
 
-<!-- =========================
-     ABOUT
-========================== -->
+<!-- =========================================================
+     INTRO
+     ========================================================= -->
 
-<section id="about">
+<section class="intro">
 
     <div class="container">
 
-        <div class="about-grid">
+        <div class="intro-grid">
 
-            <div>
+            <div class="reveal">
 
                 <div class="section-number">
-                    05 / ABOUT
+                    00 / WHY THIS EXISTS
                 </div>
 
-                <h2 class="section-title">
-                    A learning lab for cybersecurity.
+                <h2>
+                    Don't just
+                    memorize
+                    cybersecurity.
                 </h2>
-
-                <div class="about-text">
-
-                    <p>
-                        KSCybSec is an independent cybersecurity
-                        learning space focused on making technical
-                        concepts easier to understand.
-                    </p>
-
-                    <p>
-                        The goal is simple: explain the idea first,
-                        show how it works, and then give you enough
-                        practical context to explore it yourself.
-                    </p>
-
-                    <p>
-                        From OSINT and SOC fundamentals to networking,
-                        Linux and Windows, the focus is on useful
-                        knowledge rather than unnecessary complexity.
-                    </p>
-
-                </div>
 
             </div>
 
 
-            <div class="manifest">
+            <div class="intro-text reveal">
 
-                <div class="manifest-row">
-                    <span class="manifest-key">PROJECT</span>
-                    <span class="manifest-value">KSCybSec</span>
-                </div>
+                <p>
+                    Cybersecurity can feel like a wall of tools,
+                    commands and unfamiliar terminology.
+                </p>
 
-                <div class="manifest-row">
-                    <span class="manifest-key">TYPE</span>
-                    <span class="manifest-value">Knowledge Lab</span>
-                </div>
+                <br>
 
-                <div class="manifest-row">
-                    <span class="manifest-key">FOCUS</span>
-                    <span class="manifest-value">Practical Cybersecurity</span>
-                </div>
+                <p>
+                    KSCybSec takes a different approach.
+                    Start with a question. Understand the concept.
+                    Follow the evidence. Then try it yourself.
+                </p>
 
-                <div class="manifest-row">
-                    <span class="manifest-key">LEVEL</span>
-                    <span class="manifest-value">Beginner → Intermediate</span>
-                </div>
+                <br>
 
-                <div class="manifest-row">
-                    <span class="manifest-key">METHOD</span>
-                    <span class="manifest-value">Learn / Investigate / Verify</span>
-                </div>
-
-                <div class="manifest-row">
-                    <span class="manifest-key">STATUS</span>
-                    <span class="manifest-value">Building</span>
-                </div>
+                <p>
+                    <strong>
+                        The goal isn't to make cybersecurity
+                        sound complicated.
+                    </strong>
+                    It's to make it understandable.
+                </p>
 
             </div>
 
@@ -1241,31 +1484,594 @@
 </section>
 
 
-<!-- =========================
+<!-- =========================================================
+     FEATURED GUIDE
+     ========================================================= -->
+
+<section class="featured" id="guides">
+
+    <div class="container">
+
+        <div class="section-header reveal">
+
+            <div>
+
+                <div class="section-number">
+                    01 / FEATURED GUIDE
+                </div>
+
+                <h2>
+                    Start here.
+                </h2>
+
+            </div>
+
+            <a href="articles/what-is-osint.html">
+                VIEW ALL GUIDES →
+            </a>
+
+        </div>
+
+
+        <a href="articles/what-is-osint.html"
+           class="guide reveal">
+
+            <div class="guide-left">
+
+                <div class="guide-meta">
+                    <span>GUIDE 001</span>
+                    <span>OSINT</span>
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        What Is
+                        <span>OSINT?</span>
+                    </h3>
+
+                    <p class="guide-description">
+
+                        You don't always need access to discover
+                        something.
+
+                        Sometimes the information is already sitting
+                        in public.
+
+                        The real skill is understanding what the
+                        pieces actually tell you.
+
+                    </p>
+
+                    <div class="guide-link">
+                        BEGIN INVESTIGATION
+                        <span>→</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="guide-right">
+
+                <div class="case-file">
+
+                    <div class="case-header">
+                        <span>CASE FILE 001</span>
+                        <span>TRAINING</span>
+                    </div>
+
+                    <div class="case-body">
+
+                        <div class="case-subject">
+                            SUBJECT
+                        </div>
+
+                        <div class="case-username">
+                            shadowfox23
+                        </div>
+
+                        <div class="evidence-row">
+
+                            <div class="evidence">
+                                SOURCE
+                                <br><br>
+                                SEARCH ENGINE
+                            </div>
+
+                            <div class="evidence orange">
+                                SOURCE
+                                <br><br>
+                                SOCIAL PROFILE
+                            </div>
+
+                            <div class="evidence orange">
+                                LEAD
+                                <br><br>
+                                USERNAME
+                            </div>
+
+                            <div class="evidence">
+                                STATUS
+                                <br><br>
+                                VERIFY
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     TOPICS
+     ========================================================= -->
+
+<section class="topics" id="topics">
+
+    <div class="container topics-content">
+
+        <div class="section-number">
+            02 / KNOWLEDGE AREAS
+        </div>
+
+        <h2>
+            Follow your
+            curiosity.
+        </h2>
+
+
+        <div class="topic-grid">
+
+            <a href="#" class="topic reveal">
+
+                <span class="topic-number">
+                    01
+                </span>
+
+                <span class="topic-mark osint-mark"></span>
+
+                <h3>OSINT</h3>
+
+                <p>
+                    Find, connect and verify information
+                    from publicly available sources.
+                </p>
+
+            </a>
+
+
+            <a href="#" class="topic reveal">
+
+                <span class="topic-number">
+                    02
+                </span>
+
+                <span class="topic-mark soc-mark"></span>
+
+                <h3>SOC</h3>
+
+                <p>
+                    Understand alerts, logs, incidents
+                    and the thinking behind security operations.
+                </p>
+
+            </a>
+
+
+            <a href="#" class="topic reveal">
+
+                <span class="topic-number">
+                    03
+                </span>
+
+                <span class="topic-mark network-mark"></span>
+
+                <h3>Networking</h3>
+
+                <p>
+                    Understand how devices communicate,
+                    from packets to protocols.
+                </p>
+
+            </a>
+
+
+            <a href="#" class="topic reveal">
+
+                <span class="topic-number">
+                    04
+                </span>
+
+                <span class="topic-mark linux-mark"></span>
+
+                <h3>Linux</h3>
+
+                <p>
+                    Learn the systems, commands and concepts
+                    behind Linux environments.
+                </p>
+
+            </a>
+
+
+            <a href="#" class="topic reveal">
+
+                <span class="topic-number">
+                    05
+                </span>
+
+                <span class="topic-mark windows-mark"></span>
+
+                <h3>Windows</h3>
+
+                <p>
+                    Explore Windows systems, processes,
+                    users and security concepts.
+                </p>
+
+            </a>
+
+
+            <a href="#" class="topic reveal">
+
+                <span class="topic-number">
+                    06
+                </span>
+
+                <span class="topic-mark fundamentals-mark"></span>
+
+                <h3>Fundamentals</h3>
+
+                <p>
+                    Build the foundation that makes
+                    everything else easier to understand.
+                </p>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     LEARNING LIBRARY
+     ========================================================= -->
+
+<section class="library">
+
+    <div class="container">
+
+        <div class="section-number">
+            03 / LEARNING LIBRARY
+        </div>
+
+        <div class="section-header">
+
+            <h2>
+                Pick a concept.
+            </h2>
+
+        </div>
+
+
+        <div class="library-grid">
+
+            <a href="#" class="library-item reveal">
+
+                <span class="library-number">
+                    001
+                </span>
+
+                <div>
+                    <h3>TCP vs UDP</h3>
+                    <p>
+                        What actually changes between the two?
+                    </p>
+                </div>
+
+                <span class="library-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <a href="#" class="library-item reveal">
+
+                <span class="library-number">
+                    002
+                </span>
+
+                <div>
+                    <h3>Linux Commands</h3>
+                    <p>
+                        The commands you'll actually use.
+                    </p>
+                </div>
+
+                <span class="library-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <a href="#" class="library-item reveal">
+
+                <span class="library-number">
+                    003
+                </span>
+
+                <div>
+                    <h3>What Happens When You Type a URL?</h3>
+                    <p>
+                        Follow the request from browser to server.
+                    </p>
+                </div>
+
+                <span class="library-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <a href="#" class="library-item reveal">
+
+                <span class="library-number">
+                    004
+                </span>
+
+                <div>
+                    <h3>What Does a SOC Analyst Do?</h3>
+                    <p>
+                        Follow an alert through a SOC workflow.
+                    </p>
+                </div>
+
+                <span class="library-arrow">
+                    →
+                </span>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     INVESTIGATION DESK
+     ========================================================= -->
+
+<section class="desk" id="desk">
+
+    <div class="container">
+
+        <div class="desk-grid">
+
+            <div class="reveal">
+
+                <div class="section-number">
+                    04 / INVESTIGATION DESK
+                </div>
+
+                <h2>
+                    Learn by
+                    following
+                    the evidence.
+                </h2>
+
+                <p class="desk-intro">
+
+                    Some things are easier to understand when
+                    you stop reading definitions and start
+                    investigating a problem.
+
+                </p>
+
+            </div>
+
+
+            <div class="desk-list reveal">
+
+                <a href="#" class="desk-item">
+
+                    <span>
+                        DESK 001
+                    </span>
+
+                    <strong>
+                        OSINT Investigations
+                    </strong>
+
+                    <span>→</span>
+
+                </a>
+
+
+                <a href="#" class="desk-item">
+
+                    <span>
+                        DESK 002
+                    </span>
+
+                    <strong>
+                        SOC Analysis
+                    </strong>
+
+                    <span>→</span>
+
+                </a>
+
+
+                <a href="#" class="desk-item">
+
+                    <span>
+                        DESK 003
+                    </span>
+
+                    <strong>
+                        Lab Notes
+                    </strong>
+
+                    <span>→</span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     PRINCIPLE
+     ========================================================= -->
+
+<section class="principle">
+
+    <div class="container">
+
+        <div class="principle-inner reveal">
+
+            <div class="principle-label">
+                KSCYBSEC PRINCIPLE
+            </div>
+
+            <h2>
+                Learn the concept.
+                Understand why it works.
+                Then try it yourself.
+            </h2>
+
+            <p>
+                Cybersecurity isn't a list of commands to memorize.
+                It's a way of thinking.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     ABOUT
+     ========================================================= -->
+
+<section class="about" id="about">
+
+    <div class="container">
+
+        <div class="about-grid">
+
+            <div class="reveal">
+
+                <div class="section-number">
+                    05 / ABOUT KSCYBSEC
+                </div>
+
+                <h2>
+                    A place to
+                    understand
+                    things.
+                </h2>
+
+            </div>
+
+
+            <div class="about-text reveal">
+
+                <p>
+                    KSCybSec is an independent cybersecurity
+                    learning space built around one simple idea:
+                    difficult concepts become easier when they're
+                    explained clearly.
+                </p>
+
+                <p>
+                    Here you'll find practical guides,
+                    investigations, technical concepts and
+                    hands-on learning material covering different
+                    areas of cybersecurity.
+                </p>
+
+                <p>
+                    No unnecessary jargon.
+                    No pretending everything is complicated.
+                    Just concepts, questions, experiments and
+                    things worth understanding.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
      FOOTER
-========================== -->
+     ========================================================= -->
 
 <footer>
 
-    <div class="container footer-inner">
+    <div class="container">
 
-        <div class="footer-brand">
-            KSCybSec · Cybersecurity Knowledge Lab
-        </div>
+        <div class="footer-inner">
 
-        <div class="footer-links">
+            <div>
 
-            <a href="https://github.com/KSCybSec" target="_blank">
-                GitHub
-            </a>
+                <div class="footer-brand">
+                    KSCybSec
+                </div>
 
-            <a href="#" target="_blank">
-                LinkedIn
-            </a>
+                <div class="footer-tag">
+                    CYBERSECURITY KNOWLEDGE LAB
+                </div>
 
-            <a href="mailto:your-email@example.com">
-                Contact
-            </a>
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="#">
+                    GitHub
+                </a>
+
+                <a href="#">
+                    LinkedIn
+                </a>
+
+                <a href="#">
+                    Contact
+                </a>
+
+            </div>
 
         </div>
 
@@ -1273,6 +2079,44 @@
 
 </footer>
 
+
+<!-- =========================================================
+     SCROLL REVEAL
+     ========================================================= -->
+
+<script>
+
+    const revealElements =
+        document.querySelectorAll(".reveal");
+
+    const observer =
+        new IntersectionObserver(
+            (entries) => {
+
+                entries.forEach(entry => {
+
+                    if (entry.isIntersecting) {
+
+                        entry.target.classList.add("visible");
+
+                        observer.unobserve(entry.target);
+
+                    }
+
+                });
+
+            },
+            {
+                threshold: 0.12
+            }
+        );
+
+    revealElements.forEach(element => {
+        observer.observe(element);
+    });
+
+</script>
+
+
 </body>
 </html>
-
