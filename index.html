@@ -4,56 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>KSCybSec — Cybersecurity, Explained Simply</title>
+    <title>KSCybSec — Every System Leaves Clues.</title>
 
     <meta name="description"
-        content="KSCybSec is a friendly cybersecurity learning blog covering OSINT, SOC, networking, Linux, Windows and cybersecurity fundamentals.">
+          content="KSCybSec — Explore cybersecurity through clear explanations, investigations, concepts and practical guides.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+          rel="stylesheet">
 
     <style>
 
-        /* =========================================================
+        /* =====================================================
            KSCYBSEC
-           FRIENDLY CYBERSECURITY BLOG
-           ========================================================= */
+           MIDNIGHT / DREAMY / CYBER
+           ===================================================== */
 
         :root {
-            --bg: #f7f8fb;
-            --surface: #ffffff;
-            --surface-soft: #eef2f7;
+            --night: #070b14;
+            --night-2: #0a1020;
+            --surface: #0e1627;
+            --surface-2: #111c30;
 
-            --navy: #101827;
-            --navy-2: #182338;
+            --white: #e8edf5;
+            --soft: #aab5c8;
+            --muted: #69768b;
 
-            --text: #151b27;
-            --muted: #687386;
-            --border: #dfe4eb;
+            --line: rgba(173, 194, 222, .10);
+            --line-bright: rgba(173, 194, 222, .18);
 
-            --cyan: #24b7d8;
-            --cyan-soft: #dff7fb;
+            --cyan: #4de8ff;
+            --cyan-soft: rgba(77, 232, 255, .10);
 
-            --coral: #ff705f;
-            --coral-soft: #fff0ed;
+            --violet: #8b7cff;
+            --violet-soft: rgba(139, 124, 255, .10);
 
-            --purple: #8174f7;
-            --purple-soft: #eeebff;
-
-            --mono: "DM Mono", monospace;
             --body: "Inter", sans-serif;
             --display: "Space Grotesk", sans-serif;
+            --mono: "DM Mono", monospace;
 
             --max: 1180px;
         }
 
 
-        /* =========================================================
+        /* =====================================================
            RESET
-           ========================================================= */
+           ===================================================== */
 
         * {
             margin: 0;
@@ -66,10 +64,12 @@
         }
 
         body {
-            background: var(--bg);
-            color: var(--text);
+            background: var(--night);
+            color: var(--white);
+
             font-family: var(--body);
             line-height: 1.6;
+
             overflow-x: hidden;
         }
 
@@ -82,231 +82,315 @@
             font: inherit;
         }
 
-        img {
-            max-width: 100%;
-            display: block;
-        }
-
         .container {
-            width: min(var(--max), calc(100% - 40px));
+            width: min(var(--max), calc(100% - 42px));
             margin: auto;
         }
 
 
-        /* =========================================================
-           SUBTLE BACKGROUND
-           ========================================================= */
+        /* =====================================================
+           ATMOSPHERE
+           ===================================================== */
 
         body::before {
             content: "";
+
             position: fixed;
             inset: 0;
+
             pointer-events: none;
-            z-index: -2;
+            z-index: -5;
 
             background-image:
                 linear-gradient(
-                    rgba(16,24,39,.025) 1px,
+                    rgba(255,255,255,.018) 1px,
                     transparent 1px
                 ),
                 linear-gradient(
                     90deg,
-                    rgba(16,24,39,.025) 1px,
+                    rgba(255,255,255,.018) 1px,
                     transparent 1px
                 );
 
-            background-size: 40px 40px;
+            background-size: 70px 70px;
+
+            mask-image: linear-gradient(
+                to bottom,
+                black,
+                transparent 75%
+            );
         }
 
         body::after {
             content: "";
+
             position: fixed;
-            width: 500px;
-            height: 500px;
-            right: -250px;
-            top: 100px;
-            border-radius: 50%;
+
+            width: 700px;
+            height: 700px;
+
+            left: 50%;
+            top: -350px;
+
+            transform: translateX(-50%);
 
             background:
                 radial-gradient(
                     circle,
-                    rgba(36,183,216,.08),
-                    transparent 68%
+                    rgba(77,232,255,.075),
+                    transparent 67%
                 );
 
             pointer-events: none;
-            z-index: -1;
+            z-index: -4;
         }
 
 
-        /* =========================================================
+        /* =====================================================
            NAVIGATION
-           ========================================================= */
+           ===================================================== */
 
-        .navbar {
-            height: 76px;
-            background: rgba(247,248,251,.88);
-            backdrop-filter: blur(14px);
-            border-bottom: 1px solid var(--border);
+        .nav {
+            height: 78px;
 
             position: sticky;
             top: 0;
+
             z-index: 100;
+
+            border-bottom: 1px solid var(--line);
+
+            background: rgba(7,11,20,.72);
+
+            backdrop-filter: blur(18px);
         }
 
         .nav-inner {
             height: 100%;
+
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
-        .logo {
+        .brand {
             display: flex;
             align-items: center;
             gap: 11px;
 
             font-family: var(--display);
-            font-size: 20px;
             font-weight: 700;
+
             letter-spacing: -.04em;
         }
 
-        .logo-icon {
-            width: 31px;
-            height: 31px;
-            border-radius: 9px;
+        .brand-mark {
+            width: 30px;
+            height: 30px;
 
-            background: var(--navy);
+            border: 1px solid rgba(77,232,255,.35);
+
+            border-radius: 8px;
+
             position: relative;
-            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at 70% 30%,
+                    rgba(77,232,255,.2),
+                    transparent 50%
+                );
+
+            box-shadow:
+                0 0 20px rgba(77,232,255,.07);
         }
 
-        .logo-icon::before {
+        .brand-mark::before {
             content: "";
+
             position: absolute;
 
-            width: 13px;
-            height: 13px;
+            width: 7px;
+            height: 7px;
 
-            background: var(--cyan);
             border-radius: 50%;
 
-            left: 5px;
-            top: 5px;
+            background: var(--cyan);
+
+            left: 7px;
+            top: 7px;
+
+            box-shadow:
+                12px 8px 0 rgba(139,124,255,.8),
+                5px 14px 0 rgba(77,232,255,.5);
         }
 
-        .logo-icon::after {
+        .brand-mark::after {
             content: "";
+
             position: absolute;
 
-            width: 16px;
-            height: 3px;
+            width: 18px;
+            height: 1px;
 
-            background: var(--coral);
+            background: rgba(77,232,255,.45);
 
-            right: -2px;
-            bottom: 7px;
+            left: 6px;
+            top: 16px;
 
-            transform: rotate(-35deg);
+            transform: rotate(28deg);
         }
 
         .nav-links {
             display: flex;
-            gap: 30px;
+            align-items: center;
+            gap: 28px;
 
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--muted);
+            font-size: 12px;
+
+            color: var(--soft);
         }
 
         .nav-links a {
-            transition: color .2s ease;
+            transition:
+                color .25s ease;
         }
 
         .nav-links a:hover {
-            color: var(--text);
+            color: var(--cyan);
         }
 
-        .nav-cta {
-            padding: 9px 15px;
+        .nav-start {
+            padding: 9px 14px;
 
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            border: 1px solid rgba(77,232,255,.22);
+            border-radius: 7px;
 
-            background: var(--surface);
+            color: var(--white) !important;
 
-            color: var(--text) !important;
+            background: rgba(77,232,255,.05);
         }
 
-        .nav-cta:hover {
-            border-color: var(--cyan);
+        .nav-start:hover {
+            background: rgba(77,232,255,.10);
         }
 
 
-        /* =========================================================
+        /* =====================================================
            HERO
-           ========================================================= */
+           ===================================================== */
 
         .hero {
-            padding: 90px 0 100px;
+            min-height: calc(100vh - 78px);
+
+            display: flex;
+            align-items: center;
+
+            position: relative;
+
+            padding: 100px 0 120px;
+
+            overflow: hidden;
+        }
+
+        .hero-glow {
+            position: absolute;
+
+            width: 500px;
+            height: 500px;
+
+            right: -120px;
+            top: 20px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(77,232,255,.10),
+                    transparent 68%
+                );
+
+            filter: blur(15px);
+
+            pointer-events: none;
         }
 
         .hero-grid {
             display: grid;
-            grid-template-columns: 1.1fr .9fr;
-            gap: 70px;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                minmax(360px, .75fr);
+
+            gap: 80px;
+
             align-items: center;
         }
 
         .eyebrow {
-            display: inline-flex;
+            display: flex;
             align-items: center;
             gap: 9px;
 
-            font-family: var(--mono);
-            font-size: 10px;
-            letter-spacing: .08em;
-            color: var(--muted);
+            margin-bottom: 24px;
 
-            margin-bottom: 22px;
+            font-family: var(--mono);
+            font-size: 9px;
+
+            letter-spacing: .10em;
+
+            color: var(--muted);
         }
 
         .eyebrow-dot {
-            width: 7px;
-            height: 7px;
+            width: 6px;
+            height: 6px;
+
             border-radius: 50%;
+
             background: var(--cyan);
 
             box-shadow:
-                0 0 0 5px rgba(36,183,216,.12);
+                0 0 14px rgba(77,232,255,.8);
         }
 
         .hero h1 {
+            max-width: 760px;
+
             font-family: var(--display);
-            font-size: clamp(52px, 7vw, 86px);
-            line-height: .95;
-            letter-spacing: -.065em;
-            max-width: 720px;
+
+            font-size:
+                clamp(54px, 7vw, 94px);
+
+            line-height: .91;
+
+            letter-spacing: -.075em;
         }
 
-        .hero h1 span {
+        .hero h1 .glow {
             color: var(--cyan);
+
+            text-shadow:
+                0 0 45px rgba(77,232,255,.13);
         }
 
         .hero-description {
             max-width: 570px;
-            margin-top: 27px;
 
-            color: var(--muted);
-            font-size: 17px;
-            line-height: 1.75;
+            margin-top: 31px;
+
+            color: var(--soft);
+
+            font-size: 16px;
+
+            line-height: 1.8;
         }
 
         .hero-buttons {
             display: flex;
             gap: 12px;
-            margin-top: 34px;
+
+            margin-top: 35px;
+
             flex-wrap: wrap;
         }
 
@@ -315,405 +399,518 @@
             align-items: center;
             gap: 10px;
 
-            padding: 13px 18px;
+            padding: 12px 17px;
 
-            border-radius: 9px;
+            border-radius: 7px;
 
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
 
             transition:
                 transform .25s ease,
-                box-shadow .25s ease,
-                background .25s ease;
+                background .25s ease,
+                border-color .25s ease;
         }
 
         .button-primary {
-            background: var(--navy);
-            color: white;
+            background: var(--cyan);
+            color: #061019;
 
             box-shadow:
-                0 7px 20px rgba(16,24,39,.12);
+                0 0 25px rgba(77,232,255,.12);
         }
 
         .button-primary:hover {
             transform: translateY(-2px);
-            background: var(--navy-2);
 
             box-shadow:
-                0 12px 25px rgba(16,24,39,.18);
+                0 0 35px rgba(77,232,255,.20);
         }
 
         .button-secondary {
-            border: 1px solid var(--border);
-            background: var(--surface);
+            border: 1px solid var(--line-bright);
+
+            color: var(--white);
+
+            background: rgba(255,255,255,.025);
         }
 
         .button-secondary:hover {
             transform: translateY(-2px);
-            border-color: var(--cyan);
+
+            border-color:
+                rgba(77,232,255,.35);
         }
 
 
-        /* =========================================================
-           HERO VISUAL
-           ========================================================= */
+        /* =====================================================
+           HERO CONSTELLATION
+           ===================================================== */
 
         .hero-visual {
-            min-height: 430px;
-            border-radius: 24px;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    #121d31,
-                    #0b1220
-                );
+            min-height: 480px;
 
             position: relative;
-            overflow: hidden;
-
-            box-shadow:
-                0 25px 60px rgba(16,24,39,.16);
         }
 
-        .hero-visual::before {
-            content: "";
-
-            position: absolute;
-            width: 280px;
-            height: 280px;
-
-            background:
-                radial-gradient(
-                    circle,
-                    rgba(36,183,216,.27),
-                    transparent 68%
-                );
-
-            right: -80px;
-            top: -80px;
-        }
-
-        .hero-visual::after {
-            content: "";
-
-            position: absolute;
-            width: 250px;
-            height: 250px;
-
-            background:
-                radial-gradient(
-                    circle,
-                    rgba(255,112,95,.16),
-                    transparent 70%
-                );
-
-            left: -80px;
-            bottom: -80px;
-        }
-
-        .visual-grid {
+        .constellation {
             position: absolute;
             inset: 0;
-
-            background-image:
-                linear-gradient(
-                    rgba(255,255,255,.04) 1px,
-                    transparent 1px
-                ),
-                linear-gradient(
-                    90deg,
-                    rgba(255,255,255,.04) 1px,
-                    transparent 1px
-                );
-
-            background-size: 42px 42px;
         }
 
-        .visual-top {
-            position: absolute;
-            top: 20px;
-            left: 22px;
-            right: 22px;
+        .constellation::before {
+            content: "";
 
-            display: flex;
-            justify-content: space-between;
-
-            font-family: var(--mono);
-            font-size: 9px;
-            color: #77849a;
-        }
-
-        .visual-status {
-            color: #66d6e8;
-        }
-
-        .signal-network {
-            position: absolute;
-            inset: 70px 40px 40px;
-        }
-
-        .connection {
-            position: absolute;
-            height: 1px;
-            background: rgba(255,255,255,.28);
-            transform-origin: left;
-        }
-
-        .connection.one {
-            width: 170px;
-            left: 65px;
-            top: 95px;
-            transform: rotate(18deg);
-        }
-
-        .connection.two {
-            width: 150px;
-            left: 160px;
-            top: 130px;
-            transform: rotate(-35deg);
-        }
-
-        .connection.three {
-            width: 190px;
-            left: 150px;
-            top: 210px;
-            transform: rotate(12deg);
-        }
-
-        .connection.four {
-            width: 120px;
-            left: 260px;
-            top: 145px;
-            transform: rotate(58deg);
-        }
-
-        .signal-node {
             position: absolute;
 
-            width: 14px;
-            height: 14px;
+            inset: 40px;
 
             border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(77,232,255,.055),
+                    transparent 63%
+                );
+        }
+
+        .star {
+            position: absolute;
+
+            width: 5px;
+            height: 5px;
+
+            border-radius: 50%;
+
             background: var(--cyan);
 
             box-shadow:
-                0 0 0 7px rgba(36,183,216,.12);
+                0 0 15px rgba(77,232,255,.8);
 
-            animation: nodePulse 3s ease-in-out infinite;
+            animation:
+                float 4s ease-in-out infinite;
         }
 
-        .signal-node.coral {
-            background: var(--coral);
+        .star.violet {
+            background: var(--violet);
+
             box-shadow:
-                0 0 0 7px rgba(255,112,95,.11);
+                0 0 15px rgba(139,124,255,.7);
         }
 
-        .signal-node.purple {
-            background: var(--purple);
+        .star.dim {
+            width: 3px;
+            height: 3px;
+
+            opacity: .45;
+
             box-shadow:
-                0 0 0 7px rgba(129,116,247,.11);
+                0 0 9px rgba(77,232,255,.5);
         }
 
-        .node-a {
-            left: 55px;
-            top: 89px;
+        .star-1 {
+            left: 21%;
+            top: 23%;
         }
 
-        .node-b {
-            left: 220px;
-            top: 140px;
+        .star-2 {
+            left: 57%;
+            top: 14%;
+            animation-delay: -.7s;
         }
 
-        .node-c {
-            left: 125px;
-            top: 205px;
+        .star-3 {
+            left: 78%;
+            top: 38%;
+            animation-delay: -1.4s;
         }
 
-        .node-d {
-            left: 315px;
-            top: 215px;
+        .star-4 {
+            left: 42%;
+            top: 52%;
+            animation-delay: -.4s;
         }
 
-        .node-e {
-            left: 275px;
-            top: 80px;
+        .star-5 {
+            left: 69%;
+            top: 68%;
+            animation-delay: -1.1s;
         }
 
-        .visual-tag {
+        .star-6 {
+            left: 27%;
+            top: 77%;
+            animation-delay: -1.8s;
+        }
+
+        .star-7 {
+            left: 88%;
+            top: 79%;
+        }
+
+        .star-8 {
+            left: 11%;
+            top: 47%;
+        }
+
+        .line {
             position: absolute;
 
-            padding: 6px 9px;
+            height: 1px;
 
-            border: 1px solid rgba(255,255,255,.13);
-            background: rgba(255,255,255,.05);
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(77,232,255,.30),
+                    transparent
+                );
 
-            border-radius: 6px;
-
-            font-family: var(--mono);
-            font-size: 8px;
-            color: #a4afbf;
+            transform-origin: left center;
         }
 
-        .tag-one {
-            left: 25px;
-            bottom: 28px;
+        .line-1 {
+            width: 230px;
+
+            left: 21%;
+            top: 23%;
+
+            transform:
+                rotate(-11deg);
         }
 
-        .tag-two {
-            right: 25px;
-            bottom: 28px;
+        .line-2 {
+            width: 210px;
+
+            left: 42%;
+            top: 52%;
+
+            transform:
+                rotate(-37deg);
         }
 
-        @keyframes nodePulse {
-            0%, 100% {
-                transform: scale(1);
-            }
+        .line-3 {
+            width: 190px;
 
-            50% {
-                transform: scale(1.18);
-            }
+            left: 42%;
+            top: 52%;
+
+            transform:
+                rotate(23deg);
         }
 
+        .line-4 {
+            width: 170px;
 
-        /* =========================================================
-           START HERE
-           ========================================================= */
+            left: 69%;
+            top: 68%;
 
-        .start {
-            padding: 80px 0;
+            transform:
+                rotate(31deg);
         }
 
-        .section-heading {
-            margin-bottom: 35px;
+        .line-5 {
+            width: 180px;
+
+            left: 27%;
+            top: 77%;
+
+            transform:
+                rotate(-41deg);
         }
 
-        .section-label {
-            font-family: var(--mono);
-            font-size: 10px;
-            letter-spacing: .08em;
-            color: var(--cyan);
+        .center-orbit {
+            position: absolute;
 
-            margin-bottom: 9px;
+            left: 50%;
+            top: 51%;
+
+            width: 180px;
+            height: 180px;
+
+            transform: translate(-50%, -50%);
+
+            border:
+                1px solid rgba(77,232,255,.14);
+
+            border-radius: 50%;
+
+            animation:
+                slowRotate 22s linear infinite;
         }
 
-        .section-heading h2 {
-            font-family: var(--display);
-            font-size: 38px;
-            letter-spacing: -.045em;
+        .center-orbit::before {
+            content: "";
+
+            position: absolute;
+
+            inset: 28px;
+
+            border:
+                1px solid rgba(139,124,255,.12);
+
+            border-radius: 50%;
         }
 
-        .start-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 13px;
-        }
+        .center-core {
+            position: absolute;
 
-        .start-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 14px;
+            left: 50%;
+            top: 50%;
 
-            padding: 23px;
+            transform: translate(-50%, -50%);
 
-            min-height: 170px;
+            width: 76px;
+            height: 76px;
 
-            transition:
-                transform .25s ease,
-                box-shadow .25s ease,
-                border-color .25s ease;
-        }
-
-        .start-card:hover {
-            transform: translateY(-5px);
-
-            border-color: var(--cyan);
-
-            box-shadow:
-                0 15px 30px rgba(16,24,39,.08);
-        }
-
-        .start-icon {
-            width: 35px;
-            height: 35px;
-
-            border-radius: 9px;
+            border-radius: 50%;
 
             display: grid;
             place-items: center;
 
-            margin-bottom: 25px;
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(77,232,255,.13),
+                    rgba(12,22,38,.95)
+                );
+
+            border:
+                1px solid rgba(77,232,255,.28);
+
+            box-shadow:
+                0 0 50px rgba(77,232,255,.08);
+        }
+
+        .center-core span {
+            font-family: var(--mono);
+
+            font-size: 8px;
+
+            letter-spacing: .08em;
+
+            color: var(--cyan);
+        }
+
+        .visual-caption {
+            position: absolute;
+
+            left: 15%;
+            bottom: 3%;
+
+            color: var(--muted);
 
             font-family: var(--mono);
-            font-size: 12px;
+            font-size: 8px;
+
+            letter-spacing: .06em;
         }
 
-        .icon-blue {
-            background: var(--cyan-soft);
-            color: #087c98;
+        @keyframes float {
+            0%,100% {
+                transform: translateY(0);
+                opacity: .8;
+            }
+
+            50% {
+                transform: translateY(-8px);
+                opacity: 1;
+            }
         }
 
-        .icon-coral {
-            background: var(--coral-soft);
-            color: #c94e3e;
+        @keyframes slowRotate {
+            from {
+                transform:
+                    translate(-50%, -50%)
+                    rotate(0deg);
+            }
+
+            to {
+                transform:
+                    translate(-50%, -50%)
+                    rotate(360deg);
+            }
         }
 
-        .icon-purple {
-            background: var(--purple-soft);
-            color: #6253dc;
+
+        /* =====================================================
+           SECTION BASE
+           ===================================================== */
+
+        section {
+            position: relative;
         }
 
-        .icon-dark {
-            background: var(--navy);
-            color: white;
+        .section-label {
+            font-family: var(--mono);
+
+            font-size: 9px;
+
+            letter-spacing: .12em;
+
+            color: var(--cyan);
+
+            margin-bottom: 10px;
+        }
+
+        .section-title {
+            font-family: var(--display);
+
+            font-size: clamp(32px, 4vw, 48px);
+
+            line-height: 1;
+
+            letter-spacing: -.055em;
+        }
+
+        .section-subtitle {
+            margin-top: 15px;
+
+            max-width: 540px;
+
+            color: var(--muted);
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           START SECTION
+           ===================================================== */
+
+        .start {
+            padding: 105px 0;
+
+            border-top: 1px solid var(--line);
+        }
+
+        .start-header {
+            margin-bottom: 38px;
+        }
+
+        .start-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            border:
+                1px solid var(--line);
+
+            border-radius: 12px;
+
+            overflow: hidden;
+        }
+
+        .start-card {
+            min-height: 205px;
+
+            padding: 25px;
+
+            border-right:
+                1px solid var(--line);
+
+            background:
+                linear-gradient(
+                    150deg,
+                    rgba(255,255,255,.025),
+                    rgba(255,255,255,.008)
+                );
+
+            transition:
+                background .3s ease,
+                transform .3s ease;
+        }
+
+        .start-card:last-child {
+            border-right: none;
+        }
+
+        .start-card:hover {
+            background:
+                rgba(77,232,255,.035);
+
+            transform:
+                translateY(-3px);
+        }
+
+        .start-number {
+            font-family: var(--mono);
+
+            font-size: 9px;
+
+            color: var(--muted);
         }
 
         .start-card h3 {
-            font-size: 16px;
-            margin-bottom: 6px;
+            margin-top: 52px;
+
+            font-family: var(--display);
+
+            font-size: 18px;
+
+            letter-spacing: -.025em;
         }
 
         .start-card p {
+            margin-top: 8px;
+
             color: var(--muted);
-            font-size: 13px;
+
+            font-size: 12px;
+
             line-height: 1.6;
         }
 
         .start-arrow {
-            margin-top: 18px;
             display: inline-block;
-            color: var(--muted);
-            transition: transform .2s ease;
-        }
 
-        .start-card:hover .start-arrow {
-            transform: translateX(5px);
+            margin-top: 16px;
+
             color: var(--cyan);
+
+            font-family: var(--mono);
+            font-size: 11px;
         }
 
 
-        /* =========================================================
-           FEATURED ARTICLE
-           ========================================================= */
+        /* =====================================================
+           FEATURED
+           ===================================================== */
 
         .featured {
             padding: 100px 0;
         }
 
+        .featured-header {
+            margin-bottom: 32px;
+        }
+
         .featured-box {
-            background: var(--navy);
-            color: white;
-
-            border-radius: 22px;
-
             display: grid;
-            grid-template-columns: 1fr .9fr;
+
+            grid-template-columns:
+                1fr .85fr;
+
+            min-height: 450px;
+
+            border:
+                1px solid var(--line);
+
+            border-radius: 18px;
 
             overflow: hidden;
 
+            background:
+                linear-gradient(
+                    135deg,
+                    #0c1526,
+                    #0a101c
+                );
+
             box-shadow:
-                0 25px 55px rgba(16,24,39,.14);
+                0 30px 80px rgba(0,0,0,.20);
         }
 
         .featured-content {
@@ -726,24 +923,36 @@
             align-items: center;
 
             font-family: var(--mono);
-            font-size: 9px;
-            color: #8490a3;
+
+            font-size: 8px;
+
+            color: var(--muted);
+
+            letter-spacing: .06em;
         }
 
         .meta-dot {
-            width: 5px;
-            height: 5px;
+            width: 4px;
+            height: 4px;
+
             border-radius: 50%;
+
             background: var(--cyan);
         }
 
         .featured-content h2 {
-            margin-top: 28px;
+            max-width: 580px;
+
+            margin-top: 30px;
 
             font-family: var(--display);
-            font-size: clamp(42px, 5vw, 65px);
-            line-height: .98;
-            letter-spacing: -.06em;
+
+            font-size:
+                clamp(40px, 5vw, 65px);
+
+            line-height: .95;
+
+            letter-spacing: -.065em;
         }
 
         .featured-content h2 span {
@@ -751,657 +960,781 @@
         }
 
         .featured-content p {
-            color: #a7b1c0;
-            max-width: 480px;
+            max-width: 490px;
 
             margin-top: 23px;
 
-            font-size: 15px;
-            line-height: 1.75;
+            color: var(--soft);
+
+            font-size: 14px;
+
+            line-height: 1.8;
         }
 
-        .read-button {
+        .featured-link {
             display: inline-flex;
             align-items: center;
             gap: 10px;
 
             margin-top: 30px;
 
-            padding: 12px 16px;
+            color: var(--cyan);
 
-            border-radius: 8px;
+            font-family: var(--mono);
 
-            background: white;
-            color: var(--navy);
-
-            font-size: 12px;
-            font-weight: 600;
-
-            transition: transform .2s ease;
+            font-size: 10px;
         }
 
-        .read-button:hover {
-            transform: translateY(-2px);
+        .featured-link span {
+            transition:
+                transform .2s ease;
+        }
+
+        .featured-link:hover span {
+            transform:
+                translateX(5px);
         }
 
 
-        /* FEATURED VISUAL */
+        /* FEATURED ART */
 
         .featured-art {
-            min-height: 440px;
             position: relative;
+
+            min-height: 450px;
+
             overflow: hidden;
+
+            border-left:
+                1px solid var(--line);
+        }
+
+        .art-glow {
+            position: absolute;
+
+            width: 400px;
+            height: 400px;
+
+            left: 50%;
+            top: 50%;
+
+            transform:
+                translate(-50%, -50%);
 
             background:
                 radial-gradient(
-                    circle at 50% 45%,
-                    rgba(36,183,216,.16),
-                    transparent 42%
+                    circle,
+                    rgba(77,232,255,.13),
+                    transparent 65%
                 );
         }
 
-        .orbit {
+        .art-orbit {
             position: absolute;
-
-            border: 1px solid rgba(255,255,255,.11);
-            border-radius: 50%;
 
             left: 50%;
             top: 50%;
 
-            transform: translate(-50%, -50%);
+            transform:
+                translate(-50%, -50%);
+
+            border:
+                1px solid rgba(77,232,255,.14);
+
+            border-radius: 50%;
         }
 
-        .orbit.one {
-            width: 250px;
-            height: 250px;
+        .art-orbit.a {
+            width: 190px;
+            height: 190px;
         }
 
-        .orbit.two {
-            width: 170px;
+        .art-orbit.b {
+            width: 285px;
+            height: 285px;
+
+            transform:
+                translate(-50%, -50%)
+                rotate(38deg);
+        }
+
+        .art-orbit.c {
+            width: 360px;
             height: 170px;
+
+            transform:
+                translate(-50%, -50%)
+                rotate(-25deg);
+
+            border-color:
+                rgba(139,124,255,.12);
         }
 
-        .orbit.three {
-            width: 340px;
-            height: 340px;
-        }
-
-        .orbit-node {
-            position: absolute;
-
-            width: 12px;
-            height: 12px;
-
-            border-radius: 50%;
-
-            background: var(--cyan);
-
-            top: 50%;
-            left: -6px;
-
-            box-shadow:
-                0 0 20px rgba(36,183,216,.65);
-        }
-
-        .orbit-node.coral {
-            background: var(--coral);
-            box-shadow:
-                0 0 20px rgba(255,112,95,.55);
-        }
-
-        .center-symbol {
+        .art-core {
             position: absolute;
 
             left: 50%;
             top: 50%;
 
-            transform: translate(-50%, -50%);
+            transform:
+                translate(-50%, -50%);
 
-            width: 72px;
-            height: 72px;
-
-            border-radius: 20px;
-
-            background: rgba(255,255,255,.07);
-            border: 1px solid rgba(255,255,255,.14);
+            width: 78px;
+            height: 78px;
 
             display: grid;
             place-items: center;
 
-            font-family: var(--mono);
-            font-size: 12px;
+            border-radius: 20px;
+
+            background:
+                rgba(77,232,255,.06);
+
+            border:
+                1px solid rgba(77,232,255,.3);
+
             color: var(--cyan);
+
+            font-family: var(--mono);
+
+            font-size: 9px;
+
+            box-shadow:
+                0 0 45px rgba(77,232,255,.08);
+        }
+
+        .art-label {
+            position: absolute;
+
+            padding: 6px 9px;
+
+            border:
+                1px solid var(--line);
+
+            background:
+                rgba(7,11,20,.65);
+
+            color: var(--muted);
+
+            font-family: var(--mono);
+
+            font-size: 8px;
+
+            border-radius: 5px;
+        }
+
+        .label-1 {
+            top: 20%;
+            left: 14%;
+        }
+
+        .label-2 {
+            right: 12%;
+            top: 32%;
+        }
+
+        .label-3 {
+            left: 18%;
+            bottom: 19%;
+        }
+
+        .label-4 {
+            right: 17%;
+            bottom: 15%;
         }
 
 
-        /* =========================================================
-           LATEST ARTICLES
-           ========================================================= */
+        /* =====================================================
+           LATEST
+           ===================================================== */
 
         .latest {
-            padding: 90px 0 110px;
+            padding: 105px 0;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    transparent,
+                    rgba(15,25,43,.28)
+                );
         }
 
-        .latest-header {
+        .latest-top {
             display: flex;
+
             justify-content: space-between;
+
             align-items: end;
 
             margin-bottom: 35px;
         }
 
-        .latest-header h2 {
-            font-family: var(--display);
-            font-size: 40px;
-            letter-spacing: -.05em;
-        }
-
         .view-all {
             font-family: var(--mono);
-            font-size: 10px;
+
+            font-size: 9px;
+
             color: var(--muted);
+        }
+
+        .view-all:hover {
+            color: var(--cyan);
         }
 
         .article-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 16px;
         }
 
         .article-card {
-            background: var(--surface);
+            border:
+                1px solid var(--line);
 
-            border: 1px solid var(--border);
-            border-radius: 15px;
+            border-radius: 12px;
 
             overflow: hidden;
+
+            background:
+                rgba(14,22,39,.72);
 
             transition:
                 transform .3s ease,
-                box-shadow .3s ease;
+                border-color .3s ease,
+                background .3s ease;
         }
 
         .article-card:hover {
-            transform: translateY(-6px);
+            transform:
+                translateY(-6px);
 
-            box-shadow:
-                0 18px 35px rgba(16,24,39,.09);
+            border-color:
+                rgba(77,232,255,.23);
+
+            background:
+                rgba(16,27,46,.9);
         }
 
-        .article-image {
-            height: 165px;
+        .article-visual {
+            height: 155px;
 
             position: relative;
+
             overflow: hidden;
-        }
-
-        .article-image::after {
-            content: "";
-
-            position: absolute;
-            inset: 0;
-
-            background:
-                linear-gradient(
-                    120deg,
-                    transparent 20%,
-                    rgba(255,255,255,.14),
-                    transparent 70%
-                );
-
-            transform: translateX(-100%);
-            transition: transform .7s ease;
-        }
-
-        .article-card:hover .article-image::after {
-            transform: translateX(100%);
-        }
-
-        .image-osint {
-            background:
-                radial-gradient(circle at 30% 40%, #52d8e8, transparent 23%),
-                radial-gradient(circle at 75% 65%, #8174f7, transparent 25%),
-                #111c30;
-        }
-
-        .image-network {
-            background:
-                linear-gradient(130deg, #17263c, #245b75);
-        }
-
-        .image-soc {
-            background:
-                radial-gradient(circle at 70% 30%, #ff7765, transparent 22%),
-                #182033;
-        }
-
-        .article-content {
-            padding: 23px;
-        }
-
-        .article-tag {
-            font-family: var(--mono);
-            font-size: 9px;
-            color: var(--cyan);
-
-            text-transform: uppercase;
-        }
-
-        .article-content h3 {
-            margin-top: 12px;
-
-            font-family: var(--display);
-            font-size: 21px;
-            letter-spacing: -.035em;
-            line-height: 1.2;
-        }
-
-        .article-content p {
-            margin-top: 10px;
-
-            color: var(--muted);
-            font-size: 13px;
-            line-height: 1.6;
-        }
-
-        .article-footer {
-            margin-top: 20px;
-
-            display: flex;
-            justify-content: space-between;
-
-            color: var(--muted);
-
-            font-family: var(--mono);
-            font-size: 9px;
-        }
-
-
-        /* =========================================================
-           TOPICS
-           ========================================================= */
-
-        .topics {
-            padding: 100px 0;
-
-            background: var(--surface);
-
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .topic-grid {
-            margin-top: 40px;
-
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            overflow: hidden;
-        }
-
-        .topic {
-            padding: 25px 18px;
-
-            border-right: 1px solid var(--border);
-
-            transition:
-                background .25s ease;
-        }
-
-        .topic:last-child {
-            border-right: none;
-        }
-
-        .topic:hover {
-            background: var(--bg);
-        }
-
-        .topic-number {
-            font-family: var(--mono);
-            font-size: 9px;
-            color: var(--muted);
-        }
-
-        .topic h3 {
-            margin-top: 35px;
-
-            font-family: var(--display);
-            font-size: 18px;
-            letter-spacing: -.03em;
-        }
-
-        .topic p {
-            margin-top: 7px;
-
-            color: var(--muted);
-            font-size: 11px;
-            line-height: 1.5;
-        }
-
-        .topic-line {
-            margin-top: 18px;
-
-            width: 25px;
-            height: 3px;
-
-            border-radius: 5px;
-
-            background: var(--cyan);
-        }
-
-        .topic:nth-child(2) .topic-line {
-            background: var(--coral);
-        }
-
-        .topic:nth-child(3) .topic-line {
-            background: var(--purple);
-        }
-
-        .topic:nth-child(4) .topic-line {
-            background: #e0a34b;
-        }
-
-        .topic:nth-child(5) .topic-line {
-            background: #4e9bd4;
-        }
-
-        .topic:nth-child(6) .topic-line {
-            background: #8b94a3;
-        }
-
-
-        /* =========================================================
-           LEARNING PATH
-           ========================================================= */
-
-        .paths {
-            padding: 110px 0;
-        }
-
-        .paths-grid {
-            display: grid;
-            grid-template-columns: .8fr 1.2fr;
-            gap: 70px;
-            align-items: start;
-        }
-
-        .paths-intro h2 {
-            font-family: var(--display);
-            font-size: 45px;
-            line-height: 1;
-            letter-spacing: -.055em;
-        }
-
-        .paths-intro p {
-            margin-top: 20px;
-
-            color: var(--muted);
-            font-size: 14px;
-            line-height: 1.7;
-            max-width: 400px;
-        }
-
-        .path {
-            display: grid;
-            grid-template-columns: 45px 1fr;
-            gap: 18px;
-
-            position: relative;
-
-            padding-bottom: 34px;
-        }
-
-        .path:not(:last-child)::after {
-            content: "";
-
-            position: absolute;
-
-            left: 15px;
-            top: 32px;
-            bottom: 0;
-
-            width: 1px;
-
-            background: var(--border);
-        }
-
-        .path-number {
-            width: 31px;
-            height: 31px;
-
-            border-radius: 50%;
-
-            background: var(--surface);
-
-            border: 1px solid var(--border);
-
-            display: grid;
-            place-items: center;
-
-            font-family: var(--mono);
-            font-size: 9px;
-
-            position: relative;
-            z-index: 2;
-        }
-
-        .path h3 {
-            font-size: 16px;
-        }
-
-        .path p {
-            margin-top: 4px;
-
-            color: var(--muted);
-            font-size: 13px;
-        }
-
-
-        /* =========================================================
-           INVESTIGATION DESK
-           ========================================================= */
-
-        .desk {
-            padding: 100px 0;
-
-            background: var(--navy);
-            color: white;
-        }
-
-        .desk-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: center;
-        }
-
-        .desk h2 {
-            font-family: var(--display);
-            font-size: clamp(42px, 5vw, 65px);
-            line-height: .98;
-            letter-spacing: -.06em;
-        }
-
-        .desk h2 span {
-            color: var(--cyan);
-        }
-
-        .desk-description {
-            margin-top: 22px;
-
-            color: #9ca8ba;
-            max-width: 470px;
-
-            font-size: 14px;
-            line-height: 1.7;
-        }
-
-        .desk-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .desk-card {
-            padding: 19px 20px;
-
-            border: 1px solid rgba(255,255,255,.11);
-            border-radius: 10px;
-
-            background: rgba(255,255,255,.035);
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            transition:
-                background .25s ease,
-                transform .25s ease;
-        }
-
-        .desk-card:hover {
-            background: rgba(255,255,255,.07);
-            transform: translateX(5px);
-        }
-
-        .desk-card small {
-            font-family: var(--mono);
-            font-size: 9px;
-            color: #7f8b9e;
-        }
-
-        .desk-card strong {
-            display: block;
-            margin-top: 4px;
-
-            font-size: 14px;
-        }
-
-        .desk-arrow {
-            color: var(--cyan);
-        }
-
-
-        /* =========================================================
-           PRINCIPLE
-           ========================================================= */
-
-        .principle {
-            padding: 100px 0;
-        }
-
-        .principle-box {
-            padding: 55px;
 
             background:
                 linear-gradient(
                     135deg,
-                    var(--cyan-soft),
-                    var(--purple-soft)
+                    #0b1729,
+                    #101d31
                 );
+        }
 
-            border-radius: 20px;
+        .article-visual::before {
+            content: "";
 
-            border: 1px solid #d9e5e8;
+            position: absolute;
+
+            width: 180px;
+            height: 180px;
+
+            border:
+                1px solid rgba(77,232,255,.14);
+
+            border-radius: 50%;
+
+            left: 50%;
+            top: 50%;
+
+            transform:
+                translate(-50%, -50%);
+        }
+
+        .article-visual::after {
+            content: "";
+
+            position: absolute;
+
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+
+            background: var(--cyan);
+
+            left: 50%;
+            top: 50%;
+
+            box-shadow:
+                35px -32px 0 rgba(139,124,255,.8),
+                -48px 27px 0 rgba(77,232,255,.5),
+                63px 45px 0 rgba(77,232,255,.4);
+        }
+
+        .visual-network {
+            background:
+                radial-gradient(
+                    circle at 70% 30%,
+                    rgba(77,232,255,.10),
+                    transparent 45%
+                ),
+                #0b1424;
+        }
+
+        .visual-soc {
+            background:
+                radial-gradient(
+                    circle at 30% 70%,
+                    rgba(139,124,255,.12),
+                    transparent 45%
+                ),
+                #0c1424;
+        }
+
+        .visual-web {
+            background:
+                radial-gradient(
+                    circle at 65% 55%,
+                    rgba(77,232,255,.08),
+                    transparent 45%
+                ),
+                #0b1525;
+        }
+
+        .article-content {
+            padding: 22px;
+        }
+
+        .article-tag {
+            font-family: var(--mono);
+
+            font-size: 8px;
+
+            color: var(--cyan);
+
+            letter-spacing: .08em;
+        }
+
+        .article-content h3 {
+            margin-top: 11px;
+
+            font-family: var(--display);
+
+            font-size: 20px;
+
+            line-height: 1.15;
+
+            letter-spacing: -.035em;
+        }
+
+        .article-content p {
+            margin-top: 9px;
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+        .article-meta-bottom {
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-top: 20px;
+
+            font-family: var(--mono);
+
+            font-size: 8px;
+
+            color: var(--muted);
+        }
+
+
+        /* =====================================================
+           TOPICS
+           ===================================================== */
+
+        .topics {
+            padding: 110px 0;
+
+            border-top:
+                1px solid var(--line);
+        }
+
+        .topics-intro {
+            max-width: 600px;
+
+            margin-bottom: 38px;
+        }
+
+        .topic-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 10px;
+        }
+
+        .topic-card {
+            min-height: 175px;
+
+            padding: 23px;
+
+            border:
+                1px solid var(--line);
+
+            border-radius: 11px;
+
+            background:
+                rgba(255,255,255,.015);
+
+            transition:
+                transform .3s ease,
+                border-color .3s ease,
+                background .3s ease;
+        }
+
+        .topic-card:hover {
+            transform:
+                translateY(-5px);
+
+            border-color:
+                rgba(77,232,255,.24);
+
+            background:
+                rgba(77,232,255,.025);
+        }
+
+        .topic-index {
+            font-family: var(--mono);
+
+            font-size: 8px;
+
+            color: var(--muted);
+        }
+
+        .topic-card h3 {
+            margin-top: 45px;
+
+            font-family: var(--display);
+
+            font-size: 18px;
+
+            letter-spacing: -.025em;
+        }
+
+        .topic-card p {
+            margin-top: 6px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+        .topic-mark {
+            margin-top: 17px;
+
+            width: 25px;
+            height: 2px;
+
+            background: var(--cyan);
+
+            box-shadow:
+                0 0 10px rgba(77,232,255,.2);
+        }
+
+
+        /* =====================================================
+           EXPLORE
+           ===================================================== */
+
+        .explore {
+            padding: 110px 0;
+        }
+
+        .explore-layout {
+            display: grid;
+
+            grid-template-columns:
+                .85fr 1.15fr;
+
+            gap: 90px;
+
+            align-items: start;
+        }
+
+        .explore-intro h2 {
+            max-width: 450px;
+
+            font-family: var(--display);
+
+            font-size:
+                clamp(38px, 5vw, 60px);
+
+            line-height: .97;
+
+            letter-spacing: -.06em;
+        }
+
+        .explore-intro p {
+            max-width: 420px;
+
+            margin-top: 22px;
+
+            color: var(--muted);
+
+            font-size: 14px;
+
+            line-height: 1.75;
+        }
+
+        .explore-list {
+            border-top:
+                1px solid var(--line);
+        }
+
+        .explore-item {
+            display: grid;
+
+            grid-template-columns:
+                50px 1fr 25px;
+
+            gap: 15px;
+
+            align-items: center;
+
+            padding: 23px 0;
+
+            border-bottom:
+                1px solid var(--line);
+        }
+
+        .explore-number {
+            font-family: var(--mono);
+
+            font-size: 9px;
+
+            color: var(--muted);
+        }
+
+        .explore-item h3 {
+            font-size: 15px;
+        }
+
+        .explore-item p {
+            margin-top: 4px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+        .explore-arrow {
+            color: var(--cyan);
+
+            transition:
+                transform .2s ease;
+        }
+
+        .explore-item:hover .explore-arrow {
+            transform:
+                translateX(4px);
+        }
+
+
+        /* =====================================================
+           LEARN METHOD
+           ===================================================== */
+
+        .method {
+            padding: 105px 0;
+        }
+
+        .method-box {
+            padding: 60px 40px;
+
+            border:
+                1px solid var(--line);
+
+            border-radius: 18px;
+
+            background:
+                radial-gradient(
+                    circle at 50% 0%,
+                    rgba(77,232,255,.055),
+                    transparent 48%
+                ),
+                #0b1220;
 
             text-align: center;
         }
 
-        .principle-box small {
-            font-family: var(--mono);
-            font-size: 9px;
-            color: var(--muted);
-            letter-spacing: .08em;
-        }
-
-        .principle-box h2 {
-            margin-top: 18px;
+        .method-title {
+            margin-top: 14px;
 
             font-family: var(--display);
-            font-size: clamp(30px, 4vw, 48px);
+
+            font-size:
+                clamp(30px, 4vw, 48px);
 
             letter-spacing: -.055em;
         }
 
-        .principle-box p {
-            max-width: 560px;
+        .method-description {
+            max-width: 570px;
 
             margin: 18px auto 0;
 
             color: var(--muted);
-            font-size: 14px;
+
+            font-size: 13px;
+        }
+
+        .method-flow {
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 38px;
+
+            flex-wrap: wrap;
+        }
+
+        .method-step {
+            padding: 10px 14px;
+
+            border:
+                1px solid var(--line-bright);
+
+            border-radius: 6px;
+
+            font-family: var(--mono);
+
+            font-size: 9px;
+
+            color: var(--soft);
+
+            background:
+                rgba(255,255,255,.02);
+        }
+
+        .method-step.active {
+            color: var(--cyan);
+
+            border-color:
+                rgba(77,232,255,.25);
+
+            background:
+                rgba(77,232,255,.05);
+        }
+
+        .method-arrow {
+            color: var(--muted);
         }
 
 
-        /* =========================================================
+        /* =====================================================
            ABOUT
-           ========================================================= */
+           ===================================================== */
 
         .about {
-            padding: 80px 0 110px;
+            padding: 100px 0 120px;
+
+            border-top:
+                1px solid var(--line);
         }
 
         .about-grid {
             display: grid;
-            grid-template-columns: .7fr 1.3fr;
-            gap: 70px;
+
+            grid-template-columns:
+                .7fr 1.3fr;
+
+            gap: 100px;
         }
 
-        .about h2 {
+        .about-title {
             font-family: var(--display);
-            font-size: 43px;
-            line-height: 1;
-            letter-spacing: -.055em;
+
+            font-size:
+                clamp(38px, 5vw, 58px);
+
+            line-height: .98;
+
+            letter-spacing: -.06em;
         }
 
-        .about p {
-            color: var(--muted);
+        .about-text {
+            color: var(--soft);
+
             font-size: 15px;
-            line-height: 1.8;
+
+            line-height: 1.85;
+
+            max-width: 650px;
         }
 
-        .about p + p {
+        .about-text + .about-text {
             margin-top: 18px;
         }
 
 
-        /* =========================================================
+        /* =====================================================
            FOOTER
-           ========================================================= */
+           ===================================================== */
 
         footer {
-            border-top: 1px solid var(--border);
-            background: var(--surface);
-
             padding: 35px 0;
+
+            border-top:
+                1px solid var(--line);
+
+            background:
+                #050810;
         }
 
         .footer-inner {
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
         }
 
         .footer-brand {
             font-family: var(--display);
+
+            font-size: 14px;
+
             font-weight: 700;
         }
 
         .footer-note {
+            margin-top: 3px;
+
             color: var(--muted);
-            font-size: 11px;
-            margin-top: 4px;
+
+            font-size: 10px;
         }
 
         .footer-links {
             display: flex;
+
             gap: 22px;
 
             font-family: var(--mono);
-            font-size: 9px;
+
+            font-size: 8px;
+
             color: var(--muted);
         }
 
@@ -1410,65 +1743,89 @@
         }
 
 
-        /* =========================================================
-           SCROLL REVEAL
-           ========================================================= */
+        /* =====================================================
+           REVEAL
+           ===================================================== */
 
         .reveal {
             opacity: 0;
-            transform: translateY(22px);
+
+            transform:
+                translateY(18px);
 
             transition:
-                opacity .7s ease,
-                transform .7s ease;
+                opacity .75s ease,
+                transform .75s ease;
         }
 
         .reveal.visible {
             opacity: 1;
-            transform: translateY(0);
+
+            transform:
+                translateY(0);
         }
 
 
-        /* =========================================================
+        /* =====================================================
            RESPONSIVE
-           ========================================================= */
+           ===================================================== */
 
-        @media (max-width: 1000px) {
+        @media (max-width: 950px) {
 
             .hero-grid,
             .featured-box,
-            .paths-grid,
-            .desk-layout,
+            .explore-layout,
             .about-grid {
                 grid-template-columns: 1fr;
             }
 
+            .hero {
+                min-height: auto;
+            }
+
             .hero-visual {
-                min-height: 380px;
-            }
-
-            .start-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .article-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .topic-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .topic:nth-child(3) {
-                border-right: none;
-            }
-
-            .topic:nth-child(-n+3) {
-                border-bottom: 1px solid var(--border);
+                min-height: 400px;
             }
 
             .featured-art {
                 min-height: 400px;
+
+                border-left: none;
+                border-top:
+                    1px solid var(--line);
+            }
+
+            .start-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .start-card {
+                border-bottom:
+                    1px solid var(--line);
+            }
+
+            .start-card:nth-child(2) {
+                border-right: none;
+            }
+
+            .topic-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .article-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .article-card:last-child {
+                grid-column:
+                    span 2;
+            }
+
+            .about-grid {
+                gap: 45px;
             }
         }
 
@@ -1476,92 +1833,109 @@
         @media (max-width: 650px) {
 
             .container {
-                width: min(100% - 28px, var(--max));
+                width:
+                    calc(100% - 28px);
             }
 
-            .navbar {
+            .nav {
                 height: 68px;
             }
 
             .nav-links {
                 gap: 12px;
+
                 font-size: 10px;
             }
 
             .nav-links a:nth-child(2),
-            .nav-links a:nth-child(3) {
+            .nav-links a:nth-child(3),
+            .nav-links a:nth-child(4) {
                 display: none;
             }
 
             .hero {
-                padding: 65px 0 75px;
+                padding:
+                    75px 0 90px;
             }
 
             .hero h1 {
-                font-size: 52px;
+                font-size:
+                    55px;
             }
 
             .hero-description {
-                font-size: 15px;
+                font-size: 14px;
             }
 
             .hero-visual {
-                min-height: 330px;
+                min-height: 320px;
+            }
+
+            .center-orbit {
+                width: 140px;
+                height: 140px;
             }
 
             .start,
             .featured,
             .latest,
             .topics,
-            .paths,
-            .desk,
-            .principle,
+            .explore,
+            .method,
             .about {
-                padding-top: 70px;
-                padding-bottom: 70px;
+                padding-top: 75px;
+                padding-bottom: 75px;
             }
 
-            .start-grid {
-                grid-template-columns: 1fr;
-            }
-
+            .start-grid,
+            .topic-grid,
             .article-grid {
                 grid-template-columns: 1fr;
             }
 
-            .topic-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .topic {
-                border-bottom: 1px solid var(--border);
-            }
-
-            .topic:nth-child(even) {
+            .start-card,
+            .start-card:nth-child(2) {
                 border-right: none;
             }
 
+            .article-card:last-child {
+                grid-column: auto;
+            }
+
             .featured-content {
-                padding: 32px;
+                padding: 32px 25px;
+            }
+
+            .featured-content h2 {
+                font-size: 44px;
             }
 
             .featured-art {
-                min-height: 340px;
+                min-height: 330px;
             }
 
-            .latest-header {
+            .latest-top {
                 align-items: flex-start;
+
                 flex-direction: column;
-                gap: 10px;
+
+                gap: 12px;
             }
 
-            .principle-box {
-                padding: 35px 22px;
+            .explore-layout {
+                gap: 45px;
+            }
+
+            .method-box {
+                padding:
+                    40px 20px;
             }
 
             .footer-inner {
                 align-items: flex-start;
+
                 flex-direction: column;
+
                 gap: 20px;
             }
 
@@ -1577,17 +1951,17 @@
 <body>
 
 
-<!-- =========================================================
+<!-- =====================================================
      NAVIGATION
-     ========================================================= -->
+     ===================================================== -->
 
-<header class="navbar">
+<header class="nav">
 
     <div class="container nav-inner">
 
-        <a href="index.html" class="logo">
+        <a href="index.html" class="brand">
 
-            <span class="logo-icon"></span>
+            <span class="brand-mark"></span>
 
             KSCybSec
 
@@ -1596,7 +1970,7 @@
 
         <nav class="nav-links">
 
-            <a href="#latest">
+            <a href="#articles">
                 Articles
             </a>
 
@@ -1604,15 +1978,15 @@
                 Topics
             </a>
 
-            <a href="#desk">
-                Investigations
+            <a href="#explore">
+                Explore
             </a>
 
             <a href="#about">
                 About
             </a>
 
-            <a href="#start" class="nav-cta">
+            <a href="#start" class="nav-start">
                 Start Here
             </a>
 
@@ -1623,42 +1997,51 @@
 </header>
 
 
-<!-- =========================================================
-     HERO
-     ========================================================= -->
-
 <main>
+
+
+<!-- =====================================================
+     HERO
+     ===================================================== -->
 
 <section class="hero">
 
+    <div class="hero-glow"></div>
+
     <div class="container hero-grid">
 
-        <div class="hero-content reveal">
+
+        <div class="reveal">
 
             <div class="eyebrow">
 
                 <span class="eyebrow-dot"></span>
 
-                CYBERSECURITY KNOWLEDGE BLOG
+                KSCYBSEC / CYBERSECURITY KNOWLEDGE
 
             </div>
 
 
             <h1>
 
-                Cybersecurity,
+                Every system
                 <br>
 
-                <span>explained simply.</span>
+                <span class="glow">
+                    leaves clues.
+                </span>
 
             </h1>
 
 
             <p class="hero-description">
 
-                Learn OSINT, SOC, networking, Linux, Windows
-                and cybersecurity fundamentals through practical
-                explanations, examples and investigations.
+                Learn how to find them, understand them,
+                and connect the dots.
+
+                Explore cybersecurity through clear
+                explanations, investigations, concepts
+                and practical guides.
 
             </p>
 
@@ -1668,17 +2051,17 @@
                 <a href="#start"
                    class="button button-primary">
 
-                    Start Learning
+                    Start Exploring
 
                     <span>→</span>
 
                 </a>
 
 
-                <a href="#latest"
+                <a href="#topics"
                    class="button button-secondary">
 
-                    Explore Articles
+                    Browse Topics
 
                 </a>
 
@@ -1687,50 +2070,46 @@
         </div>
 
 
-        <!-- VISUAL -->
+        <!-- DREAMY CYBER VISUAL -->
 
         <div class="hero-visual reveal">
 
-            <div class="visual-grid"></div>
+            <div class="constellation">
 
-            <div class="visual-top">
-
-                <span>
-                    KSCYBSEC / KNOWLEDGE MAP
-                </span>
-
-                <span class="visual-status">
-                    ● ONLINE
-                </span>
-
-            </div>
+                <span class="star star-1"></span>
+                <span class="star violet star-2"></span>
+                <span class="star star-3"></span>
+                <span class="star violet star-4"></span>
+                <span class="star star-5"></span>
+                <span class="star star-6"></span>
+                <span class="star dim star-7"></span>
+                <span class="star dim star-8"></span>
 
 
-            <div class="signal-network">
-
-                <div class="connection one"></div>
-                <div class="connection two"></div>
-                <div class="connection three"></div>
-                <div class="connection four"></div>
-
-
-                <div class="signal-node node-a"></div>
-
-                <div class="signal-node coral node-b"></div>
-
-                <div class="signal-node purple node-c"></div>
-
-                <div class="signal-node node-d"></div>
-
-                <div class="signal-node coral node-e"></div>
+                <span class="line line-1"></span>
+                <span class="line line-2"></span>
+                <span class="line line-3"></span>
+                <span class="line line-4"></span>
+                <span class="line line-5"></span>
 
 
-                <div class="visual-tag tag-one">
-                    LEARN → TRY → THINK
+                <div class="center-orbit">
+
+                    <div class="center-core">
+
+                        <span>
+                            CONNECT
+                        </span>
+
+                    </div>
+
                 </div>
 
-                <div class="visual-tag tag-two">
-                    VERIFY
+
+                <div class="visual-caption">
+
+                    OSINT · NETWORKS · WEB · DEFENSE · OFFENSE
+
                 </div>
 
             </div>
@@ -1742,23 +2121,32 @@
 </section>
 
 
-<!-- =========================================================
+<!-- =====================================================
      START HERE
-     ========================================================= -->
+     ===================================================== -->
 
 <section class="start" id="start">
 
     <div class="container">
 
-        <div class="section-heading reveal">
+
+        <div class="start-header reveal">
 
             <div class="section-label">
-                NEW HERE?
+                BEFORE YOU DIVE IN
             </div>
 
-            <h2>
-                Start where you are.
+            <h2 class="section-title">
+                Where do you want to start?
             </h2>
+
+            <p class="section-subtitle">
+
+                Cybersecurity is a huge field.
+                You don't need to understand all of it
+                before you begin.
+
+            </p>
 
         </div>
 
@@ -1769,21 +2157,21 @@
             <a href="#topics"
                class="start-card reveal">
 
-                <div class="start-icon icon-blue">
-                    01
+                <div class="start-number">
+                    01 / BEGINNER
                 </div>
 
                 <h3>
-                    I'm completely new
+                    I'm starting from zero
                 </h3>
 
                 <p>
-                    Build your cybersecurity foundation
-                    without getting overwhelmed.
+                    Build the foundations before
+                    jumping into the complicated stuff.
                 </p>
 
                 <span class="start-arrow">
-                    →
+                    START HERE →
                 </span>
 
             </a>
@@ -1792,21 +2180,21 @@
             <a href="#topics"
                class="start-card reveal">
 
-                <div class="start-icon icon-purple">
-                    02
+                <div class="start-number">
+                    02 / CURIOUS
                 </div>
 
                 <h3>
-                    I want OSINT
+                    I want to understand something
                 </h3>
 
                 <p>
-                    Learn how public information can be
-                    found, connected and verified.
+                    Pick a concept and follow the
+                    explanation wherever it leads.
                 </p>
 
                 <span class="start-arrow">
-                    →
+                    EXPLORE →
                 </span>
 
             </a>
@@ -1815,47 +2203,48 @@
             <a href="#topics"
                class="start-card reveal">
 
-                <div class="start-icon icon-coral">
-                    03
+                <div class="start-number">
+                    03 / SECURITY
                 </div>
 
                 <h3>
-                    I want SOC skills
+                    I want to explore security
                 </h3>
 
                 <p>
-                    Understand alerts, logs, investigation
-                    and security operations.
+                    Offensive, defensive, web,
+                    networks, systems and more.
                 </p>
 
                 <span class="start-arrow">
-                    →
+                    DISCOVER →
                 </span>
 
             </a>
 
 
-            <a href="#desk"
+            <a href="#articles"
                class="start-card reveal">
 
-                <div class="start-icon icon-dark">
-                    04
+                <div class="start-number">
+                    04 / JUST BROWSING
                 </div>
 
                 <h3>
-                    I want practical work
+                    Show me something interesting
                 </h3>
 
                 <p>
-                    Follow investigations and learn
-                    through hands-on examples.
+                    Start with a guide and see
+                    where the rabbit hole goes.
                 </p>
 
                 <span class="start-arrow">
-                    →
+                    TAKE ME THERE →
                 </span>
 
             </a>
+
 
         </div>
 
@@ -1864,19 +2253,24 @@
 </section>
 
 
-<!-- =========================================================
+<!-- =====================================================
      FEATURED ARTICLE
-     ========================================================= -->
+     ===================================================== -->
 
-<section class="featured">
+<section class="featured" id="articles">
 
     <div class="container">
 
-        <div class="section-heading reveal">
+
+        <div class="featured-header reveal">
 
             <div class="section-label">
-                FEATURED
+                START WITH THIS
             </div>
+
+            <h2 class="section-title">
+                A question worth investigating.
+            </h2>
 
         </div>
 
@@ -1902,7 +2296,7 @@
                     <span class="meta-dot"></span>
 
                     <span>
-                        BEGINNER
+                        8 MIN
                     </span>
 
                 </div>
@@ -1918,21 +2312,22 @@
 
                 <p>
 
-                    You don't need to hack something
-                    to discover interesting information.
+                    You find a username.
 
-                    Sometimes the information is already
-                    sitting in public.
+                    Then another account.
 
-                    The real skill is understanding what
-                    the pieces actually tell you.
+                    Then an old post.
+
+                    Suddenly, you have pieces of a story.
+
+                    But are the pieces actually connected?
 
                 </p>
 
 
-                <span class="read-button">
+                <span class="featured-link">
 
-                    Read the guide
+                    Read the investigation
 
                     <span>→</span>
 
@@ -1943,20 +2338,32 @@
 
             <div class="featured-art">
 
-                <div class="orbit one">
-                    <span class="orbit-node"></span>
-                </div>
+                <div class="art-glow"></div>
 
-                <div class="orbit two">
-                    <span class="orbit-node coral"></span>
-                </div>
+                <div class="art-orbit a"></div>
+                <div class="art-orbit b"></div>
+                <div class="art-orbit c"></div>
 
-                <div class="orbit three">
-                    <span class="orbit-node"></span>
-                </div>
 
-                <div class="center-symbol">
+                <div class="art-core">
                     OSINT
+                </div>
+
+
+                <div class="art-label label-1">
+                    SEARCH
+                </div>
+
+                <div class="art-label label-2">
+                    CONNECT
+                </div>
+
+                <div class="art-label label-3">
+                    VERIFY
+                </div>
+
+                <div class="art-label label-4">
+                    ANALYZE
                 </div>
 
             </div>
@@ -1968,30 +2375,31 @@
 </section>
 
 
-<!-- =========================================================
+<!-- =====================================================
      LATEST ARTICLES
-     ========================================================= -->
+     ===================================================== -->
 
-<section class="latest" id="latest">
+<section class="latest">
 
     <div class="container">
 
-        <div class="latest-header reveal">
+
+        <div class="latest-top reveal">
 
             <div>
 
                 <div class="section-label">
-                    LATEST
+                    FROM THE KNOWLEDGE BASE
                 </div>
 
-                <h2>
-                    Learn something new.
+                <h2 class="section-title">
+                    Follow your curiosity.
                 </h2>
 
             </div>
 
             <a href="#" class="view-all">
-                VIEW ALL ARTICLES →
+                ALL ARTICLES →
             </a>
 
         </div>
@@ -2003,7 +2411,7 @@
             <a href="articles/what-is-osint.html"
                class="article-card reveal">
 
-                <div class="article-image image-osint"></div>
+                <div class="article-visual"></div>
 
                 <div class="article-content">
 
@@ -2016,18 +2424,18 @@
                     </h3>
 
                     <p>
-                        Finding public information is easy.
-                        Understanding it is the real skill.
+                        Finding information is easy.
+                        Knowing what it means is harder.
                     </p>
 
-                    <div class="article-footer">
+                    <div class="article-meta-bottom">
 
                         <span>
-                            BEGINNER
+                            GUIDE 001
                         </span>
 
                         <span>
-                            8 MIN READ
+                            8 MIN
                         </span>
 
                     </div>
@@ -2040,7 +2448,7 @@
             <a href="#"
                class="article-card reveal">
 
-                <div class="article-image image-network"></div>
+                <div class="article-visual visual-network"></div>
 
                 <div class="article-content">
 
@@ -2053,18 +2461,18 @@
                     </h3>
 
                     <p>
-                        Two protocols. Different behaviour.
-                        Let's understand why.
+                        Why do two protocols handle
+                        communication so differently?
                     </p>
 
-                    <div class="article-footer">
+                    <div class="article-meta-bottom">
 
                         <span>
-                            BEGINNER
+                            FUNDAMENTALS
                         </span>
 
                         <span>
-                            6 MIN READ
+                            COMING SOON
                         </span>
 
                     </div>
@@ -2077,31 +2485,31 @@
             <a href="#"
                class="article-card reveal">
 
-                <div class="article-image image-soc"></div>
+                <div class="article-visual visual-soc"></div>
 
                 <div class="article-content">
 
                     <div class="article-tag">
-                        SOC
+                        SECURITY
                     </div>
 
                     <h3>
-                        What Does a SOC Analyst Do?
+                        What Happens During an Attack?
                     </h3>
 
                     <p>
-                        An alert arrives. What happens
-                        next?
+                        Follow the clues from the first
+                        suspicious event to the response.
                     </p>
 
-                    <div class="article-footer">
+                    <div class="article-meta-bottom">
 
                         <span>
-                            BEGINNER
+                            FUNDAMENTALS
                         </span>
 
                         <span>
-                            7 MIN READ
+                            COMING SOON
                         </span>
 
                     </div>
@@ -2118,23 +2526,32 @@
 </section>
 
 
-<!-- =========================================================
+<!-- =====================================================
      TOPICS
-     ========================================================= -->
+     ===================================================== -->
 
 <section class="topics" id="topics">
 
     <div class="container">
 
-        <div class="section-heading reveal">
+
+        <div class="topics-intro reveal">
 
             <div class="section-label">
-                EXPLORE
+                THE CYBERSECURITY WORLD
             </div>
 
-            <h2>
-                Choose a topic.
+            <h2 class="section-title">
+                Explore the rabbit hole.
             </h2>
+
+            <p class="section-subtitle">
+
+                Cybersecurity isn't one subject.
+                It's a collection of systems, techniques,
+                ideas and disciplines that connect together.
+
+            </p>
 
         </div>
 
@@ -2142,118 +2559,157 @@
         <div class="topic-grid">
 
 
-            <a href="#" class="topic reveal">
+            <a href="#" class="topic-card reveal">
 
-                <span class="topic-number">
+                <div class="topic-index">
                     01
-                </span>
-
-                <h3>
-                    OSINT
-                </h3>
-
-                <p>
-                    Find. Connect. Verify.
-                </p>
-
-                <div class="topic-line"></div>
-
-            </a>
-
-
-            <a href="#" class="topic reveal">
-
-                <span class="topic-number">
-                    02
-                </span>
-
-                <h3>
-                    SOC
-                </h3>
-
-                <p>
-                    Detect. Investigate. Respond.
-                </p>
-
-                <div class="topic-line"></div>
-
-            </a>
-
-
-            <a href="#" class="topic reveal">
-
-                <span class="topic-number">
-                    03
-                </span>
-
-                <h3>
-                    Networking
-                </h3>
-
-                <p>
-                    Connect. Communicate. Understand.
-                </p>
-
-                <div class="topic-line"></div>
-
-            </a>
-
-
-            <a href="#" class="topic reveal">
-
-                <span class="topic-number">
-                    04
-                </span>
-
-                <h3>
-                    Linux
-                </h3>
-
-                <p>
-                    Commands. Files. Systems.
-                </p>
-
-                <div class="topic-line"></div>
-
-            </a>
-
-
-            <a href="#" class="topic reveal">
-
-                <span class="topic-number">
-                    05
-                </span>
-
-                <h3>
-                    Windows
-                </h3>
-
-                <p>
-                    Users. Processes. Events.
-                </p>
-
-                <div class="topic-line"></div>
-
-            </a>
-
-
-            <a href="#" class="topic reveal">
-
-                <span class="topic-number">
-                    06
-                </span>
+                </div>
 
                 <h3>
                     Fundamentals
                 </h3>
 
                 <p>
-                    Build the foundation.
+                    Start with the ideas behind security.
                 </p>
 
-                <div class="topic-line"></div>
+                <div class="topic-mark"></div>
 
             </a>
+
+
+            <a href="#" class="topic-card reveal">
+
+                <div class="topic-index">
+                    02
+                </div>
+
+                <h3>
+                    Networking
+                </h3>
+
+                <p>
+                    Packets, protocols, ports and traffic.
+                </p>
+
+                <div class="topic-mark"></div>
+
+            </a>
+
+
+            <a href="#" class="topic-card reveal">
+
+                <div class="topic-index">
+                    03
+                </div>
+
+                <h3>
+                    Web Security
+                </h3>
+
+                <p>
+                    Understand how web applications work.
+                </p>
+
+                <div class="topic-mark"></div>
+
+            </a>
+
+
+            <a href="#" class="topic-card reveal">
+
+                <div class="topic-index">
+                    04
+                </div>
+
+                <h3>
+                    Offensive Security
+                </h3>
+
+                <p>
+                    Understand attacks and vulnerabilities.
+                </p>
+
+                <div class="topic-mark"></div>
+
+            </a>
+
+
+            <a href="#" class="topic-card reveal">
+
+                <div class="topic-index">
+                    05
+                </div>
+
+                <h3>
+                    Defensive Security
+                </h3>
+
+                <p>
+                    Detection, monitoring and response.
+                </p>
+
+                <div class="topic-mark"></div>
+
+            </a>
+
+
+            <a href="#" class="topic-card reveal">
+
+                <div class="topic-index">
+                    06
+                </div>
+
+                <h3>
+                    OSINT
+                </h3>
+
+                <p>
+                    Find and verify publicly available clues.
+                </p>
+
+                <div class="topic-mark"></div>
+
+            </a>
+
+
+            <a href="#" class="topic-card reveal">
+
+                <div class="topic-index">
+                    07
+                </div>
+
+                <h3>
+                    Digital Forensics
+                </h3>
+
+                <p>
+                    Investigate the evidence left behind.
+                </p>
+
+                <div class="topic-mark"></div>
+
+            </a>
+
+
+            <a href="#" class="topic-card reveal">
+
+                <div class="topic-index">
+                    08
+                </div>
+
+                <h3>
+                    Malware & Threats
+                </h3>
+
+                <p>
+                    Understand malicious software and threats.
+                </p>
+
+                <div class="topic-mark"></div>
+
+            </a>
+
 
         </div>
 
@@ -2262,250 +2718,142 @@
 </section>
 
 
-<!-- =========================================================
-     LEARNING PATH
-     ========================================================= -->
+<!-- =====================================================
+     EXPLORE
+     ===================================================== -->
 
-<section class="paths">
+<section class="explore" id="explore">
 
-    <div class="container paths-grid">
+    <div class="container explore-layout">
 
 
-        <div class="paths-intro reveal">
+        <div class="explore-intro reveal">
 
             <div class="section-label">
-                LEARNING PATH
+                GO DEEPER
             </div>
 
             <h2>
-                Not sure what
-                to learn next?
+                One field.
+                A thousand
+                questions.
             </h2>
 
             <p>
 
-                You don't need to know everything
-                before you begin.
-
-                Follow the path one concept at a time.
+                Sometimes the best way to understand
+                cybersecurity is to follow one question
+                until it leads somewhere interesting.
 
             </p>
 
         </div>
 
 
-        <div class="path-list">
+        <div class="explore-list">
 
 
-            <div class="path reveal">
+            <a href="#"
+               class="explore-item reveal">
 
-                <div class="path-number">
+                <div class="explore-number">
                     01
                 </div>
 
                 <div>
 
                     <h3>
-                        Cybersecurity Fundamentals
+                        Understand
                     </h3>
 
                     <p>
-                        Learn the basic ideas behind
-                        cybersecurity.
+                        Concepts explained from the ground up.
                     </p>
 
                 </div>
 
-            </div>
+                <span class="explore-arrow">
+                    →
+                </span>
+
+            </a>
 
 
-            <div class="path reveal">
+            <a href="#"
+               class="explore-item reveal">
 
-                <div class="path-number">
+                <div class="explore-number">
                     02
                 </div>
 
                 <div>
 
                     <h3>
-                        Networking Basics
+                        Break It Down
                     </h3>
 
                     <p>
-                        Understand how devices communicate.
+                        See how attacks, vulnerabilities
+                        and techniques actually work.
                     </p>
 
                 </div>
 
-            </div>
+                <span class="explore-arrow">
+                    →
+                </span>
+
+            </a>
 
 
-            <div class="path reveal">
+            <a href="#"
+               class="explore-item reveal">
 
-                <div class="path-number">
+                <div class="explore-number">
                     03
                 </div>
 
                 <div>
 
                     <h3>
-                        Linux & Windows
+                        Defend
                     </h3>
 
                     <p>
-                        Get comfortable with the systems
-                        you'll encounter.
+                        Explore detection, monitoring,
+                        analysis and response.
                     </p>
 
                 </div>
 
-            </div>
+                <span class="explore-arrow">
+                    →
+                </span>
+
+            </a>
 
 
-            <div class="path reveal">
+            <a href="#"
+               class="explore-item reveal">
 
-                <div class="path-number">
+                <div class="explore-number">
                     04
                 </div>
 
                 <div>
 
                     <h3>
-                        OSINT & SOC
+                        Investigate
                     </h3>
 
                     <p>
-                        Start investigating real-world
-                        security problems.
+                        Follow clues through OSINT,
+                        forensics and security scenarios.
                     </p>
 
                 </div>
 
-            </div>
-
-
-            <div class="path reveal">
-
-                <div class="path-number">
-                    05
-                </div>
-
-                <div>
-
-                    <h3>
-                        Hands-on Practice
-                    </h3>
-
-                    <p>
-                        Put the concepts into practice.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================================================
-     INVESTIGATION DESK
-     ========================================================= -->
-
-<section class="desk" id="desk">
-
-    <div class="container desk-layout">
-
-
-        <div class="reveal">
-
-            <div class="section-label">
-                INVESTIGATION DESK
-            </div>
-
-            <h2>
-
-                Sometimes
-                you learn best
-                by <span>investigating.</span>
-
-            </h2>
-
-            <p class="desk-description">
-
-                Follow practical investigations,
-                explore clues and see how cybersecurity
-                concepts work outside a definition.
-
-            </p>
-
-        </div>
-
-
-        <div class="desk-list">
-
-
-            <a href="#" class="desk-card reveal">
-
-                <div>
-
-                    <small>
-                        OSINT / 001
-                    </small>
-
-                    <strong>
-                        OSINT Investigations
-                    </strong>
-
-                </div>
-
-                <span class="desk-arrow">
-                    →
-                </span>
-
-            </a>
-
-
-            <a href="#" class="desk-card reveal">
-
-                <div>
-
-                    <small>
-                        SOC / 001
-                    </small>
-
-                    <strong>
-                        SOC Analysis
-                    </strong>
-
-                </div>
-
-                <span class="desk-arrow">
-                    →
-                </span>
-
-            </a>
-
-
-            <a href="#" class="desk-card reveal">
-
-                <div>
-
-                    <small>
-                        LAB / 001
-                    </small>
-
-                    <strong>
-                        Lab Notes
-                    </strong>
-
-                </div>
-
-                <span class="desk-arrow">
+                <span class="explore-arrow">
                     →
                 </span>
 
@@ -2519,31 +2867,68 @@
 </section>
 
 
-<!-- =========================================================
-     PRINCIPLE
-     ========================================================= -->
+<!-- =====================================================
+     LEARNING METHOD
+     ===================================================== -->
 
-<section class="principle">
+<section class="method">
 
     <div class="container">
 
-        <div class="principle-box reveal">
 
-            <small>
-                THE KSCYBSEC APPROACH
-            </small>
+        <div class="method-box reveal">
 
-            <h2>
-                Learn → Try → Think → Verify
+            <div class="section-label">
+                HOW WE LEARN
+            </div>
+
+
+            <h2 class="method-title">
+                Don't just memorize it.
+                Understand it.
             </h2>
 
-            <p>
 
-                Don't just memorize what a tool does.
-                Understand the problem first, then learn
-                how the tool helps you solve it.
+            <p class="method-description">
+
+                Every guide should help you move from
+                knowing a definition to understanding
+                why something works.
 
             </p>
+
+
+            <div class="method-flow">
+
+                <span class="method-step active">
+                    LEARN
+                </span>
+
+                <span class="method-arrow">
+                    →
+                </span>
+
+                <span class="method-step">
+                    TRY
+                </span>
+
+                <span class="method-arrow">
+                    →
+                </span>
+
+                <span class="method-step">
+                    THINK
+                </span>
+
+                <span class="method-arrow">
+                    →
+                </span>
+
+                <span class="method-step active">
+                    VERIFY
+                </span>
+
+            </div>
 
         </div>
 
@@ -2552,9 +2937,9 @@
 </section>
 
 
-<!-- =========================================================
+<!-- =====================================================
      ABOUT
-     ========================================================= -->
+     ===================================================== -->
 
 <section class="about" id="about">
 
@@ -2567,10 +2952,10 @@
                 ABOUT KSCYBSEC
             </div>
 
-            <h2>
-                Cybersecurity
-                doesn't have
-                to feel confusing.
+            <h2 class="about-title">
+                Curiosity is a
+                good place
+                to start.
             </h2>
 
         </div>
@@ -2578,28 +2963,34 @@
 
         <div class="reveal">
 
-            <p>
+            <p class="about-text">
 
-                KSCybSec is an independent cybersecurity
-                learning blog built for people who want
-                to understand how things actually work.
+                KSCybSec is a cybersecurity knowledge space
+                built around a simple idea:
 
-            </p>
-
-            <p>
-
-                From OSINT and SOC concepts to networking,
-                Linux and Windows, the goal is simple:
-                explain the idea clearly, show how it works,
-                and give you something practical to try.
+                cybersecurity becomes easier to understand
+                when complicated ideas are broken into
+                questions, clues and connections.
 
             </p>
 
-            <p>
 
-                Start with one concept.
-                Follow your curiosity.
-                Keep investigating.
+            <p class="about-text">
+
+                From networking and web security to
+                offensive and defensive security,
+                OSINT, forensics, malware and beyond,
+                the goal is to explore the field one concept
+                at a time.
+
+            </p>
+
+
+            <p class="about-text">
+
+                You don't need to know everything.
+
+                Just start with one question.
 
             </p>
 
@@ -2613,13 +3004,14 @@
 </main>
 
 
-<!-- =========================================================
+<!-- =====================================================
      FOOTER
-     ========================================================= -->
+     ===================================================== -->
 
 <footer>
 
     <div class="container footer-inner">
+
 
         <div>
 
@@ -2628,7 +3020,7 @@
             </div>
 
             <div class="footer-note">
-                Cybersecurity, explained simply.
+                Every system leaves clues.
             </div>
 
         </div>
@@ -2655,41 +3047,49 @@
 </footer>
 
 
-<!-- =========================================================
-     SCROLL ANIMATION
-     ========================================================= -->
+<!-- =====================================================
+     SCROLL REVEAL
+     ===================================================== -->
 
 <script>
 
-    const elements =
+    const revealElements =
         document.querySelectorAll(".reveal");
 
-    const observer =
+
+    const revealObserver =
         new IntersectionObserver(
-            (entries) => {
+
+            entries => {
 
                 entries.forEach(entry => {
 
                     if (entry.isIntersecting) {
 
-                        entry.target.classList.add("visible");
+                        entry.target.classList.add(
+                            "visible"
+                        );
 
-                        observer.unobserve(entry.target);
+                        revealObserver.unobserve(
+                            entry.target
+                        );
 
                     }
 
                 });
 
             },
+
             {
-                threshold: 0.12
+                threshold: 0.10
             }
+
         );
 
 
-    elements.forEach(element => {
+    revealElements.forEach(element => {
 
-        observer.observe(element);
+        revealObserver.observe(element);
 
     });
 
