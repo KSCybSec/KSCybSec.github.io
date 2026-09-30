@@ -1,1 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <title>TCP vs UDP: What's the Difference? | KSCybSec</title>
+  <meta
+    name="description"
+    content="TCP vs UDP explained simply through a story. Learn how these two transport protocols handle communication and why the difference matters in cybersecurity."
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg: #070B14;
+      --section: #0B1120;
+      --card: #101827;
+      --text: #E8EDF5;
+      --muted: #8995AA;
+      --cyan: #4DE8FF;
+      --violet: #8B7CFF;
+      --line: rgba(232, 237, 245, 0.09);
+      --soft-cyan: rgba(77, 232, 255, 0.08);
+      --soft-violet: rgba(139, 124, 255, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Inter", sans-serif;
+      line-height: 1.8;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    ::selection {
+      background: rgba(77, 232, 255, 0.2);
+      color: var(--text);
+    }
+
+    /* NAV */
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6%;
+      background: rgba(7, 11, 20, 0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand span {
+      color: var(--cyan);
+    }
+
+    .nav-back {
+      color: var(--muted);
+      font-size: 0.85rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-back:hover {
+      color: var(--text);
+    }
+
+    /* PROGRESS */
+
+    .progress {
+      position: fixed;
+      top: 69px;
+      left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--cyan);
+      z-index: 99;
+    }
+
+    /* HERO */
+
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 110px 24px 80px;
+    }
+
+    .eyebrow {
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      color: var(--cyan);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+      max-width: 850px;
+      margin-bottom: 30px;
+    }
+
+    .hero-intro {
+      max-width: 680px;
+      font-size: 1.18rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* ARTICLE */
+
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 24px 100px;
+    }
+
+    article section {
+      margin-bottom: 78px;
+    }
+
+    h2 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      line-height: 1.15;
+      letter-spacing: -0.035em;
+      margin-bottom: 24px;
+    }
+
+    p {
+      color: #C8D0DE;
+      margin-bottom: 22px;
+      font-size: 1.03rem;
+    }
+
+    strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .story-quote {
+      border-left: 2px solid var(--cyan);
+      padding: 4px 0 4px 24px;
+      margin: 34px 0;
+      color: var(--text);
+      font-size: 1.12rem;
+    }
+
+    /* QUESTION */
+
+    .question {
+      margin: 42px 0;
+      padding: 28px 30px;
+      border: 1px solid rgba(77, 232, 255, 0.16);
+      background: var(--soft-cyan);
+      border-radius: 10px;
+    }
+
+    .question-label {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+
+    .question p {
+      margin: 0;
+      color: var(--text);
+      font-size: 1.08rem;
+    }
+
+    /* MESSAGE VISUAL */
+
+    .message-visual {
+      margin: 48px 0;
+      padding: 34px 24px;
+      background: var(--section);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+
+    .message-title {
+      font-family: "DM Mono", monospace;
+      color: var(--muted);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 22px;
+    }
+
+    .message {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 14px 0;
+      flex-wrap: wrap;
+    }
+
+    .message-box {
+      padding: 10px 14px;
+      border: 1px solid rgba(77, 232, 255, 0.2);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: "DM Mono", monospace;
+      font-size: 0.76rem;
+    }
+
+    .message-arrow {
+      color: var(--cyan);
+      font-family: "DM Mono", monospace;
+    }
+
+    .lost {
+      border-color: rgba(139, 124, 255, 0.25);
+    }
+
+    .lost-arrow {
+      color: var(--violet);
+    }
+
+    /* COMPARISON */
+
+    .comparison {
+      margin: 40px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .comparison-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .comparison-cell {
+      padding: 18px 16px;
+      color: #C8D0DE;
+      font-size: 0.92rem;
+    }
+
+    .comparison-cell:first-child {
+      border-right: 1px solid var(--line);
+    }
+
+    .comparison-heading {
+      color: var(--text);
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+    }
+
+    .tcp-heading {
+      color: var(--cyan);
+    }
+
+    .udp-heading {
+      color: #A99EFF;
+    }
+
+    /* TAKEAWAY */
+
+    .takeaway {
+      padding: 34px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      margin: 70px 0;
+    }
+
+    .takeaway-label {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 14px;
+    }
+
+    .takeaway p {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.45rem;
+      line-height: 1.45;
+      color: var(--text);
+      margin: 0;
+    }
+
+    /* NEXT */
+
+    .next {
+      padding: 55px 0 20px;
+    }
+
+    .next-label {
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 15px;
+    }
+
+    .next-link {
+      display: inline-block;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 600;
+      line-height: 1.15;
+      transition: color 0.25s ease;
+    }
+
+    .next-link:hover {
+      color: var(--cyan);
+    }
+
+    /* FOOTER */
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 40px 6%;
+      color: var(--muted);
+      font-size: 0.82rem;
+      text-align: center;
+    }
+
+    footer strong {
+      color: var(--text);
+    }
+
+    /* REVEAL */
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition:
+        opacity 0.7s ease,
+        transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 650px) {
+      nav {
+        padding: 0 5%;
+      }
+
+      .hero {
+        padding: 80px 20px 65px;
+      }
+
+      main {
+        padding: 0 20px 80px;
+      }
+
+      article section {
+        margin-bottom: 62px;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      .question {
+        padding: 23px;
+      }
+
+      .comparison-row {
+        grid-template-columns: 1fr;
+      }
+
+      .comparison-cell:first-child {
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .message {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="../index.html" class="brand">
+      KS<span>CybSec</span>
+    </a>
+
+    <a href="../index.html" class="nav-back">
+      ← Back to KSCybSec
+    </a>
+  </nav>
+
+  <div class="progress" id="progress"></div>
+
+  <header class="hero reveal">
+    <div class="eyebrow">Beginner Path · 005</div>
+
+    <h1>TCP vs UDP</h1>
+
+    <p class="hero-intro">
+      Two devices need to communicate. But they don't always need to
+      communicate in the same way.
+    </p>
+  </header>
+
+  <main>
+    <article>
+
+      <section class="reveal">
+        <p>
+          So far, we've followed a request quite a long way.
+        </p>
+
+        <p>
+          We started with a website name.
+        </p>
+
+        <p>
+          DNS helped us find an IP address.
+        </p>
+
+        <p>
+          The IP address helped identify the destination.
+        </p>
+
+        <p>
+          A port helped identify the service we wanted to communicate with.
+        </p>
+
+        <p>
+          It feels like we finally know where we're going.
+        </p>
+
+        <p>
+          But there's another question hiding underneath all of this.
+        </p>
+
+        <div class="question">
+          <div class="question-label">One more thing</div>
+          <p>
+            Once two devices know where to communicate, how should they
+            actually exchange the data?
+          </p>
+        </div>
+      </section>
+
+      <section class="reveal">
+        <h2>Imagine sending something important</h2>
+
+        <p>
+          Imagine you need to send a package containing an important document.
+        </p>
+
+        <p>
+          You have two choices.
+        </p>
+
+        <p>
+          With the first method, you want the delivery system to keep track
+          of the package, make sure it arrives, and notice if something goes
+          wrong.
+        </p>
+
+        <p>
+          With the second, speed matters more. You send the information and
+          don't want to spend extra time checking every part of the delivery.
+        </p>
+
+        <p>
+          Both approaches can be useful.
+        </p>
+
+        <p>
+          Networking has a similar choice.
+        </p>
+
+        <p>
+          Two important transport protocols you'll encounter are
+          <strong>TCP</strong> and <strong>UDP</strong>.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>TCP wants to know what happened</h2>
+
+        <p>
+          Imagine you're sending ten pages of a document.
+        </p>
+
+        <p>
+          You don't just want the pages to arrive.
+        </p>
+
+        <p>
+          You want to know that they arrived, that they're in the right
+          order, and that missing pages can be dealt with.
+        </p>
+
+        <p>
+          That's the basic idea behind TCP.
+        </p>
+
+        <div class="story-quote">
+          TCP is designed to provide reliable, ordered delivery of data
+          between applications.
+        </div>
+
+        <p>
+          Before TCP begins sending application data, the two sides establish
+          a connection.
+        </p>
+
+        <p>
+          During communication, TCP keeps track of the data being exchanged
+          and uses acknowledgements and retransmissions to help deal with
+          missing information.
+        </p>
+
+        <p>
+          So if something goes missing, TCP has mechanisms for detecting and
+          recovering from that problem.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>And then there's UDP</h2>
+
+        <p>
+          Now imagine you're watching a live video.
+        </p>
+
+        <p>
+          A tiny piece of data gets lost.
+        </p>
+
+        <p>
+          You probably don't want the entire stream to stop while everyone
+          waits for that missing piece to be sent again.
+        </p>
+
+        <p>
+          You'd rather keep the stream moving.
+        </p>
+
+        <p>
+          That's the kind of situation where UDP can make sense.
+        </p>
+
+        <div class="story-quote">
+          UDP is a connectionless transport protocol that sends datagrams
+          without providing TCP's built-in reliability and ordering.
+        </div>
+
+        <p>
+          UDP doesn't establish a TCP-style connection before sending data.
+        </p>
+
+        <p>
+          It also doesn't provide the same built-in mechanisms for
+          acknowledging and retransmitting lost data.
+        </p>
+
+        <p>
+          That makes it simpler and can reduce overhead, but the application
+          has to handle reliability itself if it needs it.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>So which one is faster?</h2>
+
+        <p>
+          This is where the usual beginner explanation can become misleading.
+        </p>
+
+        <p>
+          You might hear:
+        </p>
+
+        <div class="story-quote">
+          “TCP is slow and UDP is fast.”
+        </div>
+
+        <p>
+          That's too simple.
+        </p>
+
+        <p>
+          UDP has less built-in overhead because it doesn't provide TCP's
+          connection setup, acknowledgements, ordering, and retransmission
+          mechanisms.
+        </p>
+
+        <p>
+          But whether an application is actually faster depends on the
+          network, the application, the amount of data, latency, congestion,
+          and what the application is trying to accomplish.
+        </p>
+
+        <p>
+          The more useful question isn't:
+          <strong>“Which protocol is faster?”</strong>
+        </p>
+
+        <p>
+          It's:
+          <strong>“What does this application need?”</strong>
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>Now the difference becomes clearer</h2>
+
+        <div class="comparison">
+
+          <div class="comparison-row">
+            <div class="comparison-cell">
+              <div class="comparison-heading tcp-heading">TCP</div>
+            </div>
+
+            <div class="comparison-cell">
+              <div class="comparison-heading udp-heading">UDP</div>
+            </div>
+          </div>
+
+          <div class="comparison-row">
+            <div class="comparison-cell">
+              Connection-oriented
+            </div>
+
+            <div class="comparison-cell">
+              Connectionless
+            </div>
+          </div>
+
+          <div class="comparison-row">
+            <div class="comparison-cell">
+              Reliable delivery mechanisms
+            </div>
+
+            <div class="comparison-cell">
+              No built-in TCP-style reliability
+            </div>
+          </div>
+
+          <div class="comparison-row">
+            <div class="comparison-cell">
+              Keeps data ordered
+            </div>
+
+            <div class="comparison-cell">
+              Does not guarantee ordering
+            </div>
+          </div>
+
+          <div class="comparison-row">
+            <div class="comparison-cell">
+              Uses acknowledgements and retransmissions
+            </div>
+
+            <div class="comparison-cell">
+              Sends datagrams without those TCP mechanisms
+            </div>
+          </div>
+
+          <div class="comparison-row">
+            <div class="comparison-cell">
+              More protocol overhead
+            </div>
+
+            <div class="comparison-cell">
+              Lower protocol overhead
+            </div>
+          </div>
+
+        </div>
+
+        <p>
+          Neither is simply “better.”
+        </p>
+
+        <p>
+          They're designed around different communication needs.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>You've already seen both</h2>
+
+        <p>
+          Remember the ports from the previous article?
+        </p>
+
+        <p>
+          A port number by itself doesn't tell the entire story.
+        </p>
+
+        <p>
+          The transport protocol matters too.
+        </p>
+
+        <p>
+          For example, a service can be associated with a TCP port, while
+          another service can use UDP.
+        </p>
+
+        <div class="message-visual">
+          <div class="message-title">Same idea, different transport</div>
+
+          <div class="message">
+            <span class="message-box">Application</span>
+            <span class="message-arrow">→</span>
+            <span class="message-box">TCP</span>
+            <span class="message-arrow">→</span>
+            <span class="message-box">IP</span>
+          </div>
+
+          <div class="message">
+            <span class="message-box">Application</span>
+            <span class="message-arrow">→</span>
+            <span class="message-box">UDP</span>
+            <span class="message-arrow">→</span>
+            <span class="message-box">IP</span>
+          </div>
+        </div>
+
+        <p>
+          This is one reason you'll often see things written like
+          <strong>TCP/80</strong> or <strong>UDP/53</strong>.
+        </p>
+
+        <p>
+          The number identifies the port, while TCP or UDP tells you which
+          transport protocol is being used.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>Why should cybersecurity people care?</h2>
+
+        <p>
+          Now imagine you're looking at a network capture or a security alert.
+        </p>
+
+        <p>
+          You see traffic involving:
+        </p>
+
+        <div class="message-visual">
+          <div class="message-title">Example traffic</div>
+
+          <div class="message">
+            <span class="message-box">10.0.0.15</span>
+            <span class="message-arrow">→</span>
+            <span class="message-box">10.0.0.20:443</span>
+            <span class="message-arrow">TCP</span>
+          </div>
+
+          <div class="message">
+            <span class="message-box">10.0.0.15</span>
+            <span class="message-arrow">→</span>
+            <span class="message-box">10.0.0.1:53</span>
+            <span class="message-arrow">UDP</span>
+          </div>
+        </div>
+
+        <p>
+          Knowing whether traffic uses TCP or UDP gives you another piece of
+          the puzzle.
+        </p>
+
+        <p>
+          A SOC analyst may encounter TCP connections in logs, UDP traffic in
+          packet captures, or unusual patterns involving either protocol.
+        </p>
+
+        <p>
+          During network reconnaissance, security tools may also report
+          different results depending on whether you're examining TCP or UDP
+          ports.
+        </p>
+
+        <p>
+          So this isn't just networking theory.
+        </p>
+
+        <p>
+          It's part of learning how to read what is happening on a network.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>But there's a trade-off</h2>
+
+        <p>
+          TCP's reliability is useful, but it comes with additional
+          communication.
+        </p>
+
+        <p>
+          UDP's simplicity can be useful when an application cares more about
+          continuing communication than recovering every lost packet.
+        </p>
+
+        <p>
+          That's why different applications can make different choices.
+        </p>
+
+        <p>
+          A file transfer generally cares deeply about receiving the correct
+          data.
+        </p>
+
+        <p>
+          A real-time application may care more about keeping information
+          flowing with low delay.
+        </p>
+
+        <p>
+          The protocol choice follows the problem the application is trying
+          to solve.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>And now our journey has another layer</h2>
+
+        <p>
+          Look at everything we've discovered so far.
+        </p>
+
+        <div class="message-visual">
+          <div class="message-title">Following a request</div>
+
+          <div class="message">
+            <span class="message-box">Website name</span>
+            <span class="message-arrow">→</span>
+            <span class="message-box">DNS</span>
+          </div>
+
+          <div class="message">
+            <span class="message-box">IP address</span>
+            <span class="message-arrow">→</span>
+            <span class="message-box">Destination</span>
+          </div>
+
+          <div class="message">
+            <span class="message-box">Port</span>
+            <span class="message-arrow">→</span>
+            <span class="message-box">Service</span>
+          </div>
+
+          <div class="message">
+            <span class="message-box">TCP / UDP</span>
+            <span class="message-arrow">→</span>
+            <span class="message-box">How data is transported</span>
+          </div>
+        </div>
+
+        <p>
+          What started as:
+        </p>
+
+        <div class="story-quote">
+          “I typed a website address.”
+        </div>
+
+        <p>
+          has turned into a chain of systems working together.
+        </p>
+
+        <p>
+          And we're still not finished.
+        </p>
+      </section>
+
+      <div class="takeaway reveal">
+        <div class="takeaway-label">Remember this</div>
+
+        <p>
+          TCP focuses on reliable, ordered communication. UDP keeps transport
+          simpler and leaves reliability to the application when needed.
+        </p>
+      </div>
+
+      <section class="next reveal">
+        <div class="next-label">Next → Beginner Path · 006</div>
+
+        <a href="what-is-dns.html" class="next-link">
+          What Is DNS? →
+        </a>
+      </section>
+
+    </article>
+  </main>
+
+  <footer>
+    <strong>KSCybSec</strong> — Cybersecurity knowledge, one clue at a time.
+  </footer>
+
+  <script>
+    // Reading progress
+    const progress = document.getElementById("progress");
+
+    window.addEventListener("scroll", () => {
+      const scrollTop = window.scrollY;
+      const documentHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+
+      const percentage =
+        documentHeight > 0
+          ? (scrollTop / documentHeight) * 100
+          : 0;
+
+      progress.style.width = percentage + "%";
+    });
+
+    // Reveal sections
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.08
+      }
+    );
+
+    document.querySelectorAll(".reveal").forEach((element) => {
+      observer.observe(element);
+    });
+  </script>
+
+</body>
+</html>
