@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>What Are Ports? | KSCybSec</title>
+  <meta
+    name="description"
+    content="What are ports in networking? Follow a simple story to understand how ports connect network traffic to services and why they matter in cybersecurity."
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg: #070B14;
+      --section: #0B1120;
+      --card: #101827;
+      --text: #E8EDF5;
+      --muted: #8995AA;
+      --cyan: #4DE8FF;
+      --violet: #8B7CFF;
+      --line: rgba(232, 237, 245, 0.09);
+      --soft-cyan: rgba(77, 232, 255, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Inter", sans-serif;
+      line-height: 1.8;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    ::selection {
+      background: rgba(77, 232, 255, 0.2);
+      color: var(--text);
+    }
+
+    /* NAV */
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6%;
+      background: rgba(7, 11, 20, 0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand span {
+      color: var(--cyan);
+    }
+
+    .nav-back {
+      color: var(--muted);
+      font-size: 0.85rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-back:hover {
+      color: var(--text);
+    }
+
+    /* PROGRESS */
+
+    .progress {
+      position: fixed;
+      top: 69px;
+      left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--cyan);
+      z-index: 99;
+    }
+
+    /* HERO */
+
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 110px 24px 80px;
+    }
+
+    .eyebrow {
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      color: var(--cyan);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+      max-width: 850px;
+      margin-bottom: 30px;
+    }
+
+    .hero-intro {
+      max-width: 680px;
+      font-size: 1.18rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* ARTICLE */
+
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 24px 100px;
+    }
+
+    article section {
+      margin-bottom: 78px;
+    }
+
+    h2 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      line-height: 1.15;
+      letter-spacing: -0.035em;
+      margin-bottom: 24px;
+    }
+
+    p {
+      color: #C8D0DE;
+      margin-bottom: 22px;
+      font-size: 1.03rem;
+    }
+
+    strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .story-quote {
+      border-left: 2px solid var(--cyan);
+      padding: 4px 0 4px 24px;
+      margin: 34px 0;
+      color: var(--text);
+      font-size: 1.12rem;
+    }
+
+    /* QUESTION */
+
+    .question {
+      margin: 42px 0;
+      padding: 28px 30px;
+      border: 1px solid rgba(77, 232, 255, 0.16);
+      background: var(--soft-cyan);
+      border-radius: 10px;
+    }
+
+    .question-label {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+
+    .question p {
+      margin: 0;
+      color: var(--text);
+      font-size: 1.08rem;
+    }
+
+    /* PORT VISUAL */
+
+    .port-visual {
+      margin: 48px 0;
+      padding: 34px 24px;
+      background: var(--section);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .server-name {
+      font-family: "DM Mono", monospace;
+      color: var(--muted);
+      font-size: 0.8rem;
+      margin-bottom: 18px;
+    }
+
+    .server-address {
+      font-family: "DM Mono", monospace;
+      color: var(--text);
+      font-size: 1rem;
+      margin-bottom: 26px;
+    }
+
+    .port-list {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .port {
+      padding: 10px 14px;
+      border: 1px solid rgba(77, 232, 255, 0.2);
+      color: var(--cyan);
+      font-family: "DM Mono", monospace;
+      font-size: 0.78rem;
+      border-radius: 6px;
+    }
+
+    /* FLOW */
+
+    .flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin: 40px 0;
+      font-family: "DM Mono", monospace;
+      font-size: 0.78rem;
+    }
+
+    .flow-item {
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(77, 232, 255, 0.3);
+      color: var(--text);
+    }
+
+    .arrow {
+      color: var(--cyan);
+    }
+
+    /* PORT TABLE */
+
+    .port-table {
+      width: 100%;
+      margin: 38px 0;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .port-table th,
+    .port-table td {
+      padding: 14px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+
+    .port-table th {
+      color: var(--muted);
+      font-family: "DM Mono", monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .port-table td {
+      color: #C8D0DE;
+    }
+
+    .port-table td:first-child {
+      color: var(--cyan);
+      font-family: "DM Mono", monospace;
+    }
+
+    /* TAKEAWAY */
+
+    .takeaway {
+      padding: 34px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      margin: 70px 0;
+    }
+
+    .takeaway-label {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 14px;
+    }
+
+    .takeaway p {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.45rem;
+      line-height: 1.45;
+      color: var(--text);
+      margin: 0;
+    }
+
+    /* NEXT */
+
+    .next {
+      padding: 55px 0 20px;
+    }
+
+    .next-label {
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 15px;
+    }
+
+    .next-link {
+      display: inline-block;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 600;
+      line-height: 1.15;
+      transition: color 0.25s ease;
+    }
+
+    .next-link:hover {
+      color: var(--cyan);
+    }
+
+    /* FOOTER */
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 40px 6%;
+      color: var(--muted);
+      font-size: 0.82rem;
+      text-align: center;
+    }
+
+    footer strong {
+      color: var(--text);
+    }
+
+    /* REVEAL */
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition:
+        opacity 0.7s ease,
+        transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 650px) {
+      nav {
+        padding: 0 5%;
+      }
+
+      .hero {
+        padding: 80px 20px 65px;
+      }
+
+      main {
+        padding: 0 20px 80px;
+      }
+
+      article section {
+        margin-bottom: 62px;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      .question {
+        padding: 23px;
+      }
+
+      .port-visual {
+        padding: 28px 18px;
+      }
+
+      .flow {
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .arrow {
+        transform: rotate(90deg);
+      }
+
+      .port-table {
+        font-size: 0.82rem;
+      }
+
+      .port-table th,
+      .port-table td {
+        padding: 12px 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="../index.html" class="brand">
+      KS<span>CybSec</span>
+    </a>
+
+    <a href="../index.html" class="nav-back">
+      ← Back to KSCybSec
+    </a>
+  </nav>
+
+  <div class="progress" id="progress"></div>
+
+  <header class="hero reveal">
+    <div class="eyebrow">Beginner Path · 004</div>
+
+    <h1>What Are Ports?</h1>
+
+    <p class="hero-intro">
+      You found the building. You found the address. Now there's one more
+      question: where inside the building should your request go?
+    </p>
+  </header>
+
+  <main>
+    <article>
+
+      <section class="reveal">
+        <p>
+          In the last article, we followed a device across a network and
+          learned about IP addresses.
+        </p>
+
+        <p>
+          An IP address helps identify where traffic should go.
+        </p>
+
+        <p>
+          But imagine you walk up to a large office building.
+        </p>
+
+        <p>
+          You know the building's address.
+        </p>
+
+        <p>
+          You walk through the front door...
+        </p>
+
+        <p>
+          ...and then stop.
+        </p>
+
+        <p>
+          Which room are you supposed to visit?
+        </p>
+
+        <div class="question">
+          <div class="question-label">One more clue</div>
+          <p>
+            If an IP address gets your traffic to the right computer, how does
+            that computer know which service should receive it?
+          </p>
+        </div>
+      </section>
+
+      <section class="reveal">
+        <h2>Think about a busy computer</h2>
+
+        <p>
+          Your computer can do several things at once.
+        </p>
+
+        <p>
+          It might be browsing a website while downloading a file, checking
+          email, talking to another computer, and running a game in the
+          background.
+        </p>
+
+        <p>
+          Imagine all of those conversations arriving at the same machine.
+        </p>
+
+        <p>
+          The computer needs some way to tell them apart.
+        </p>
+
+        <p>
+          That's where <strong>ports</strong> come in.
+        </p>
+
+        <div class="story-quote">
+          A port is a numbered communication endpoint that helps network
+          traffic reach the appropriate service on a device.
+        </div>
+
+        <p>
+          So if the IP address helps you find the building, the port helps
+          identify the particular doorway or service you're trying to reach.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>One computer, many doors</h2>
+
+        <p>
+          Let's make the idea visible.
+        </p>
+
+        <div class="port-visual">
+          <div class="server-name">SERVER</div>
+
+          <div class="server-address">
+            192.0.2.10
+          </div>
+
+          <div class="port-list">
+            <span class="port">:22</span>
+            <span class="port">:80</span>
+            <span class="port">:443</span>
+            <span class="port">:25</span>
+          </div>
+        </div>
+
+        <p>
+          Those numbers represent different ports.
+        </p>
+
+        <p>
+          A server could be running several network services at the same
+          time, with each service associated with a particular port.
+        </p>
+
+        <p>
+          That means these two destinations are not exactly the same:
+        </p>
+
+        <div class="flow">
+          <span class="flow-item">192.0.2.10:80</span>
+          <span class="arrow">≠</span>
+          <span class="flow-item">192.0.2.10:22</span>
+        </div>
+
+        <p>
+          They point to the same IP address, but they identify different
+          communication endpoints.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>You've probably already met some</h2>
+
+        <p>
+          You don't need to memorize hundreds of port numbers.
+        </p>
+
+        <p>
+          But a few common ones are useful because you'll see them repeatedly
+          while learning networking and cybersecurity.
+        </p>
+
+        <table class="port-table">
+          <thead>
+            <tr>
+              <th>Port</th>
+              <th>Common association</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>22</td>
+              <td>SSH</td>
+            </tr>
+
+            <tr>
+              <td>25</td>
+              <td>SMTP</td>
+            </tr>
+
+            <tr>
+              <td>53</td>
+              <td>DNS</td>
+            </tr>
+
+            <tr>
+              <td>80</td>
+              <td>HTTP</td>
+            </tr>
+
+            <tr>
+              <td>443</td>
+              <td>HTTPS</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+          The important part isn't memorizing the table.
+        </p>
+
+        <p>
+          It's recognizing the relationship:
+        </p>
+
+        <div class="story-quote">
+          <strong>IP address → destination</strong><br />
+          <strong>Port → service or communication endpoint</strong>
+        </div>
+      </section>
+
+      <section class="reveal">
+        <h2>So what happens when you visit a website?</h2>
+
+        <p>
+          Let's return to our original journey.
+        </p>
+
+        <p>
+          You type a website address into your browser.
+        </p>
+
+        <p>
+          DNS helps your computer discover the IP address associated with
+          the domain.
+        </p>
+
+        <p>
+          Your device then needs to communicate with the appropriate service
+          on that destination.
+        </p>
+
+        <div class="flow">
+          <span class="flow-item">Website name</span>
+          <span class="arrow">→</span>
+          <span class="flow-item">IP address</span>
+          <span class="arrow">→</span>
+          <span class="flow-item">Port</span>
+          <span class="arrow">→</span>
+          <span class="flow-item">Service</span>
+        </div>
+
+        <p>
+          For a typical HTTPS website, that communication commonly uses
+          <strong>port 443</strong>.
+        </p>
+
+        <p>
+          So the request isn't simply saying,
+          <em>“Take me to this computer.”</em>
+        </p>
+
+        <p>
+          It's closer to:
+          <em>“Take me to this destination and communicate with the service
+          listening at this endpoint.”</em>
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>Now ports become interesting for security</h2>
+
+        <p>
+          Imagine you're investigating a server.
+        </p>
+
+        <p>
+          You discover that it has several ports accepting connections.
+        </p>
+
+        <p>
+          That immediately gives you useful information.
+        </p>
+
+        <p>
+          Maybe port 80 is serving a website.
+          Maybe port 22 is running SSH.
+          Maybe another port belongs to a completely different application.
+        </p>
+
+        <p>
+          Each open service becomes something you can investigate.
+        </p>
+
+        <p>
+          This is why port scanning is such a fundamental technique in
+          cybersecurity.
+        </p>
+
+        <p>
+          A tool such as Nmap can help identify which ports are accessible
+          and, with additional techniques, what services may be running
+          behind them.
+        </p>
+
+        <p>
+          But finding an open port doesn't automatically mean you've found a
+          vulnerability.
+        </p>
+
+        <div class="question">
+          <div class="question-label">Think like an analyst</div>
+          <p>
+            If a server has port 443 open, does that automatically mean the
+            server is vulnerable?
+          </p>
+        </div>
+
+        <p>
+          No.
+        </p>
+
+        <p>
+          It simply tells you that something is accepting connections there.
+          You still need to understand what service is running, how it is
+          configured, what version it uses, and whether there is anything
+          unusual about it.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>Open doesn't mean dangerous</h2>
+
+        <p>
+          This distinction is worth remembering.
+        </p>
+
+        <p>
+          An <strong>open port</strong> generally means that a service is
+          listening and accepting connections.
+        </p>
+
+        <p>
+          A <strong>closed port</strong> means the destination is reachable,
+          but there isn't a service accepting connections there at that
+          moment.
+        </p>
+
+        <p>
+          A <strong>filtered port</strong> is different again: something,
+          such as a firewall or filtering device, may be preventing you from
+          determining whether the port is actually accessible.
+        </p>
+
+        <p>
+          These small distinctions become extremely useful once you start
+          working with network scanners and security logs.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>And there's another detail</h2>
+
+        <p>
+          You might have noticed that we keep saying
+          <strong>service</strong>.
+        </p>
+
+        <p>
+          That's because a port isn't the application itself.
+        </p>
+
+        <p>
+          Think of a restaurant.
+        </p>
+
+        <p>
+          The door gives customers a way into the building.
+          But behind that door is an actual service: people taking orders,
+          preparing food, and serving customers.
+        </p>
+
+        <p>
+          In networking, the port is part of the path used to reach a
+          service.
+        </p>
+
+        <p>
+          So when a security professional sees an open port, the next
+          question is often:
+        </p>
+
+        <div class="story-quote">
+          “What's actually listening there?”
+        </div>
+
+        <p>
+          And that question takes us naturally to the next stage of our
+          journey: identifying services and understanding how they
+          communicate.
+        </p>
+      </section>
+
+      <div class="takeaway reveal">
+        <div class="takeaway-label">Remember this</div>
+
+        <p>
+          An IP address helps you find the destination. A port helps identify
+          the service or communication endpoint you want to reach.
+        </p>
+      </div>
+
+      <section class="next reveal">
+        <div class="next-label">Next → Beginner Path · 005</div>
+
+        <a href="tcp-vs-udp.html" class="next-link">
+          TCP vs UDP →
+        </a>
+      </section>
+
+    </article>
+  </main>
+
+  <footer>
+    <strong>KSCybSec</strong> — Cybersecurity knowledge, one clue at a time.
+  </footer>
+
+  <script>
+    // Reading progress
+    const progress = document.getElementById("progress");
+
+    window.addEventListener("scroll", () => {
+      const scrollTop = window.scrollY;
+      const documentHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+
+      const percentage =
+        documentHeight > 0
+          ? (scrollTop / documentHeight) * 100
+          : 0;
+
+      progress.style.width = percentage + "%";
+    });
+
+    // Reveal sections
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.08
+      }
+    );
+
+    document.querySelectorAll(".reveal").forEach((element) => {
+      observer.observe(element);
+    });
+  </script>
+
+</body>
+</html>
