@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>What Is DNS? | KSCybSec</title>
+  <meta
+    name="description"
+    content="What is DNS? Follow a simple story to understand how domain names are translated into IP addresses and why DNS matters in cybersecurity."
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg: #070B14;
+      --section: #0B1120;
+      --text: #E8EDF5;
+      --muted: #8995AA;
+      --cyan: #4DE8FF;
+      --violet: #8B7CFF;
+      --line: rgba(232, 237, 245, 0.09);
+      --soft-cyan: rgba(77, 232, 255, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Inter", sans-serif;
+      line-height: 1.8;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    ::selection {
+      background: rgba(77, 232, 255, 0.2);
+      color: var(--text);
+    }
+
+    /* NAV */
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6%;
+      background: rgba(7, 11, 20, 0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .brand span {
+      color: var(--cyan);
+    }
+
+    .nav-back {
+      color: var(--muted);
+      font-size: 0.85rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-back:hover {
+      color: var(--text);
+    }
+
+    /* PROGRESS */
+
+    .progress {
+      position: fixed;
+      top: 69px;
+      left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--cyan);
+      z-index: 99;
+    }
+
+    /* HERO */
+
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 110px 24px 80px;
+    }
+
+    .eyebrow {
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      color: var(--cyan);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+      max-width: 850px;
+      margin-bottom: 30px;
+    }
+
+    .hero-intro {
+      max-width: 680px;
+      font-size: 1.18rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* ARTICLE */
+
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 24px 100px;
+    }
+
+    article section {
+      margin-bottom: 78px;
+    }
+
+    h2 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      line-height: 1.15;
+      letter-spacing: -0.035em;
+      margin-bottom: 24px;
+    }
+
+    p {
+      color: #C8D0DE;
+      margin-bottom: 22px;
+      font-size: 1.03rem;
+    }
+
+    strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .story-quote {
+      border-left: 2px solid var(--cyan);
+      padding: 4px 0 4px 24px;
+      margin: 34px 0;
+      color: var(--text);
+      font-size: 1.12rem;
+    }
+
+    /* QUESTION */
+
+    .question {
+      margin: 42px 0;
+      padding: 28px 30px;
+      border: 1px solid rgba(77, 232, 255, 0.16);
+      background: var(--soft-cyan);
+      border-radius: 10px;
+    }
+
+    .question-label {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+
+    .question p {
+      margin: 0;
+      color: var(--text);
+      font-size: 1.08rem;
+    }
+
+    /* DNS VISUAL */
+
+    .dns-visual {
+      margin: 48px 0;
+      padding: 36px 24px;
+      background: var(--section);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+
+    .dns-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .dns-item {
+      padding: 13px 16px;
+      border: 1px solid rgba(77, 232, 255, 0.2);
+      border-radius: 7px;
+      font-family: "DM Mono", monospace;
+      font-size: 0.78rem;
+      color: var(--text);
+    }
+
+    .dns-item.highlight {
+      color: var(--cyan);
+    }
+
+    .dns-arrow {
+      color: var(--cyan);
+      font-family: "DM Mono", monospace;
+    }
+
+    .dns-caption {
+      margin-top: 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    /* LOOKUP */
+
+    .lookup {
+      margin: 42px 0;
+      font-family: "DM Mono", monospace;
+      font-size: 0.8rem;
+    }
+
+    .lookup-line {
+      display: flex;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .lookup-label {
+      color: var(--muted);
+      min-width: 85px;
+    }
+
+    .lookup-value {
+      color: var(--text);
+    }
+
+    .lookup-value.cyan {
+      color: var(--cyan);
+    }
+
+    /* TAKEAWAY */
+
+    .takeaway {
+      padding: 34px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      margin: 70px 0;
+    }
+
+    .takeaway-label {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 14px;
+    }
+
+    .takeaway p {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.45rem;
+      line-height: 1.45;
+      color: var(--text);
+      margin: 0;
+    }
+
+    /* NEXT */
+
+    .next {
+      padding: 55px 0 20px;
+    }
+
+    .next-label {
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 15px;
+    }
+
+    .next-link {
+      display: inline-block;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 600;
+      line-height: 1.15;
+      transition: color 0.25s ease;
+    }
+
+    .next-link:hover {
+      color: var(--cyan);
+    }
+
+    /* FOOTER */
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 40px 6%;
+      color: var(--muted);
+      font-size: 0.82rem;
+      text-align: center;
+    }
+
+    footer strong {
+      color: var(--text);
+    }
+
+    /* REVEAL */
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition:
+        opacity 0.7s ease,
+        transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 650px) {
+      nav {
+        padding: 0 5%;
+      }
+
+      .hero {
+        padding: 80px 20px 65px;
+      }
+
+      main {
+        padding: 0 20px 80px;
+      }
+
+      article section {
+        margin-bottom: 62px;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      .question {
+        padding: 23px;
+      }
+
+      .dns-visual {
+        padding: 28px 16px;
+      }
+
+      .dns-row {
+        flex-direction: column;
+      }
+
+      .dns-arrow {
+        transform: rotate(90deg);
+      }
+
+      .lookup-line {
+        flex-direction: column;
+        gap: 3px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="../index.html" class="brand">
+      KS<span>CybSec</span>
+    </a>
+
+    <a href="../index.html" class="nav-back">
+      ← Back to KSCybSec
+    </a>
+  </nav>
+
+  <div class="progress" id="progress"></div>
+
+  <header class="hero reveal">
+    <div class="eyebrow">Beginner Path · 006</div>
+
+    <h1>What Is DNS?</h1>
+
+    <p class="hero-intro">
+      You remember names. Computers work with addresses. So who translates
+      one into the other?
+    </p>
+  </header>
+
+  <main>
+    <article>
+
+      <section class="reveal">
+        <p>
+          Think about how you use the Internet every day.
+        </p>
+
+        <p>
+          You probably don't type a string of numbers whenever you want to
+          visit a website.
+        </p>
+
+        <p>
+          You type a name.
+        </p>
+
+        <p>
+          Maybe you enter a familiar domain into your browser, press Enter,
+          and wait for the page to appear.
+        </p>
+
+        <p>
+          But we've already discovered something important.
+        </p>
+
+        <p>
+          Computers need IP addresses to communicate.
+        </p>
+
+        <p>
+          So if you type:
+        </p>
+
+        <div class="story-quote">
+          <strong>example.com</strong>
+        </div>
+
+        <p>
+          how does your computer discover the IP address it needs?
+        </p>
+
+        <div class="question">
+          <div class="question-label">The mystery</div>
+          <p>
+            Who translates a name that humans understand into an address that
+            computers can use?
+          </p>
+        </div>
+      </section>
+
+      <section class="reveal">
+        <h2>Imagine your phone contacts</h2>
+
+        <p>
+          Think about your phone.
+        </p>
+
+        <p>
+          You probably don't remember everyone's phone number.
+        </p>
+
+        <p>
+          Instead, you save:
+        </p>
+
+        <div class="story-quote">
+          <strong>“Mom”</strong>
+        </div>
+
+        <p>
+          When you want to call her, you tap her name.
+        </p>
+
+        <p>
+          Your phone looks up the number associated with that contact and
+          uses it to make the call.
+        </p>
+
+        <p>
+          DNS works with a similar basic idea.
+        </p>
+
+        <p>
+          You give the system a human-friendly name.
+        </p>
+
+        <p>
+          DNS helps find the corresponding network information.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>DNS is the Internet's naming system</h2>
+
+        <p>
+          <strong>DNS</strong> stands for
+          <strong>Domain Name System</strong>.
+        </p>
+
+        <p>
+          Its job is to help translate domain names into IP addresses and
+          provide other information about domains.
+        </p>
+
+        <div class="dns-visual">
+          <div class="dns-row">
+            <div class="dns-item highlight">
+              example.com
+            </div>
+
+            <div class="dns-arrow">
+              →
+            </div>
+
+            <div class="dns-item">
+              DNS
+            </div>
+
+            <div class="dns-arrow">
+              →
+            </div>
+
+            <div class="dns-item highlight">
+              93.184.216.34
+            </div>
+          </div>
+
+          <div class="dns-caption">
+            A simplified view of a DNS lookup
+          </div>
+        </div>
+
+        <p>
+          That's the basic idea.
+        </p>
+
+        <p>
+          But the real system is much more interesting than one giant
+          directory containing every website on the Internet.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>There isn't one giant DNS server</h2>
+
+        <p>
+          Imagine if one computer somewhere had to remember every domain name
+          and every IP address on Earth.
+        </p>
+
+        <p>
+          Every device would have to ask that one computer for every lookup.
+        </p>
+
+        <p>
+          That wouldn't be a very practical design.
+        </p>
+
+        <p>
+          Instead, DNS is a distributed system.
+        </p>
+
+        <p>
+          Different DNS servers have different roles, and information can be
+          cached along the way.
+        </p>
+
+        <p>
+          You don't need to memorize all of those server types yet.
+        </p>
+
+        <p>
+          For now, remember the important idea:
+        </p>
+
+        <div class="story-quote">
+          DNS is a distributed naming system, not one computer that knows
+          everything.
+        </div>
+      </section>
+
+      <section class="reveal">
+        <h2>Let's follow the lookup</h2>
+
+        <p>
+          You type a domain name into your browser.
+        </p>
+
+        <p>
+          Before the browser can communicate with the destination server, the
+          system needs to find the appropriate IP address.
+        </p>
+
+        <p>
+          A simplified version of the journey looks like this:
+        </p>
+
+        <div class="dns-visual">
+          <div class="dns-row">
+            <div class="dns-item">
+              Your device
+            </div>
+
+            <div class="dns-arrow">
+              →
+            </div>
+
+            <div class="dns-item">
+              DNS resolver
+            </div>
+
+            <div class="dns-arrow">
+              →
+            </div>
+
+            <div class="dns-item">
+              DNS system
+            </div>
+
+            <div class="dns-arrow">
+              →
+            </div>
+
+            <div class="dns-item highlight">
+              IP address
+            </div>
+          </div>
+        </div>
+
+        <p>
+          Often, the resolver can answer immediately because it already has
+          the information stored in its cache.
+        </p>
+
+        <p>
+          If it doesn't, it can perform the necessary DNS queries to find the
+          answer.
+        </p>
+
+        <p>
+          Once the result is available, your device can continue the journey
+          toward the destination.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>And sometimes the answer is already nearby</h2>
+
+        <p>
+          This is where <strong>caching</strong> becomes useful.
+        </p>
+
+        <p>
+          If a DNS result was recently requested, it may already be stored
+          temporarily by your device, operating system, browser, or DNS
+          resolver.
+        </p>
+
+        <p>
+          There's no reason to perform the entire lookup again if a valid
+          cached answer is available.
+        </p>
+
+        <p>
+          That's one reason DNS can feel almost invisible when you use the
+          Internet.
+        </p>
+
+        <p>
+          A lot can happen without you seeing any of it.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>Here's where security enters the story</h2>
+
+        <p>
+          DNS looks simple from the outside.
+        </p>
+
+        <p>
+          Ask for a name.
+          Get an address.
+          Continue the connection.
+        </p>
+
+        <p>
+          But what happens if the answer is wrong?
+        </p>
+
+        <div class="question">
+          <div class="question-label">Think about it</div>
+          <p>
+            What if someone could manipulate the answer your computer receives
+            from DNS?
+          </p>
+        </div>
+
+        <p>
+          Instead of being directed toward the intended destination, a user
+          could potentially be redirected somewhere else.
+        </p>
+
+        <p>
+          That's why DNS is an important part of security investigations.
+        </p>
+
+        <p>
+          Analysts may examine DNS queries to understand which domains a
+          system attempted to contact.
+        </p>
+
+        <p>
+          They may look for unusual domain names, unexpected destinations,
+          suspicious patterns, or connections that don't fit the normal
+          behaviour of a system.
+        </p>
+
+        <p>
+          DNS can become a clue.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>A domain name can tell you something</h2>
+
+        <p>
+          Imagine a company computer suddenly starts making repeated DNS
+          queries for a strange domain that nobody in the organisation
+          recognises.
+        </p>
+
+        <p>
+          That doesn't automatically prove anything malicious happened.
+        </p>
+
+        <p>
+          It could be a legitimate application, an update service, a
+          misconfigured system, or something that simply hasn't been
+          documented properly.
+        </p>
+
+        <p>
+          But it gives an analyst somewhere to look.
+        </p>
+
+        <div class="story-quote">
+          The question isn't “Is this domain bad?”
+          <br><br>
+          The better question is “Why is this system communicating with this
+          domain?”
+        </div>
+
+        <p>
+          Context matters.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>DNS isn't only about websites</h2>
+
+        <p>
+          Another useful thing to understand is that DNS isn't limited to
+          turning website names into IPv4 addresses.
+        </p>
+
+        <p>
+          DNS can store different kinds of records that provide different
+          pieces of information.
+        </p>
+
+        <p>
+          For example, DNS can be used for things related to:
+        </p>
+
+        <div class="lookup">
+          <div class="lookup-line">
+            <span class="lookup-label">A</span>
+            <span class="lookup-value">
+              IPv4 address
+            </span>
+          </div>
+
+          <div class="lookup-line">
+            <span class="lookup-label">AAAA</span>
+            <span class="lookup-value">
+              IPv6 address
+            </span>
+          </div>
+
+          <div class="lookup-line">
+            <span class="lookup-label">MX</span>
+            <span class="lookup-value">
+              Mail servers
+            </span>
+          </div>
+
+          <div class="lookup-line">
+            <span class="lookup-label">TXT</span>
+            <span class="lookup-value">
+              Text-based information
+            </span>
+          </div>
+        </div>
+
+        <p>
+          You don't need to memorize these yet.
+        </p>
+
+        <p>
+          Just remember that DNS is more than a simple
+          <em>name → IP</em> converter.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>Now look at the journey again</h2>
+
+        <p>
+          At the beginning, all you did was type a website name.
+        </p>
+
+        <p>
+          But underneath that simple action, several pieces started working
+          together.
+        </p>
+
+        <div class="dns-visual">
+          <div class="dns-row">
+            <div class="dns-item">
+              Domain
+            </div>
+
+            <div class="dns-arrow">
+              →
+            </div>
+
+            <div class="dns-item">
+              DNS
+            </div>
+
+            <div class="dns-arrow">
+              →
+            </div>
+
+            <div class="dns-item">
+              IP
+            </div>
+
+            <div class="dns-arrow">
+              →
+            </div>
+
+            <div class="dns-item">
+              Port
+            </div>
+
+            <div class="dns-arrow">
+              →
+            </div>
+
+            <div class="dns-item highlight">
+              Service
+            </div>
+          </div>
+        </div>
+
+        <p>
+          First, the human-friendly name has to be resolved.
+        </p>
+
+        <p>
+          Then the destination has to be reached.
+        </p>
+
+        <p>
+          Then the appropriate service has to receive the traffic.
+        </p>
+
+        <p>
+          And now we're getting close to the part of the journey where
+          browsers and web servers actually start speaking to each other.
+        </p>
+      </section>
+
+      <div class="takeaway reveal">
+        <div class="takeaway-label">Remember this</div>
+
+        <p>
+          DNS helps humans use names while networks use addresses. It quietly
+          connects the two.
+        </p>
+      </div>
+
+      <section class="next reveal">
+        <div class="next-label">Next → Beginner Path · 007</div>
+
+        <a href="http-vs-https.html" class="next-link">
+          HTTP vs HTTPS →
+        </a>
+      </section>
+
+    </article>
+  </main>
+
+  <footer>
+    <strong>KSCybSec</strong> — Cybersecurity knowledge, one clue at a time.
+  </footer>
+
+  <script>
+    // Reading progress
+    const progress = document.getElementById("progress");
+
+    window.addEventListener("scroll", () => {
+      const scrollTop = window.scrollY;
+      const documentHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+
+      const percentage =
+        documentHeight > 0
+          ? (scrollTop / documentHeight) * 100
+          : 0;
+
+      progress.style.width = percentage + "%";
+    });
+
+    // Reveal sections
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.08
+      }
+    );
+
+    document.querySelectorAll(".reveal").forEach((element) => {
+      observer.observe(element);
+    });
+  </script>
+
+</body>
+</html>
