@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>What Is an IP Address? | KSCybSec</title>
+  <meta
+    name="description"
+    content="What is an IP address? Follow a simple story to understand how devices are identified and communicate across networks."
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg: #070B14;
+      --section: #0B1120;
+      --card: #101827;
+      --text: #E8EDF5;
+      --muted: #8995AA;
+      --cyan: #4DE8FF;
+      --violet: #8B7CFF;
+      --line: rgba(232, 237, 245, 0.09);
+      --soft-cyan: rgba(77, 232, 255, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Inter", sans-serif;
+      line-height: 1.8;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    ::selection {
+      background: rgba(77, 232, 255, 0.2);
+      color: var(--text);
+    }
+
+    /* NAV */
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6%;
+      background: rgba(7, 11, 20, 0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand span {
+      color: var(--cyan);
+    }
+
+    .nav-back {
+      color: var(--muted);
+      font-size: 0.85rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-back:hover {
+      color: var(--text);
+    }
+
+    /* PROGRESS */
+
+    .progress {
+      position: fixed;
+      top: 69px;
+      left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--cyan);
+      z-index: 99;
+    }
+
+    /* HERO */
+
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 110px 24px 80px;
+    }
+
+    .eyebrow {
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      color: var(--cyan);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+      max-width: 850px;
+      margin-bottom: 30px;
+    }
+
+    .hero-intro {
+      max-width: 680px;
+      font-size: 1.18rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* ARTICLE */
+
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 24px 100px;
+    }
+
+    article section {
+      margin-bottom: 78px;
+    }
+
+    h2 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      line-height: 1.15;
+      letter-spacing: -0.035em;
+      margin-bottom: 24px;
+    }
+
+    h3 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.35rem;
+      margin: 34px 0 12px;
+    }
+
+    p {
+      color: #C8D0DE;
+      margin-bottom: 22px;
+      font-size: 1.03rem;
+    }
+
+    strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .story-quote {
+      border-left: 2px solid var(--cyan);
+      padding: 4px 0 4px 24px;
+      margin: 34px 0;
+      color: var(--text);
+      font-size: 1.12rem;
+    }
+
+    /* QUESTION */
+
+    .question {
+      margin: 42px 0;
+      padding: 28px 30px;
+      border: 1px solid rgba(77, 232, 255, 0.16);
+      background: var(--soft-cyan);
+      border-radius: 10px;
+    }
+
+    .question-label {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+
+    .question p {
+      margin: 0;
+      color: var(--text);
+      font-size: 1.08rem;
+    }
+
+    /* ADDRESS VISUAL */
+
+    .address-visual {
+      margin: 48px 0;
+      padding: 34px 28px;
+      background: var(--section);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .device {
+      font-family: "DM Mono", monospace;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .ip {
+      font-family: "DM Mono", monospace;
+      font-size: clamp(1.4rem, 5vw, 2rem);
+      color: var(--cyan);
+      letter-spacing: 0.04em;
+      margin-bottom: 18px;
+    }
+
+    .address-caption {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    /* FLOW */
+
+    .flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin: 40px 0;
+      font-family: "DM Mono", monospace;
+      font-size: 0.78rem;
+    }
+
+    .flow-item {
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(77, 232, 255, 0.3);
+      color: var(--text);
+    }
+
+    .arrow {
+      color: var(--cyan);
+    }
+
+    /* TAKEAWAY */
+
+    .takeaway {
+      padding: 34px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      margin: 70px 0;
+    }
+
+    .takeaway-label {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 14px;
+    }
+
+    .takeaway p {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.45rem;
+      line-height: 1.45;
+      color: var(--text);
+      margin: 0;
+    }
+
+    /* NEXT */
+
+    .next {
+      padding: 55px 0 20px;
+    }
+
+    .next-label {
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 15px;
+    }
+
+    .next-link {
+      display: inline-block;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 600;
+      line-height: 1.15;
+      transition: color 0.25s ease;
+    }
+
+    .next-link:hover {
+      color: var(--cyan);
+    }
+
+    /* FOOTER */
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 40px 6%;
+      color: var(--muted);
+      font-size: 0.82rem;
+      text-align: center;
+    }
+
+    footer strong {
+      color: var(--text);
+    }
+
+    /* REVEAL */
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition:
+        opacity 0.7s ease,
+        transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 650px) {
+      nav {
+        padding: 0 5%;
+      }
+
+      .hero {
+        padding: 80px 20px 65px;
+      }
+
+      main {
+        padding: 0 20px 80px;
+      }
+
+      article section {
+        margin-bottom: 62px;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      .question {
+        padding: 23px;
+      }
+
+      .address-visual {
+        padding: 28px 18px;
+      }
+
+      .flow {
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .arrow {
+        transform: rotate(90deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="../index.html" class="brand">
+      KS<span>CybSec</span>
+    </a>
+
+    <a href="../index.html" class="nav-back">
+      ← Back to KSCybSec
+    </a>
+  </nav>
+
+  <div class="progress" id="progress"></div>
+
+  <header class="hero reveal">
+    <div class="eyebrow">Beginner Path · 003</div>
+
+    <h1>What Is an IP Address?</h1>
+
+    <p class="hero-intro">
+      Your request has to reach somewhere. But how does your computer know
+      where to send it?
+    </p>
+  </header>
+
+  <main>
+    <article>
+
+      <section class="reveal">
+        <p>
+          Let's go back to where we left off.
+        </p>
+
+        <p>
+          You opened your browser, typed a website address, and pressed
+          Enter.
+        </p>
+
+        <p>
+          Your computer had to find the right destination before it could
+          send the request.
+        </p>
+
+        <p>
+          We talked about DNS helping turn a name like
+          <strong>example.com</strong> into something a computer can use.
+        </p>
+
+        <p>
+          But that leaves us with another question.
+        </p>
+
+        <div class="question">
+          <div class="question-label">Pause for a second</div>
+          <p>
+            If computers need addresses to communicate, what exactly does
+            that address look like?
+          </p>
+        </div>
+      </section>
+
+      <section class="reveal">
+        <h2>Imagine sending a letter</h2>
+
+        <p>
+          Suppose you want to send a letter to a friend.
+        </p>
+
+        <p>
+          Writing your friend's name on the envelope isn't enough.
+          The postal system needs an address.
+        </p>
+
+        <p>
+          The address tells the system where the letter needs to go.
+        </p>
+
+        <p>
+          Computers need something similar.
+        </p>
+
+        <p>
+          When one device wants to communicate with another device over a
+          network, it needs a way to identify the destination.
+        </p>
+
+        <p>
+          That's where an <strong>IP address</strong> comes in.
+        </p>
+
+        <div class="story-quote">
+          An IP address is a numerical address used to identify a device or
+          network interface so that data can be sent to the right destination.
+        </div>
+      </section>
+
+      <section class="reveal">
+        <h2>So what does one look like?</h2>
+
+        <p>
+          You've probably seen something like this before:
+        </p>
+
+        <div class="address-visual">
+          <div class="device">EXAMPLE DEVICE</div>
+
+          <div class="ip">
+            192.168.1.25
+          </div>
+
+          <div class="address-caption">
+            An example IPv4 address
+          </div>
+        </div>
+
+        <p>
+          At first glance, it looks like four numbers separated by dots.
+        </p>
+
+        <p>
+          That's an example of an <strong>IPv4 address</strong>, one of the
+          most common forms of IP addressing you'll encounter while learning
+          networking and cybersecurity.
+        </p>
+
+        <p>
+          Each number can range from 0 to 255, giving IPv4 its familiar
+          format.
+        </p>
+
+        <p>
+          You don't need to memorize the mathematics behind it yet.
+          What's more important is understanding the idea:
+        </p>
+
+        <p>
+          <strong>
+            Devices communicating on a network need addresses so that traffic
+            has somewhere to go.
+          </strong>
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>But here's something interesting</h2>
+
+        <p>
+          Look again at this address:
+        </p>
+
+        <div class="address-visual">
+          <div class="ip">192.168.1.25</div>
+        </div>
+
+        <p>
+          You might have seen addresses beginning with
+          <strong>192.168</strong> on your own computer or phone.
+        </p>
+
+        <p>
+          That's because addresses such as these are commonly used inside
+          private networks.
+        </p>
+
+        <p>
+          Your home might have several devices connected to the same router:
+        </p>
+
+        <div class="flow">
+          <span class="flow-item">Laptop</span>
+          <span class="arrow">→</span>
+          <span class="flow-item">Phone</span>
+          <span class="arrow">→</span>
+          <span class="flow-item">Smart TV</span>
+          <span class="arrow">→</span>
+          <span class="flow-item">Router</span>
+        </div>
+
+        <p>
+          They can each have their own private IP address inside your local
+          network.
+        </p>
+
+        <p>
+          Your router then helps that local network communicate with the
+          wider Internet.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>Wait — then what is a public IP?</h2>
+
+        <p>
+          Here's where the picture gets a little bigger.
+        </p>
+
+        <p>
+          Your laptop can have a private address inside your home network,
+          while your network itself communicates with the Internet through a
+          public IP address.
+        </p>
+
+        <p>
+          You can think of it like an apartment building.
+        </p>
+
+        <p>
+          Inside the building, individual apartments have their own numbers.
+          From the outside, however, the building has one street address.
+        </p>
+
+        <p>
+          A private IP helps identify something inside the local network.
+          A public IP can identify the network's connection to the wider
+          Internet.
+        </p>
+
+        <p>
+          The comparison isn't perfect, but it gives you the basic idea.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>And this is where the router matters</h2>
+
+        <p>
+          Remember the request we were following in the previous article?
+        </p>
+
+        <p>
+          Your computer doesn't simply throw data onto the Internet and hope
+          someone finds it.
+        </p>
+
+        <p>
+          Your router sits between your local network and the wider network.
+        </p>
+
+        <div class="flow">
+          <span class="flow-item">Your Device</span>
+          <span class="arrow">→</span>
+          <span class="flow-item">Router</span>
+          <span class="arrow">→</span>
+          <span class="flow-item">Internet</span>
+          <span class="arrow">→</span>
+          <span class="flow-item">Destination</span>
+        </div>
+
+        <p>
+          It helps determine where traffic should go and where returning
+          traffic should come back.
+        </p>
+
+        <p>
+          That's one reason networking becomes so important in cybersecurity.
+        </p>
+
+        <p>
+          When you're investigating suspicious activity, you often need to
+          understand where traffic came from, where it was going, and what
+          devices were communicating.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>An IP address isn't a person's identity</h2>
+
+        <p>
+          There's an important detail worth remembering.
+        </p>
+
+        <p>
+          Seeing an IP address does <strong>not</strong> automatically tell
+          you who a person is.
+        </p>
+
+        <p>
+          An address might belong to a home network, an organisation, a
+          mobile provider, a cloud server, a VPN service, or many other kinds
+          of infrastructure.
+        </p>
+
+        <p>
+          Multiple people can appear to use the same public IP address.
+          Addresses can change. Devices can move between networks.
+        </p>
+
+        <p>
+          So if a security log says:
+        </p>
+
+        <div class="story-quote">
+          “Connection received from 203.0.113.25.”
+        </div>
+
+        <p>
+          that's a clue — not a complete story.
+        </p>
+
+        <p>
+          A security analyst would normally need more evidence to understand
+          what actually happened.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>Now think like a security analyst</h2>
+
+        <p>
+          Imagine you're looking at a security alert.
+        </p>
+
+        <p>
+          It says that a server received several unexpected connections from
+          the same IP address.
+        </p>
+
+        <p>
+          Is that automatically an attack?
+        </p>
+
+        <p>
+          Not necessarily.
+        </p>
+
+        <p>
+          Maybe it's a legitimate service.
+          Maybe it's a vulnerability scanner.
+          Maybe it's an employee's network.
+          Maybe it's something genuinely suspicious.
+        </p>
+
+        <p>
+          The IP address gives you a place to start investigating.
+          It doesn't give you the entire answer.
+        </p>
+
+        <div class="question">
+          <div class="question-label">Think like an investigator</div>
+          <p>
+            What else would you want to know before deciding what those
+            connections actually mean?
+          </p>
+        </div>
+
+        <p>
+          This is a useful cybersecurity habit:
+          <strong>don't treat one piece of information as the whole story.</strong>
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>There's still something missing</h2>
+
+        <p>
+          So far, we've answered one important question.
+        </p>
+
+        <p>
+          We know how a device can have an address.
+        </p>
+
+        <p>
+          We know that address helps traffic reach the right destination.
+        </p>
+
+        <p>
+          But there's a problem.
+        </p>
+
+        <p>
+          Imagine a huge office building.
+        </p>
+
+        <p>
+          You know the building's address.
+        </p>
+
+        <p>
+          But that's not enough to find a particular room inside it.
+        </p>
+
+        <p>
+          The same idea appears in networking.
+        </p>
+
+        <p>
+          An IP address can help identify the destination machine or network.
+          But once traffic reaches that machine, something else helps
+          determine <strong>which service should receive it</strong>.
+        </p>
+
+        <p>
+          That's where our next clue appears.
+        </p>
+      </section>
+
+      <div class="takeaway reveal">
+        <div class="takeaway-label">Remember this</div>
+
+        <p>
+          An IP address helps identify where network traffic should go —
+          but an address alone doesn't tell you the whole story.
+        </p>
+      </div>
+
+      <section class="next reveal">
+        <div class="next-label">Next → Beginner Path · 004</div>
+
+        <a href="what-are-ports.html" class="next-link">
+          What Are Ports? →
+        </a>
+      </section>
+
+    </article>
+  </main>
+
+  <footer>
+    <strong>KSCybSec</strong> — Cybersecurity knowledge, one clue at a time.
+  </footer>
+
+  <script>
+    // Reading progress
+    const progress = document.getElementById("progress");
+
+    window.addEventListener("scroll", () => {
+      const scrollTop = window.scrollY;
+      const documentHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+
+      const percentage =
+        documentHeight > 0
+          ? (scrollTop / documentHeight) * 100
+          : 0;
+
+      progress.style.width = percentage + "%";
+    });
+
+    // Reveal sections
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.08
+      }
+    );
+
+    document.querySelectorAll(".reveal").forEach((element) => {
+      observer.observe(element);
+    });
+  </script>
+
+</body>
+</html>
