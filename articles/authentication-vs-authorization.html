@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Authentication vs Authorization — KSCybSec</title>
+  <meta
+    name="description"
+    content="Understand the difference between authentication and authorization through a simple cybersecurity investigation."
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg: #070B14;
+      --surface: #0B1120;
+      --surface-2: #101827;
+      --text: #E8EDF5;
+      --muted: #8995AA;
+      --cyan: #4DE8FF;
+      --purple: #8B7CFF;
+      --border: rgba(137, 149, 170, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 15% 10%, rgba(77, 232, 255, 0.06), transparent 28%),
+        radial-gradient(circle at 85% 25%, rgba(139, 124, 255, 0.06), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      font-family: "Inter", sans-serif;
+      line-height: 1.7;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 18px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(7, 11, 20, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      color: var(--text);
+      text-decoration: none;
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+    }
+
+    .brand span {
+      color: var(--cyan);
+    }
+
+    .nav-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .nav-link:hover {
+      color: var(--cyan);
+    }
+
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 70px 24px 100px;
+    }
+
+    .meta {
+      font-family: "DM Mono", monospace;
+      font-size: 0.78rem;
+      color: var(--cyan);
+      letter-spacing: 0.08em;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(2.6rem, 7vw, 5rem);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+      max-width: 850px;
+      margin-bottom: 28px;
+    }
+
+    .hero-subtitle {
+      color: var(--muted);
+      font-size: 1.15rem;
+      max-width: 700px;
+      margin-bottom: 55px;
+    }
+
+    .question {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      line-height: 1.15;
+      margin: 70px 0 25px;
+    }
+
+    p {
+      color: #b8c1d0;
+      margin-bottom: 22px;
+      font-size: 1.03rem;
+    }
+
+    .visual {
+      margin: 45px 0;
+      padding: 32px;
+      background: linear-gradient(145deg, var(--surface), var(--surface-2));
+      border: 1px solid var(--border);
+      border-radius: 20px;
+    }
+
+    .visual-title {
+      font-family: "DM Mono", monospace;
+      color: var(--muted);
+      font-size: 0.75rem;
+      margin-bottom: 24px;
+      letter-spacing: 0.08em;
+    }
+
+    .login-screen {
+      max-width: 500px;
+      margin: auto;
+      padding: 30px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(7, 11, 20, 0.65);
+    }
+
+    .login-header {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.3rem;
+      margin-bottom: 24px;
+    }
+
+    .input {
+      padding: 13px 15px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-family: "DM Mono", monospace;
+      font-size: 0.85rem;
+    }
+
+    .button {
+      padding: 13px;
+      border-radius: 9px;
+      background: rgba(77, 232, 255, 0.12);
+      border: 1px solid rgba(77, 232, 255, 0.35);
+      color: var(--cyan);
+      text-align: center;
+      font-family: "DM Mono", monospace;
+      font-size: 0.85rem;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      align-items: center;
+      text-align: center;
+    }
+
+    .flow-item {
+      padding: 24px 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(7, 11, 20, 0.5);
+    }
+
+    .flow-item strong {
+      display: block;
+      font-family: "Space Grotesk", sans-serif;
+      margin-bottom: 7px;
+    }
+
+    .flow-item span {
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .arrow {
+      color: var(--cyan);
+      font-size: 1.4rem;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+      margin: 40px 0;
+    }
+
+    .concept {
+      padding: 28px;
+      border-top: 2px solid var(--cyan);
+      background: var(--surface);
+      border-radius: 0 0 16px 16px;
+    }
+
+    .concept:nth-child(2) {
+      border-top-color: var(--purple);
+    }
+
+    .concept h3 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .concept .question-small {
+      color: var(--cyan);
+      font-family: "DM Mono", monospace;
+      font-size: 0.8rem;
+      margin-bottom: 14px;
+    }
+
+    .concept:nth-child(2) .question-small {
+      color: var(--purple);
+    }
+
+    .example-list {
+      margin: 25px 0;
+      border-left: 1px solid var(--border);
+      padding-left: 24px;
+    }
+
+    .example-list div {
+      margin: 14px 0;
+      color: #b8c1d0;
+    }
+
+    .example-list strong {
+      color: var(--text);
+    }
+
+    .investigation {
+      margin: 45px 0;
+      padding: 30px;
+      border-left: 2px solid var(--cyan);
+      background: rgba(77, 232, 255, 0.035);
+    }
+
+    .investigation strong {
+      color: var(--text);
+    }
+
+    .mini-flow {
+      margin: 35px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .mini-step {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 18px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface);
+    }
+
+    .mini-step span {
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .takeaway {
+      margin-top: 70px;
+      padding: 35px;
+      border: 1px solid rgba(139, 124, 255, 0.3);
+      border-radius: 18px;
+      background: rgba(139, 124, 255, 0.045);
+    }
+
+    .takeaway-label {
+      font-family: "DM Mono", monospace;
+      font-size: 0.75rem;
+      color: var(--purple);
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+
+    .takeaway h2 {
+      font-family: "Space Grotesk", sans-serif;
+      margin-bottom: 14px;
+    }
+
+    .next {
+      margin-top: 70px;
+      text-align: center;
+      padding-top: 35px;
+      border-top: 1px solid var(--border);
+    }
+
+    .next span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-family: "DM Mono", monospace;
+      margin-bottom: 10px;
+    }
+
+    .next a {
+      color: var(--cyan);
+      text-decoration: none;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.2rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 35px 20px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 700px) {
+      main {
+        padding-top: 45px;
+      }
+
+      .flow {
+        grid-template-columns: 1fr;
+      }
+
+      .arrow {
+        transform: rotate(90deg);
+      }
+
+      .split {
+        grid-template-columns: 1fr;
+      }
+
+      .visual {
+        padding: 22px;
+      }
+
+      h1 {
+        font-size: 2.7rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="../index.html" class="brand">KS<span>CybSec</span></a>
+    <a href="../index.html" class="nav-link">← Back to KSCybSec</a>
+  </nav>
+
+  <main>
+
+    <div class="meta">BEGINNER PATH · 012</div>
+
+    <h1>Authentication vs Authorization</h1>
+
+    <p class="hero-subtitle">
+      You proved who you are. But that doesn't automatically mean
+      you're allowed to do everything.
+    </p>
+
+    <div class="visual">
+
+      <div class="visual-title">A LOGIN REQUEST</div>
+
+      <div class="login-screen">
+        <div class="login-header">Secure Portal</div>
+
+        <div class="input">username: kamali</div>
+        <div class="input">password: •••••••••</div>
+
+        <div class="button">SIGN IN</div>
+      </div>
+
+    </div>
+
+    <h2 class="question">
+      You entered the correct password.
+      What happens next?
+    </h2>
+
+    <p>
+      The system has to answer two different questions.
+    </p>
+
+    <div class="flow">
+
+      <div class="flow-item">
+        <strong>WHO?</strong>
+        <span>Are you really Kamali?</span>
+      </div>
+
+      <div class="arrow">→</div>
+
+      <div class="flow-item">
+        <strong>WHAT?</strong>
+        <span>What are you allowed to access?</span>
+      </div>
+
+    </div>
+
+    <p style="margin-top: 35px;">
+      These two questions are closely related, but they are not the same.
+    </p>
+
+
+    <h2 class="question">
+      Authentication
+    </h2>
+
+    <p>
+      <strong>Authentication</strong> is the process of verifying
+      who someone or something claims to be.
+    </p>
+
+    <div class="split">
+
+      <div class="concept">
+        <div class="question-small">AUTHENTICATION ASKS</div>
+        <h3>“Who are you?”</h3>
+
+        <p>
+          The system checks evidence that supports your identity.
+        </p>
+      </div>
+
+      <div class="concept">
+        <div class="question-small">COMMON METHODS</div>
+        <h3>Proof of identity</h3>
+
+        <p>
+          Passwords, PINs, fingerprints, security keys,
+          and multi-factor authentication can all be used.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="visual">
+
+      <div class="visual-title">AUTHENTICATION FLOW</div>
+
+      <div class="flow">
+
+        <div class="flow-item">
+          <strong>USER</strong>
+          <span>Claims an identity</span>
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="flow-item">
+          <strong>PROOF</strong>
+          <span>Password / MFA / key</span>
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="flow-item">
+          <strong>IDENTITY</strong>
+          <span>Verified</span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <p>
+      For example, when you sign in to an account with a password,
+      the service checks whether the credentials match the account.
+    </p>
+
+    <p>
+      If the verification succeeds, you have been <strong>authenticated</strong>.
+    </p>
+
+
+    <h2 class="question">
+      But being authenticated isn't the end.
+    </h2>
+
+    <p>
+      Imagine you've successfully signed into a university system.
+    </p>
+
+    <div class="investigation">
+
+      <p>
+        Your identity is verified.
+      </p>
+
+      <p>
+        But should you automatically be able to:
+      </p>
+
+      <div class="example-list">
+        <div>→ View another student's grades?</div>
+        <div>→ Delete a course?</div>
+        <div>→ Change administrator settings?</div>
+        <div>→ Download confidential records?</div>
+      </div>
+
+      <p>
+        Probably not.
+      </p>
+
+    </div>
+
+
+    <h2 class="question">
+      Authorization
+    </h2>
+
+    <p>
+      <strong>Authorization</strong> determines what an authenticated
+      user is allowed to access or do.
+    </p>
+
+    <div class="split">
+
+      <div class="concept">
+        <div class="question-small">AUTHORIZATION ASKS</div>
+        <h3>“What can you do?”</h3>
+
+        <p>
+          The system checks the permissions associated with your identity.
+        </p>
+      </div>
+
+      <div class="concept">
+        <div class="question-small">EXAMPLES</div>
+        <h3>Permissions</h3>
+
+        <p>
+          Read, write, delete, create, modify,
+          administer, or access specific resources.
+        </p>
+      </div>
+
+    </div>
+
+
+    <div class="visual">
+
+      <div class="visual-title">ONE LOGIN · DIFFERENT PERMISSIONS</div>
+
+      <div class="mini-flow">
+
+        <div class="mini-step">
+          <strong>Student</strong>
+          <span>View own profile</span>
+        </div>
+
+        <div class="mini-step">
+          <strong>Teacher</strong>
+          <span>View and update course records</span>
+        </div>
+
+        <div class="mini-step">
+          <strong>Administrator</strong>
+          <span>Manage users and system settings</span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <p>
+      All three users can be authenticated successfully.
+      Their permissions can still be very different.
+    </p>
+
+
+    <h2 class="question">
+      The easiest way to remember it
+    </h2>
+
+    <div class="visual">
+
+      <div class="flow">
+
+        <div class="flow-item">
+          <strong>AUTHENTICATION</strong>
+          <span>Who are you?</span>
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="flow-item">
+          <strong>AUTHORIZATION</strong>
+          <span>What can you do?</span>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <h2 class="question">
+      Here's where cybersecurity gets interesting.
+    </h2>
+
+    <p>
+      Imagine an attacker obtains a legitimate user's password.
+    </p>
+
+    <div class="visual">
+
+      <div class="visual-title">A POSSIBLE ATTACK PATH</div>
+
+      <div class="mini-flow">
+
+        <div class="mini-step">
+          <strong>1 · Password stolen</strong>
+          <span>Attacker obtains credentials</span>
+        </div>
+
+        <div class="mini-step">
+          <strong>2 · Login succeeds</strong>
+          <span>Authentication may succeed</span>
+        </div>
+
+        <div class="mini-step">
+          <strong>3 · Permissions checked</strong>
+          <span>Authorization determines access</span>
+        </div>
+
+        <div class="mini-step">
+          <strong>4 · Activity monitored</strong>
+          <span>Logs can reveal unusual behavior</span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <p>
+      This is why security doesn't stop at passwords.
+      Strong authentication helps protect identity,
+      while authorization limits what that identity can do.
+    </p>
+
+    <div class="investigation">
+
+      <p>
+        A security analyst might therefore ask:
+      </p>
+
+      <div class="example-list">
+        <div><strong>Who</strong> logged in?</div>
+        <div><strong>How</strong> was the identity verified?</div>
+        <div><strong>What</strong> resources were accessed?</div>
+        <div><strong>Was</strong> that access expected?</div>
+      </div>
+
+      <p>
+        Authentication and authorization become important clues
+        when investigating suspicious activity.
+      </p>
+
+    </div>
+
+
+    <h2 class="question">
+      One more important distinction
+    </h2>
+
+    <p>
+      A system can have strong authentication and still have
+      poor authorization.
+    </p>
+
+    <p>
+      For example, a legitimate employee may successfully log in,
+      but a mistake in permissions could give that employee access
+      to information they should never have been able to see.
+    </p>
+
+    <p>
+      That's why security requires both identity verification
+      <strong>and</strong> appropriate permissions.
+    </p>
+
+
+    <div class="visual">
+
+      <div class="visual-title">THE SECURITY CHAIN</div>
+
+      <div class="flow">
+
+        <div class="flow-item">
+          <strong>IDENTITY</strong>
+          <span>Who?</span>
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="flow-item">
+          <strong>AUTHENTICATION</strong>
+          <span>Prove it</span>
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="flow-item">
+          <strong>AUTHORIZATION</strong>
+          <span>Allow only what's permitted</span>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="takeaway">
+
+      <div class="takeaway-label">TAKEAWAY</div>
+
+      <h2>Authentication proves identity. Authorization controls access.</h2>
+
+      <p>
+        Think of authentication as answering
+        <strong>“Who are you?”</strong>
+        and authorization as answering
+        <strong>“What are you allowed to do?”</strong>
+      </p>
+
+      <p>
+        In cybersecurity, both matter because a verified identity
+        should not automatically have unlimited access.
+      </p>
+
+    </div>
+
+
+    <div class="next">
+
+      <span>NEXT CLUE · 013</span>
+
+      <a href="encryption-hashing-encoding.html">
+        Encryption, Hashing & Encoding →
+      </a>
+
+    </div>
+
+  </main>
+
+
+  <footer>
+    KSCybSec — Cybersecurity knowledge, one clue at a time.
+  </footer>
+
+</body>
+</html>
