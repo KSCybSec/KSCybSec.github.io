@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>What Is a Firewall? | KSCybSec</title>
+  <meta
+    name="description"
+    content="What is a firewall? Follow a simple story to understand how firewalls control network traffic and why they matter in cybersecurity."
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --bg: #070B14;
+      --section: #0B1120;
+      --card: #101827;
+      --text: #E8EDF5;
+      --muted: #8995AA;
+      --cyan: #4DE8FF;
+      --violet: #8B7CFF;
+      --border: rgba(232, 237, 245, 0.09);
+      --soft: rgba(77, 232, 255, 0.07);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Inter", sans-serif;
+      line-height: 1.85;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(7, 11, 20, 0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1120px;
+      margin: auto;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .brand span {
+      color: var(--cyan);
+    }
+
+    .nav-back {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .nav-back:hover {
+      color: var(--cyan);
+    }
+
+    .progress {
+      height: 2px;
+      width: 100%;
+      background: transparent;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0;
+      background: var(--cyan);
+    }
+
+    .hero {
+      max-width: 900px;
+      margin: auto;
+      padding: 110px 24px 75px;
+    }
+
+    .eyebrow {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+      max-width: 800px;
+      margin-bottom: 28px;
+    }
+
+    .hero-intro {
+      color: var(--muted);
+      font-size: 1.15rem;
+      max-width: 720px;
+    }
+
+    main {
+      max-width: 780px;
+      margin: auto;
+      padding: 0 24px 100px;
+    }
+
+    article p {
+      margin-bottom: 28px;
+      color: #cbd3df;
+      font-size: 1.04rem;
+    }
+
+    article strong {
+      color: var(--text);
+    }
+
+    h2 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 2rem;
+      line-height: 1.2;
+      margin: 75px 0 25px;
+      letter-spacing: -0.03em;
+    }
+
+    blockquote {
+      border-left: 2px solid var(--cyan);
+      padding: 4px 0 4px 24px;
+      margin: 38px 0;
+      color: var(--text);
+      font-size: 1.18rem;
+      line-height: 1.7;
+    }
+
+    .scene {
+      margin: 45px 0;
+      padding: 28px;
+      border: 1px solid var(--border);
+      background: linear-gradient(
+        135deg,
+        rgba(77, 232, 255, 0.05),
+        rgba(139, 124, 255, 0.04)
+      );
+      border-radius: 18px;
+    }
+
+    .scene-label {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .traffic {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      font-family: "DM Mono", monospace;
+      font-size: 0.85rem;
+    }
+
+    .node {
+      padding: 12px 15px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .arrow {
+      color: var(--cyan);
+    }
+
+    .firewall {
+      padding: 18px 16px;
+      border: 1px solid rgba(77, 232, 255, 0.3);
+      border-radius: 12px;
+      background: var(--soft);
+      text-align: center;
+      min-width: 145px;
+    }
+
+    .firewall small {
+      display: block;
+      color: var(--muted);
+      margin-top: 4px;
+      font-size: 0.7rem;
+    }
+
+    .question {
+      margin: 45px 0;
+      padding: 24px 26px;
+      border-radius: 14px;
+      background: var(--soft);
+      border: 1px solid rgba(77, 232, 255, 0.12);
+    }
+
+    .question-label {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 10px;
+    }
+
+    .question p {
+      margin: 0;
+      color: var(--text);
+      font-size: 1.05rem;
+    }
+
+    .flow {
+      margin: 40px 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    .flow-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .flow-row:last-child {
+      border-bottom: none;
+    }
+
+    .flow-label {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .flow-value {
+      color: var(--muted);
+      text-align: right;
+      font-family: "DM Mono", monospace;
+      font-size: 0.78rem;
+    }
+
+    .chain {
+      margin: 45px 0;
+      padding: 26px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+      font-family: "DM Mono", monospace;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 2.4;
+    }
+
+    .chain span {
+      color: var(--cyan);
+    }
+
+    .takeaway {
+      margin-top: 70px;
+      padding-top: 35px;
+      border-top: 1px solid var(--border);
+    }
+
+    .takeaway-title {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 18px;
+    }
+
+    .takeaway p {
+      font-size: 1.2rem;
+      color: var(--text);
+    }
+
+    .next {
+      margin-top: 75px;
+      padding: 34px 0 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .next-label {
+      font-family: "DM Mono", monospace;
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .next-link {
+      display: inline-block;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.5rem;
+      color: var(--text);
+      transition: color 0.2s ease;
+    }
+
+    .next-link:hover {
+      color: var(--cyan);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 35px 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 650px) {
+      .hero {
+        padding-top: 75px;
+      }
+
+      h1 {
+        font-size: 3.4rem;
+      }
+
+      .traffic {
+        flex-direction: column;
+      }
+
+      .arrow {
+        transform: rotate(90deg);
+      }
+
+      .flow-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .flow-value {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="../index.html" class="brand">KS<span>CybSec</span></a>
+      <a href="../index.html" class="nav-back">← KSCybSec</a>
+    </div>
+
+    <div class="progress">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="eyebrow">Beginner Path · 009</div>
+
+    <h1>What Is a Firewall?</h1>
+
+    <p class="hero-intro">
+      Your computer is constantly communicating with other systems.
+      But should every connection be allowed?
+    </p>
+  </header>
+
+  <main>
+    <article>
+
+      <section class="reveal">
+
+        <p>
+          Imagine you're sitting at home working on your laptop.
+        </p>
+
+        <p>
+          Your browser is open. You're watching a video in another tab.
+          Maybe you're downloading a file.
+        </p>
+
+        <p>
+          All of these things involve network communication.
+        </p>
+
+        <p>
+          Data is coming in.
+          Data is going out.
+          Different applications are talking to different services.
+        </p>
+
+        <p>
+          Now imagine that your computer suddenly receives a connection
+          request from somewhere you've never heard of.
+        </p>
+
+        <p>
+          Should it allow the connection?
+        </p>
+
+        <div class="question">
+          <div class="question-label">Pause here</div>
+          <p>
+            If your computer accepted every connection automatically,
+            what could possibly go wrong?
+          </p>
+        </div>
+
+        <p>
+          That's the problem we're about to solve.
+        </p>
+
+      </section>
+
+
+      <section class="reveal">
+
+        <h2>Let's go back to the network</h2>
+
+        <p>
+          In the previous articles, we followed a request across the Internet.
+        </p>
+
+        <p>
+          A domain name was translated into an IP address.
+          A port identified a service.
+          TCP or UDP carried the communication.
+          HTTP or HTTPS handled the web conversation.
+        </p>
+
+        <div class="chain">
+          <span>Domain</span>
+          →
+          <span>DNS</span>
+          →
+          <span>IP</span>
+          →
+          <span>Port</span>
+          →
+          <span>Service</span>
+        </div>
+
+        <p>
+          But there's another question we haven't really asked yet.
+        </p>
+
+        <blockquote>
+          “Should this traffic be allowed to continue?”
+        </blockquote>
+
+        <p>
+          This is where a firewall enters the picture.
+        </p>
+
+      </section>
+
+
+      <section class="reveal">
+
+        <h2>Think of a security checkpoint</h2>
+
+        <p>
+          Imagine a building with a security checkpoint at the entrance.
+        </p>
+
+        <p>
+          People arrive.
+          The security guard checks certain information.
+          Some people are allowed inside.
+          Others aren't.
+        </p>
+
+        <p>
+          A firewall works with a similar idea, but for network traffic.
+        </p>
+
+        <div class="scene">
+
+          <div class="scene-label">A simplified network view</div>
+
+          <div class="traffic">
+
+            <div class="node">
+              Internet
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="firewall">
+              FIREWALL
+              <small>checks traffic</small>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="node">
+              Your system
+            </div>
+
+          </div>
+
+        </div>
+
+        <p>
+          A firewall monitors network traffic and applies rules to decide
+          whether traffic should be allowed or blocked.
+        </p>
+
+        <p>
+          That's the core idea.
+        </p>
+
+      </section>
+
+
+      <section class="reveal">
+
+        <h2>But how does it decide?</h2>
+
+        <p>
+          A firewall doesn't simply look at traffic and magically know
+          whether something is “good” or “bad.”
+        </p>
+
+        <p>
+          It works using rules.
+        </p>
+
+        <p>
+          Those rules can consider information such as the source,
+          destination, protocol, port, and connection state.
+        </p>
+
+        <div class="flow">
+
+          <div class="flow-row">
+            <div class="flow-label">Source</div>
+            <div class="flow-value">Where did it come from?</div>
+          </div>
+
+          <div class="flow-row">
+            <div class="flow-label">Destination</div>
+            <div class="flow-value">Where is it going?</div>
+          </div>
+
+          <div class="flow-row">
+            <div class="flow-label">Port</div>
+            <div class="flow-value">Which service?</div>
+          </div>
+
+          <div class="flow-row">
+            <div class="flow-label">Protocol</div>
+            <div class="flow-value">TCP? UDP? Other?</div>
+          </div>
+
+          <div class="flow-row">
+            <div class="flow-label">Connection state</div>
+            <div class="flow-value">What is happening?</div>
+          </div>
+
+        </div>
+
+        <p>
+          Based on its configuration, the firewall can then allow or block
+          the traffic.
+        </p>
+
+      </section>
+
+
+      <section class="reveal">
+
+        <h2>Here's where ports become useful again</h2>
+
+        <p>
+          Remember the idea of ports?
+        </p>
+
+        <p>
+          One computer can run many network services at the same time.
+        </p>
+
+        <p>
+          A firewall can use those ports when deciding what traffic is
+          permitted.
+        </p>
+
+        <p>
+          For example, a system might intentionally allow web traffic
+          through ports 80 and 443 while blocking an unnecessary service
+          on another port.
+        </p>
+
+        <p>
+          The exact rules depend on the system and its purpose.
+        </p>
+
+        <p>
+          A web server, a personal laptop, and a corporate server may all
+          need different firewall rules.
+        </p>
+
+      </section>
+
+
+      <section class="reveal">
+
+        <h2>Now imagine you're a security analyst</h2>
+
+        <p>
+          You notice that a server is receiving connection attempts on
+          several ports.
+        </p>
+
+        <p>
+          Some are expected.
+          Others aren't.
+        </p>
+
+        <p>
+          You check the firewall logs.
+        </p>
+
+        <p>
+          They show which traffic was allowed and which traffic was blocked.
+        </p>
+
+        <p>
+          Suddenly, the firewall isn't just a barrier anymore.
+        </p>
+
+        <p>
+          It's also producing information that can help you understand
+          what's happening on the network.
+        </p>
+
+        <blockquote>
+          Security isn't only about blocking something.<br>
+          Sometimes the evidence left behind is just as important.
+        </blockquote>
+
+      </section>
+
+
+      <section class="reveal">
+
+        <h2>There isn't just one kind of firewall</h2>
+
+        <p>
+          Firewalls can exist in different places.
+        </p>
+
+        <p>
+          Your operating system can have a firewall.
+          A network can have a firewall between different systems.
+          Organizations can use dedicated firewall devices or cloud-based
+          firewall services.
+        </p>
+
+        <p>
+          They may also inspect traffic at different levels and use
+          increasingly sophisticated rules.
+        </p>
+
+        <p>
+          You don't need to memorize all the types yet.
+        </p>
+
+        <p>
+          For now, keep the main idea in your head:
+        </p>
+
+        <blockquote>
+          A firewall is a control point between network traffic and the
+          system or network you're trying to protect.
+        </blockquote>
+
+      </section>
+
+
+      <section class="reveal">
+
+        <h2>One important misunderstanding</h2>
+
+        <p>
+          A firewall is useful.
+        </p>
+
+        <p>
+          But it isn't a magic shield.
+        </p>
+
+        <p>
+          A firewall can control traffic according to its rules.
+          It cannot automatically solve phishing, stolen passwords,
+          vulnerable applications, malware, or every other security problem.
+        </p>
+
+        <p>
+          That's why cybersecurity uses layers.
+        </p>
+
+        <p>
+          A firewall might control network access.
+          Authentication protects accounts.
+          Encryption protects information in transit or at rest.
+          Monitoring helps detect suspicious activity.
+          Security teams investigate what those systems report.
+        </p>
+
+        <p>
+          Each layer has a different job.
+        </p>
+
+      </section>
+
+
+      <section class="reveal">
+
+        <h2>And now the network looks a little different</h2>
+
+        <p>
+          At the beginning of this path, the Internet probably looked like
+          one huge invisible thing.
+        </p>
+
+        <p>
+          Now we can start breaking it apart.
+        </p>
+
+        <div class="chain">
+          <span>Domain</span>
+          →
+          <span>DNS</span>
+          →
+          <span>IP</span>
+          →
+          <span>Port</span>
+          →
+          <span>TCP / UDP</span>
+          →
+          <span>Firewall</span>
+          →
+          <span>Service</span>
+        </div>
+
+        <p>
+          And every one of those pieces gives us another clue about how
+          digital communication works.
+        </p>
+
+      </section>
+
+
+      <section class="takeaway reveal">
+
+        <div class="takeaway-title">Remember this</div>
+
+        <p>
+          A firewall controls network traffic using rules, helping decide
+          what should be allowed to reach a system or network and what
+          should be blocked.
+        </p>
+
+      </section>
+
+
+      <section class="next reveal">
+
+        <div class="next-label">Next in the Beginner Path</div>
+
+        <a href="what-is-malware.html" class="next-link">
+          What Is Malware? →
+        </a>
+
+      </section>
+
+    </article>
+  </main>
+
+
+  <footer>
+    KSCybSec — Cybersecurity knowledge, one clue at a time.
+  </footer>
+
+
+  <script>
+    const progressBar = document.getElementById("progressBar");
+
+    window.addEventListener("scroll", () => {
+      const scrollTop = window.scrollY;
+      const height =
+        document.documentElement.scrollHeight - window.innerHeight;
+
+      const progress = height > 0
+        ? (scrollTop / height) * 100
+        : 0;
+
+      progressBar.style.width = progress + "%";
+    });
+
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      },
+      {
+        threshold: 0.08
+      }
+    );
+
+    document.querySelectorAll(".reveal").forEach(element => {
+      observer.observe(element);
+    });
+  </script>
+
+</body>
+</html>
