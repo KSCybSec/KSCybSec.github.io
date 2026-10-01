@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
+  <!-- Homepage -->
   <url>
     <loc>https://kscybsec.github.io/</loc>
   </url>
+
+  <!-- Beginner Path -->
 
   <url>
     <loc>https://kscybsec.github.io/articles/what-is-cybersecurity.html</loc>
@@ -64,6 +67,14 @@
   <url>
     <loc>https://kscybsec.github.io/articles/how-cyber-attacks-work.html</loc>
   </url>
+
+  <!-- Beginner Challenge -->
+
+  <url>
+    <loc>https://kscybsec.github.io/beginner-challenge.html</loc>
+  </url>
+
+  <!-- Investigation Track · OSINT -->
 
   <url>
     <loc>https://kscybsec.github.io/articles/what-is-osint.html</loc>
