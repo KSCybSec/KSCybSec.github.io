@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>What Is Phishing? | KSCybSec</title>
+
+  <meta
+    name="description"
+    content="What is phishing? Learn how phishing works by investigating a suspicious email and discovering the clues attackers leave behind."
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    :root {
+      --bg: #070B14;
+      --section: #0B1120;
+      --card: #101827;
+      --text: #E8EDF5;
+      --muted: #8995AA;
+      --cyan: #4DE8FF;
+      --violet: #8B7CFF;
+      --danger: #ff718b;
+      --warning: #ffc66d;
+      --success: #62e6a7;
+      --border: rgba(232, 237, 245, 0.09);
+      --soft: rgba(77, 232, 255, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Inter", sans-serif;
+      line-height: 1.8;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* NAV */
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(7, 11, 20, 0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1120px;
+      margin: auto;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .brand span {
+      color: var(--cyan);
+    }
+
+    .back {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .back:hover {
+      color: var(--cyan);
+    }
+
+    .progress {
+      height: 2px;
+    }
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      background: var(--cyan);
+    }
+
+    /* HERO */
+
+    .hero {
+      max-width: 900px;
+      margin: auto;
+      padding: 105px 24px 70px;
+    }
+
+    .eyebrow {
+      color: var(--cyan);
+      font-family: "DM Mono", monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(3.2rem, 8vw, 6rem);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+      margin-bottom: 28px;
+    }
+
+    .hero-intro {
+      max-width: 690px;
+      color: var(--muted);
+      font-size: 1.12rem;
+    }
+
+    /* ARTICLE */
+
+    main {
+      max-width: 780px;
+      margin: auto;
+      padding: 0 24px 100px;
+    }
+
+    article p {
+      color: #cbd3df;
+      font-size: 1.03rem;
+      margin-bottom: 25px;
+    }
+
+    h2 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 2rem;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+      margin: 70px 0 22px;
+    }
+
+    strong {
+      color: var(--text);
+    }
+
+    /* EMAIL */
+
+    .email {
+      margin: 42px 0;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--section);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.18);
+    }
+
+    .email-top {
+      padding: 15px 19px;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted);
+      font-family: "DM Mono", monospace;
+      font-size: 0.7rem;
+    }
+
+    .email-row {
+      display: grid;
+      grid-template-columns: 75px 1fr;
+      gap: 10px;
+      padding: 11px 19px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.83rem;
+    }
+
+    .email-label {
+      color: var(--muted);
+      font-family: "DM Mono", monospace;
+      font-size: 0.7rem;
+    }
+
+    .email-value {
+      color: var(--text);
+      word-break: break-word;
+    }
+
+    .email-body {
+      padding: 25px 20px 30px;
+    }
+
+    .fake-brand {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .fake-brand span {
+      color: var(--cyan);
+    }
+
+    .email-button {
+      display: inline-block;
+      margin: 10px 0 22px;
+      padding: 11px 18px;
+      border-radius: 8px;
+      background: rgba(77,232,255,0.1);
+      border: 1px solid rgba(77,232,255,0.2);
+      color: var(--cyan);
+      font-family: "DM Mono", monospace;
+      font-size: 0.75rem;
+    }
+
+    .email-warning {
+      color: var(--danger);
+      font-family: "DM Mono", monospace;
+      font-size: 0.7rem;
+    }
+
+    /* QUESTION */
+
+    .question {
+      margin: 38px 0;
+      padding: 22px 24px;
+      border-left: 2px solid var(--cyan);
+      background: var(--soft);
+    }
+
+    .question-label {
+      color: var(--cyan);
+      font-family: "DM Mono", monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .question p {
+      margin: 0;
+      color: var(--text);
+      font-size: 1.08rem;
+    }
+
+    /* CLUES */
+
+    .clues {
+      margin: 40px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .clue {
+      display: grid;
+      grid-template-columns: 45px 1fr;
+      gap: 17px;
+      padding: 19px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .clue-number {
+      color: var(--cyan);
+      font-family: "DM Mono", monospace;
+      font-size: 0.75rem;
+    }
+
+    .clue-title {
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .clue p {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    /* FLOW */
+
+    .flow {
+      margin: 42px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 11px;
+      flex-wrap: wrap;
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+    }
+
+    .flow-item {
+      padding: 13px 15px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--section);
+      text-align: center;
+    }
+
+    .flow-item.danger {
+      color: var(--danger);
+      border-color: rgba(255,113,139,0.25);
+    }
+
+    .flow-arrow {
+      color: var(--muted);
+    }
+
+    /* ATTACKER GOAL */
+
+    .goal {
+      margin: 40px 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .goal-item {
+      padding: 20px 15px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: rgba(255,255,255,0.018);
+      text-align: center;
+    }
+
+    .goal-item strong {
+      display: block;
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      color: var(--cyan);
+      margin-bottom: 7px;
+    }
+
+    .goal-item span {
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    /* QUOTE */
+
+    blockquote {
+      margin: 42px 0;
+      padding-left: 23px;
+      border-left: 2px solid var(--violet);
+      color: var(--text);
+      font-size: 1.15rem;
+      line-height: 1.7;
+    }
+
+    /* PROTECTION */
+
+    .protection {
+      margin: 40px 0;
+      display: grid;
+      gap: 0;
+    }
+
+    .protection-row {
+      display: grid;
+      grid-template-columns: 125px 1fr;
+      gap: 20px;
+      padding: 17px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .protection-row strong {
+      color: var(--cyan);
+      font-family: "DM Mono", monospace;
+      font-size: 0.73rem;
+    }
+
+    .protection-row span {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    /* TAKEAWAY */
+
+    .takeaway {
+      margin-top: 70px;
+      padding-top: 34px;
+      border-top: 1px solid var(--border);
+    }
+
+    .takeaway-label {
+      color: var(--cyan);
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .takeaway p {
+      color: var(--text);
+      font-size: 1.2rem;
+    }
+
+    /* NEXT */
+
+    .next {
+      margin-top: 70px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .next-label {
+      color: var(--muted);
+      font-family: "DM Mono", monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .next-link {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.45rem;
+    }
+
+    .next-link:hover {
+      color: var(--cyan);
+    }
+
+    /* FOOTER */
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 35px 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    /* REVEAL */
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 650px) {
+
+      .hero {
+        padding-top: 75px;
+      }
+
+      h1 {
+        font-size: 3.4rem;
+      }
+
+      .goal {
+        grid-template-columns: 1fr;
+      }
+
+      .protection-row {
+        grid-template-columns: 1fr;
+        gap: 5px;
+      }
+
+      .flow {
+        flex-direction: column;
+      }
+
+      .flow-arrow {
+        transform: rotate(90deg);
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+
+  <!-- NAV -->
+
+  <nav>
+
+    <div class="nav-inner">
+
+      <a href="../index.html" class="brand">
+        KS<span>CybSec</span>
+      </a>
+
+      <a href="../index.html" class="back">
+        ← KSCybSec
+      </a>
+
+    </div>
+
+    <div class="progress">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+  </nav>
+
+
+  <!-- HERO -->
+
+  <header class="hero">
+
+    <div class="eyebrow">
+      Beginner Path · 011
+    </div>
+
+    <h1>
+      What Is Phishing?
+    </h1>
+
+    <p class="hero-intro">
+      The message looks real. The sender looks familiar.
+      There's just one problem: someone wants you to make a mistake.
+    </p>
+
+  </header>
+
+
+  <main>
+
+    <article>
+
+
+      <!-- OPENING -->
+
+      <section class="reveal">
+
+        <p>
+          It's Monday morning.
+        </p>
+
+        <p>
+          You check your inbox.
+        </p>
+
+        <p>
+          There's an email from your bank.
+        </p>
+
+        <p>
+          At least, it looks like it's from your bank.
+        </p>
+
+        <div class="email">
+
+          <div class="email-top">
+            INBOX · 1 NEW MESSAGE
+          </div>
+
+          <div class="email-row">
+
+            <div class="email-label">
+              FROM
+            </div>
+
+            <div class="email-value">
+              Security Team &lt;security@secure-bank.example&gt;
+            </div>
+
+          </div>
+
+          <div class="email-row">
+
+            <div class="email-label">
+              SUBJECT
+            </div>
+
+            <div class="email-value">
+              Urgent: Your account requires verification
+            </div>
+
+          </div>
+
+          <div class="email-body">
+
+            <div class="fake-brand">
+              Secure<span>Bank</span>
+            </div>
+
+            <p>
+              We detected unusual activity on your account.
+              Please verify your information immediately to avoid
+              temporary suspension.
+            </p>
+
+            <div class="email-button">
+              VERIFY ACCOUNT
+            </div>
+
+            <div class="email-warning">
+              ACTION REQUIRED · TODAY
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="question">
+
+          <div class="question-label">
+            Your turn
+          </div>
+
+          <p>
+            Would you click the button?
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- INVESTIGATION -->
+
+      <section class="reveal">
+
+        <h2>
+          Don't click yet. Investigate.
+        </h2>
+
+        <p>
+          The email looks convincing.
+        </p>
+
+        <p>
+          But cybersecurity often begins with slowing down.
+        </p>
+
+        <p>
+          Let's look at the message again.
+        </p>
+
+        <div class="clues">
+
+          <div class="clue">
+
+            <div class="clue-number">
+              01
+            </div>
+
+            <div>
+
+              <div class="clue-title">
+                Urgency
+              </div>
+
+              <p>
+                “Verify immediately.”
+                “Your account will be suspended.”
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="clue">
+
+            <div class="clue-number">
+              02
+            </div>
+
+            <div>
+
+              <div class="clue-title">
+                Unexpected request
+              </div>
+
+              <p>
+                You weren't expecting to verify anything.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="clue">
+
+            <div class="clue-number">
+              03
+            </div>
+
+            <div>
+
+              <div class="clue-title">
+                Destination
+              </div>
+
+              <p>
+                Where does the button actually take you?
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="clue">
+
+            <div class="clue-number">
+              04
+            </div>
+
+            <div>
+
+              <div class="clue-title">
+                Sender
+              </div>
+
+              <p>
+                Does the real sending address match the organization?
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- DEFINITION -->
+
+      <section class="reveal">
+
+        <h2>
+          This is phishing
+        </h2>
+
+        <p>
+          <strong>Phishing</strong> is a social engineering technique
+          where an attacker impersonates a trusted person, organization,
+          or service to trick someone into taking an action.
+        </p>
+
+        <p>
+          That action could be clicking a link, opening an attachment,
+          entering a password, sending money, or revealing information.
+        </p>
+
+        <p>
+          Notice something important.
+        </p>
+
+        <blockquote>
+          The attacker isn't necessarily breaking through a technical
+          defense. They're trying to convince you to open the door yourself.
+        </blockquote>
+
+      </section>
+
+
+      <!-- GOALS -->
+
+      <section class="reveal">
+
+        <h2>
+          What does the attacker want?
+        </h2>
+
+        <div class="goal">
+
+          <div class="goal-item">
+
+            <strong>
+              CREDENTIALS
+            </strong>
+
+            <span>
+              Usernames and passwords
+            </span>
+
+          </div>
+
+          <div class="goal-item">
+
+            <strong>
+              MONEY
+            </strong>
+
+            <span>
+              Payments or financial information
+            </span>
+
+          </div>
+
+          <div class="goal-item">
+
+            <strong>
+              ACCESS
+            </strong>
+
+            <span>
+              Access to accounts or systems
+            </span>
+
+          </div>
+
+        </div>
+
+        <p>
+          Sometimes the goal is simply to get malware onto the victim's
+          device.
+        </p>
+
+      </section>
+
+
+      <!-- FLOW -->
+
+      <section class="reveal">
+
+        <h2>
+          The trick happens before the click
+        </h2>
+
+        <div class="flow">
+
+          <div class="flow-item">
+            Trusted identity
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item">
+            Fake message
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item danger">
+            Victim acts
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item">
+            Attacker's goal
+          </div>
+
+        </div>
+
+        <p>
+          The technical attack might happen later.
+          The first attack is often against your decision-making.
+        </p>
+
+      </section>
+
+
+      <!-- TYPES -->
+
+      <section class="reveal">
+
+        <h2>
+          Phishing isn't always an email
+        </h2>
+
+        <p>
+          The same idea can appear in different places.
+        </p>
+
+        <div class="protection">
+
+          <div class="protection-row">
+
+            <strong>
+              EMAIL
+            </strong>
+
+            <span>
+              A fake message pretending to come from a trusted organization.
+            </span>
+
+          </div>
+
+          <div class="protection-row">
+
+            <strong>
+              SMS
+            </strong>
+
+            <span>
+              A suspicious message asking you to click a link or call a number.
+            </span>
+
+          </div>
+
+          <div class="protection-row">
+
+            <strong>
+              SOCIAL
+            </strong>
+
+            <span>
+              A fake account or message designed to gain trust.
+            </span>
+
+          </div>
+
+          <div class="protection-row">
+
+            <strong>
+              TARGETED
+            </strong>
+
+            <span>
+              A highly personalized phishing attempt aimed at a specific person.
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- SECURITY CONNECTION -->
+
+      <section class="reveal">
+
+        <h2>
+          Remember our malware article?
+        </h2>
+
+        <p>
+          Here's where the two ideas connect.
+        </p>
+
+        <p>
+          A phishing message might contain a malicious attachment.
+          Or it might send someone to a website that delivers malware.
+        </p>
+
+        <div class="flow">
+
+          <div class="flow-item">
+            Phishing
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item">
+            Click
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item danger">
+            Malware
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item">
+            Investigation
+          </div>
+
+        </div>
+
+        <p>
+          Or the attacker may skip malware completely and simply steal
+          the victim's credentials.
+        </p>
+
+      </section>
+
+
+      <!-- DEFENSE -->
+
+      <section class="reveal">
+
+        <h2>
+          So what should you do?
+        </h2>
+
+        <p>
+          You don't need to become an email detective every time you
+          receive a message.
+        </p>
+
+        <p>
+          But when something feels unusual, slow down.
+        </p>
+
+        <div class="protection">
+
+          <div class="protection-row">
+
+            <strong>
+              STOP
+            </strong>
+
+            <span>
+              Don't rush because a message says “urgent.”
+            </span>
+
+          </div>
+
+          <div class="protection-row">
+
+            <strong>
+              CHECK
+            </strong>
+
+            <span>
+              Examine the sender, link, request, and context.
+            </span>
+
+          </div>
+
+          <div class="protection-row">
+
+            <strong>
+              VERIFY
+            </strong>
+
+            <span>
+              Use a trusted channel to confirm the request.
+            </span>
+
+          </div>
+
+          <div class="protection-row">
+
+            <strong>
+              REPORT
+            </strong>
+
+            <span>
+              If it's suspicious, report it through the appropriate channel.
+            </span>
+
+          </div>
+
+        </div>
+
+        <blockquote>
+          A few seconds of skepticism can be more useful than a few seconds
+          of panic.
+        </blockquote>
+
+      </section>
+
+
+      <!-- BIGGER PICTURE -->
+
+      <section class="reveal">
+
+        <h2>
+          And this changes how you see email
+        </h2>
+
+        <p>
+          Before cybersecurity, you might have looked at an email and asked:
+        </p>
+
+        <p>
+          “Does this look real?”
+        </p>
+
+        <p>
+          Now you can ask better questions.
+        </p>
+
+        <div class="question">
+
+          <div class="question-label">
+            Think like an investigator
+          </div>
+
+          <p>
+            Who sent this? Why did they send it?
+            Where does the link go? What are they asking me to do?
+            Does the situation actually make sense?
+          </p>
+
+        </div>
+
+        <p>
+          That's the mindset we're building throughout this beginner path.
+        </p>
+
+      </section>
+
+
+      <!-- TAKEAWAY -->
+
+      <section class="takeaway reveal">
+
+        <div class="takeaway-label">
+          Remember this
+        </div>
+
+        <p>
+          Phishing uses deception and trust to convince people to take
+          an action that benefits an attacker. When something feels urgent,
+          unexpected, or unusual, pause and verify before you act.
+        </p>
+
+      </section>
+
+
+      <!-- NEXT -->
+
+      <section class="next reveal">
+
+        <div class="next-label">
+          Next in the Beginner Path
+        </div>
+
+        <a
+          href="authentication-vs-authorization.html"
+          class="next-link"
+        >
+          Authentication vs Authorization →
+        </a>
+
+      </section>
+
+    </article>
+
+  </main>
+
+
+  <footer>
+    KSCybSec — Cybersecurity knowledge, one clue at a time.
+  </footer>
+
+
+  <script>
+
+    /* Reading progress */
+
+    const progressBar =
+      document.getElementById("progressBar");
+
+    window.addEventListener("scroll", () => {
+
+      const scrollTop = window.scrollY;
+
+      const documentHeight =
+        document.documentElement.scrollHeight -
+        window.innerHeight;
+
+      const progress =
+        documentHeight > 0
+          ? (scrollTop / documentHeight) * 100
+          : 0;
+
+      progressBar.style.width =
+        progress + "%";
+
+    });
+
+
+    /* Scroll reveal */
+
+    const observer =
+      new IntersectionObserver(
+        entries => {
+
+          entries.forEach(entry => {
+
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+            }
+
+          });
+
+        },
+        {
+          threshold: 0.08
+        }
+      );
+
+
+    document
+      .querySelectorAll(".reveal")
+      .forEach(element => {
+
+        observer.observe(element);
+
+      });
+
+  </script>
+
+</body>
+</html>
