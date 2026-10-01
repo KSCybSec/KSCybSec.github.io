@@ -144,7 +144,7 @@
     }
 
     .message-box {
-      max-width: 650px;
+      max-width: 600px;
       margin: auto;
       padding: 25px;
       border: 1px solid var(--border);
@@ -196,49 +196,6 @@
       font-size: 1.4rem;
     }
 
-    .split {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin: 40px 0;
-    }
-
-    .concept {
-      padding: 26px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-    }
-
-    .concept:nth-child(2) {
-      border-color: rgba(139, 124, 255, 0.35);
-    }
-
-    .concept:nth-child(3) {
-      border-color: rgba(77, 232, 255, 0.35);
-    }
-
-    .concept h3 {
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 1.4rem;
-      margin-bottom: 12px;
-    }
-
-    .concept .label {
-      font-family: "DM Mono", monospace;
-      font-size: 0.72rem;
-      color: var(--cyan);
-      margin-bottom: 12px;
-    }
-
-    .concept:nth-child(2) .label {
-      color: var(--purple);
-    }
-
-    .concept p {
-      font-size: 0.93rem;
-    }
-
     .investigation {
       margin: 45px 0;
       padding: 30px;
@@ -259,30 +216,6 @@
 
     .example-list strong {
       color: var(--text);
-    }
-
-    .mini-flow {
-      margin: 30px 0;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .mini-step {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      align-items: center;
-      padding: 15px 18px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: var(--surface);
-    }
-
-    .mini-step span {
-      color: var(--muted);
-      font-size: 0.85rem;
-      text-align: right;
     }
 
     .warning {
@@ -348,13 +281,9 @@
       font-size: 0.8rem;
     }
 
-    @media (max-width: 760px) {
+    @media (max-width: 700px) {
       main {
         padding-top: 45px;
-      }
-
-      .split {
-        grid-template-columns: 1fr;
       }
 
       .flow {
@@ -367,15 +296,6 @@
 
       .visual {
         padding: 22px;
-      }
-
-      .mini-step {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .mini-step span {
-        text-align: left;
       }
 
       h1 {
@@ -403,6 +323,7 @@
       But they solve very different problems.
     </p>
 
+
     <div class="visual">
 
       <div class="visual-title">THE ORIGINAL MESSAGE</div>
@@ -414,46 +335,50 @@
 
     </div>
 
+
     <h2 class="question">
-      Now something changes.
+      Something changed.
     </h2>
 
     <p>
-      The message is transformed.
-      Someone looking at the result may no longer understand it immediately.
+      The message no longer looks the same.
+      But what actually happened to it?
     </p>
 
     <div class="visual">
 
       <div class="visual-title">THREE POSSIBILITIES</div>
 
-      <div class="split">
+      <div class="flow">
 
-        <div class="concept">
-          <div class="label">METHOD 01</div>
-          <h3>Encryption</h3>
-          <p>
-            Protect information so that authorized parties can recover
-            the original data.
-          </p>
+        <div class="flow-item">
+          <strong>ENCRYPTION</strong>
+          <span>Protect the information</span>
         </div>
 
-        <div class="concept">
-          <div class="label">METHOD 02</div>
-          <h3>Hashing</h3>
-          <p>
-            Transform data into a fixed-length value designed to work
-            as a one-way representation.
-          </p>
+        <div class="arrow">?</div>
+
+        <div class="flow-item">
+          <strong>HASHING</strong>
+          <span>Create a digest</span>
         </div>
 
-        <div class="concept">
-          <div class="label">METHOD 03</div>
-          <h3>Encoding</h3>
-          <p>
-            Represent data in another format so systems can store,
-            transmit, or process it correctly.
-          </p>
+      </div>
+
+      <div style="height:16px;"></div>
+
+      <div class="flow">
+
+        <div class="flow-item">
+          <strong>ENCODING</strong>
+          <span>Change the representation</span>
+        </div>
+
+        <div class="arrow">?</div>
+
+        <div class="flow-item">
+          <strong>CONTEXT</strong>
+          <span>Find out what actually happened</span>
         </div>
 
       </div>
@@ -462,19 +387,11 @@
 
 
     <h2 class="question">
-      Let's follow each clue.
-    </h2>
-
-
-    <!-- ENCRYPTION -->
-
-    <h2 class="question">
-      01 · Encryption
+      First clue: Encryption
     </h2>
 
     <p>
-      Encryption is about <strong>protecting information from unauthorized
-      access</strong>.
+      Encryption is about protecting information from unauthorized access.
     </p>
 
     <div class="visual">
@@ -500,9 +417,13 @@
     </div>
 
     <p>
-      A cryptographic key is used as part of the encryption process.
-      With the appropriate key and algorithm, the protected data can
-      be decrypted.
+      Encryption uses a cryptographic algorithm and key to transform
+      readable data into protected data.
+    </p>
+
+    <p>
+      With the appropriate key and cryptographic process,
+      the protected data can be decrypted back into usable information.
     </p>
 
     <div class="investigation">
@@ -512,31 +433,38 @@
       </p>
 
       <div class="example-list">
-        <div><strong>Without protection:</strong> someone who intercepts the data may be able to read it.</div>
-        <div><strong>With encryption:</strong> the intercepted data is intended to remain protected from unauthorized readers.</div>
+
+        <div>
+          <strong>Without encryption:</strong>
+          an unauthorized party who obtains the data may be able to read it.
+        </div>
+
+        <div>
+          <strong>With encryption:</strong>
+          the data is intended to remain unreadable to unauthorized parties.
+        </div>
+
       </div>
 
     </div>
 
     <p>
-      HTTPS, encrypted messaging, encrypted files, and many other
-      security systems rely on cryptography.
+      HTTPS, encrypted messaging, encrypted storage, and many other
+      security systems use cryptography to protect information.
     </p>
 
 
-    <!-- HASHING -->
-
     <h2 class="question">
-      02 · Hashing
+      Second clue: Hashing
     </h2>
 
     <p>
-      Hashing works differently.
+      Hashing has a different purpose.
     </p>
 
     <p>
-      A hash function takes input and produces a fixed-length output,
-      often called a <strong>hash value</strong> or <strong>digest</strong>.
+      A hash function takes input and produces a fixed-length output
+      called a hash value or digest.
     </p>
 
     <div class="visual">
@@ -547,7 +475,7 @@
 
         <div class="flow-item">
           <strong>INPUT</strong>
-          <span>Any supported data</span>
+          <span>Original data</span>
         </div>
 
         <div class="arrow">→</div>
@@ -562,30 +490,27 @@
     </div>
 
     <p>
-      A properly designed cryptographic hash function is intended to
-      make it computationally infeasible to recover the original input
+      A cryptographic hash function is designed so that it is
+      computationally infeasible to recover the original input
       directly from the hash.
-    </p>
-
-    <p>
-      More importantly, even a tiny change in the input should produce
-      a very different hash value.
     </p>
 
     <div class="visual">
 
-      <div class="visual-title">SMALL CHANGE · DIFFERENT RESULT</div>
+      <div class="visual-title">A TINY CHANGE</div>
 
-      <div class="mini-flow">
+      <div class="flow">
 
-        <div class="mini-step">
+        <div class="flow-item">
           <strong>Hello</strong>
-          <span>Hash A</span>
+          <span>One hash value</span>
         </div>
 
-        <div class="mini-step">
+        <div class="arrow">→</div>
+
+        <div class="flow-item">
           <strong>hello</strong>
-          <span>Hash B</span>
+          <span>A completely different hash value</span>
         </div>
 
       </div>
@@ -593,8 +518,8 @@
     </div>
 
     <p>
-      The two inputs differ by only one character,
-      but their hash outputs can be completely different.
+      Even a small change in the input can produce a dramatically
+      different hash.
     </p>
 
 
@@ -603,8 +528,8 @@
     </h2>
 
     <p>
-      A well-designed password system should not need to store
-      users' original passwords in readable form.
+      A secure password system should not need to store users'
+      original passwords in readable form.
     </p>
 
     <div class="visual">
@@ -614,15 +539,15 @@
       <div class="flow">
 
         <div class="flow-item">
-          <strong>YOUR PASSWORD</strong>
+          <strong>PASSWORD</strong>
           <span>Entered during login</span>
         </div>
 
         <div class="arrow">→</div>
 
         <div class="flow-item">
-          <strong>HASH</strong>
-          <span>Compared with stored verifier</span>
+          <strong>VERIFICATION</strong>
+          <span>Compared against stored password verifier</span>
         </div>
 
       </div>
@@ -630,63 +555,38 @@
     </div>
 
     <p>
-      Modern password storage should use dedicated password-hashing
-      algorithms with salts and appropriate work factors, rather than
-      simply applying a fast general-purpose hash such as SHA-256.
+      Modern password storage uses dedicated password-hashing
+      algorithms with salts and appropriate work factors.
+      Simply storing passwords or using a fast general-purpose
+      hash is not sufficient password protection.
     </p>
 
 
-    <!-- ENCODING -->
-
     <h2 class="question">
-      03 · Encoding
+      Third clue: Encoding
     </h2>
 
     <p>
-      Encoding is different again.
+      Encoding is different from both encryption and hashing.
     </p>
 
     <p>
-      Encoding changes how information is represented so that it can
-      be stored, transmitted, or processed by another system.
+      It changes the representation of information so that systems
+      can store, transmit, or process it using an expected format.
     </p>
 
     <div class="visual">
 
       <div class="visual-title">ENCODING</div>
 
-      <div class="flow">
-
-        <div class="flow-item">
-          <strong>DATA</strong>
-          <span>Original representation</span>
-        </div>
-
-        <div class="arrow">→</div>
-
-        <div class="flow-item">
-          <strong>ENCODED DATA</strong>
-          <span>Another representation</span>
-        </div>
-
-      </div>
-
-    </div>
-
-    <p>
-      A familiar example is <strong>Base64</strong>.
-    </p>
-
-    <div class="visual">
-
       <div class="message-box">
 
-        <div class="message-label">TEXT</div>
+        <div class="message-label">ORIGINAL TEXT</div>
         <div class="message">Hello</div>
 
         <br>
 
-        <div class="message-label">BASE64 REPRESENTATION</div>
+        <div class="message-label">BASE64</div>
         <div class="message">SGVsbG8=</div>
 
       </div>
@@ -694,8 +594,12 @@
     </div>
 
     <p>
-      Base64 may look mysterious at first glance, but it is not
-      encryption. Anyone can decode Base64 if they know the encoding.
+      Base64 is a common example.
+    </p>
+
+    <p>
+      The result may look complicated, but Base64 is not encryption.
+      Anyone who knows the encoding can decode it.
     </p>
 
     <div class="warning">
@@ -705,26 +609,61 @@
 
 
     <h2 class="question">
-      So how do you tell them apart?
+      So what is the difference?
     </h2>
 
     <div class="visual">
 
-      <div class="mini-flow">
+      <div class="visual-title">FOLLOW THE PURPOSE</div>
 
-        <div class="mini-step">
-          <strong>Encryption</strong>
-          <span>Protect data → authorized parties can decrypt it</span>
+      <div class="flow">
+
+        <div class="flow-item">
+          <strong>ENCRYPTION</strong>
+          <span>Protect data</span>
         </div>
 
-        <div class="mini-step">
-          <strong>Hashing</strong>
-          <span>Produce a one-way digest for verification and other uses</span>
+        <div class="arrow">→</div>
+
+        <div class="flow-item">
+          <strong>DECRYPT</strong>
+          <span>Recover the protected data</span>
         </div>
 
-        <div class="mini-step">
-          <strong>Encoding</strong>
-          <span>Change representation → decode using the known format</span>
+      </div>
+
+      <div style="height:20px;"></div>
+
+      <div class="flow">
+
+        <div class="flow-item">
+          <strong>HASHING</strong>
+          <span>Create a digest</span>
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="flow-item">
+          <strong>VERIFY</strong>
+          <span>Compare or check information</span>
+        </div>
+
+      </div>
+
+      <div style="height:20px;"></div>
+
+      <div class="flow">
+
+        <div class="flow-item">
+          <strong>ENCODING</strong>
+          <span>Change representation</span>
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="flow-item">
+          <strong>DECODE</strong>
+          <span>Return to the original representation</span>
         </div>
 
       </div>
@@ -733,75 +672,72 @@
 
 
     <h2 class="question">
-      Here's where this becomes useful to a security analyst.
+      Now imagine you're investigating a system.
     </h2>
 
     <p>
-      During an investigation, you might encounter a strange-looking
-      string in a URL, log file, configuration file, or application response.
+      You find a strange-looking string inside a log file,
+      URL, configuration file, or application response.
     </p>
 
     <div class="investigation">
 
       <p>
-        Don't immediately assume:
+        Don't immediately conclude:
+      </p>
+
+      <p>
         <strong>“That's encrypted.”</strong>
       </p>
 
       <p>
-        First ask:
+        Instead, investigate.
       </p>
 
       <div class="example-list">
-        <div>→ Could this be an encoded value?</div>
+
+        <div>→ Could it be encoded?</div>
         <div>→ Could it be a hash?</div>
-        <div>→ Is there evidence that encryption is being used?</div>
-        <div>→ What system produced it?</div>
-        <div>→ What context surrounds the value?</div>
+        <div>→ Is encryption actually being used?</div>
+        <div>→ Which application produced it?</div>
+        <div>→ What does the surrounding context tell you?</div>
+
       </div>
 
     </div>
 
     <p>
-      The appearance of a string alone usually isn't enough to identify
-      what produced it.
+      The appearance of a string alone usually isn't enough to
+      determine how it was produced.
     </p>
 
 
     <h2 class="question">
-      One final clue
+      The clue is the purpose.
     </h2>
 
     <div class="visual">
 
-      <div class="visual-title">SECURITY PURPOSE</div>
+      <div class="visual-title">THINK LIKE AN INVESTIGATOR</div>
 
-      <div class="split">
+      <div class="message-box">
 
-        <div class="concept">
-          <div class="label">ENCRYPTION</div>
-          <h3>Confidentiality</h3>
-          <p>
-            Helps prevent unauthorized parties from reading protected data.
-          </p>
-        </div>
+        <div class="message-label">ASK WHAT THE SYSTEM IS TRYING TO DO</div>
 
-        <div class="concept">
-          <div class="label">HASHING</div>
-          <h3>Integrity & verification</h3>
-          <p>
-            Useful for checking data and securely verifying information
-            such as passwords when used appropriately.
-          </p>
-        </div>
+        <p style="margin-top:16px;">
+          <strong>Protect information?</strong><br>
+          Think encryption.
+        </p>
 
-        <div class="concept">
-          <div class="label">ENCODING</div>
-          <h3>Compatibility</h3>
-          <p>
-            Helps systems represent and exchange data in expected formats.
-          </p>
-        </div>
+        <p>
+          <strong>Create a digest for verification?</strong><br>
+          Think hashing.
+        </p>
+
+        <p style="margin-bottom:0;">
+          <strong>Represent information in another format?</strong><br>
+          Think encoding.
+        </p>
 
       </div>
 
@@ -812,26 +748,27 @@
 
       <div class="takeaway-label">TAKEAWAY</div>
 
-      <h2>Same appearance. Different purpose.</h2>
+      <h2>They may look similar. Their purposes are not.</h2>
 
       <p>
-        <strong>Encryption</strong> protects data and is designed to be
-        reversible with the appropriate key.
+        <strong>Encryption</strong> protects information and is designed
+        to be reversible using the appropriate cryptographic process.
       </p>
 
       <p>
-        <strong>Hashing</strong> creates a one-way digest that can be used
-        for verification and integrity-related tasks.
+        <strong>Hashing</strong> produces a one-way digest useful for
+        verification, integrity-related tasks, and password storage
+        when appropriate algorithms are used.
       </p>
 
       <p>
-        <strong>Encoding</strong> changes representation so information
-        can be handled or transmitted in a compatible format.
+        <strong>Encoding</strong> changes the representation of data
+        so that systems can store or transmit it in an expected format.
       </p>
 
       <p>
-        When you encounter unfamiliar data during an investigation,
-        don't guess from appearance alone. Look at the context.
+        When you encounter unfamiliar data, don't guess from appearance.
+        <strong>Look at the context and purpose.</strong>
       </p>
 
     </div>
