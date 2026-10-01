@@ -4,18 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>KSCybSec — Beginner Challenge</title>
+  <title>Beginner Challenge · KSCybSec</title>
 
   <meta
     name="description"
-    content="Test your understanding of the KSCybSec Beginner Path with a 15-question cybersecurity challenge."
+    content="Test your cybersecurity fundamentals with the KSCybSec Beginner Challenge."
   />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link
-    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
     rel="stylesheet"
   />
 
@@ -32,16 +32,17 @@
       --cyan: #4DE8FF;
       --violet: #8B7CFF;
 
-      --border: rgba(232, 237, 245, 0.08);
-      --border-hover: rgba(77, 232, 255, 0.25);
+      --green: #39ff88;
+      --red: #ff4d6d;
+
+      --border: rgba(232, 237, 245, 0.10);
+      --border-hover: rgba(77, 232, 255, 0.35);
 
       --max: 900px;
     }
 
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
 
     html {
@@ -49,40 +50,19 @@
     }
 
     body {
-      min-height: 100vh;
-
-      background:
-        radial-gradient(
-          circle at 15% 10%,
-          rgba(77, 232, 255, 0.055),
-          transparent 28%
-        ),
-        radial-gradient(
-          circle at 85% 35%,
-          rgba(139, 124, 255, 0.045),
-          transparent 30%
-        ),
-        var(--bg);
-
+      margin: 0;
+      background: var(--bg);
       color: var(--text);
-
-      font-family: "Inter", sans-serif;
-      line-height: 1.7;
-
-      overflow-x: hidden;
+      font-family: "Space Grotesk", sans-serif;
+      line-height: 1.6;
     }
 
     a {
       color: inherit;
-      text-decoration: none;
-    }
-
-    button {
-      font-family: inherit;
     }
 
     .container {
-      width: min(var(--max), calc(100% - 40px));
+      width: min(calc(100% - 40px), var(--max));
       margin: auto;
     }
 
@@ -91,18 +71,15 @@
     ========================= */
 
     nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-
-      background: rgba(7, 11, 20, 0.82);
-      backdrop-filter: blur(18px);
-
+      height: 74px;
       border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
     }
 
     .nav-inner {
-      min-height: 72px;
+      width: min(calc(100% - 40px), 1180px);
+      margin: auto;
 
       display: flex;
       align-items: center;
@@ -110,10 +87,9 @@
     }
 
     .brand {
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 1.25rem;
-      font-weight: 700;
-      letter-spacing: -0.03em;
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: -0.02em;
     }
 
     .brand span {
@@ -121,10 +97,11 @@
     }
 
     .back-link {
+      text-decoration: none;
       color: var(--muted);
 
       font-family: "DM Mono", monospace;
-      font-size: 0.78rem;
+      font-size: 0.72rem;
 
       transition: color 0.2s ease;
     }
@@ -137,90 +114,89 @@
        INTRO
     ========================= */
 
-    .intro {
-      padding: 110px 0 70px;
+    .hero {
+      padding: 90px 0 55px;
     }
 
     .eyebrow {
       font-family: "DM Mono", monospace;
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
       color: var(--cyan);
-
       margin-bottom: 18px;
     }
 
-    .intro h1 {
-      font-family: "Space Grotesk", sans-serif;
+    h1 {
+      margin: 0;
+      max-width: 700px;
 
-      font-size: clamp(2.8rem, 7vw, 5.5rem);
-      line-height: 1;
-      letter-spacing: -0.06em;
-
-      margin-bottom: 25px;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      line-height: 1.02;
+      letter-spacing: -0.045em;
     }
 
-    .intro h1 span {
-      color: var(--cyan);
-    }
-
-    .intro p {
-      max-width: 680px;
+    .hero-description {
+      max-width: 650px;
+      margin: 24px 0 28px;
 
       color: var(--body);
       font-size: 1.05rem;
     }
 
-    .intro-meta {
+    .meta {
       display: flex;
       flex-wrap: wrap;
-      gap: 18px;
+      gap: 10px;
+    }
 
-      margin-top: 30px;
+    .meta span {
+      padding: 7px 10px;
 
-      color: var(--muted);
+      border: 1px solid var(--border);
 
       font-family: "DM Mono", monospace;
-      font-size: 0.75rem;
+      font-size: 0.66rem;
+      letter-spacing: 0.05em;
+
+      color: var(--muted);
     }
 
     /* =========================
-       PROGRESS
+       QUIZ
     ========================= */
 
+    .quiz-section {
+      padding-bottom: 100px;
+    }
+
     .progress-wrap {
-      margin-bottom: 45px;
+      margin-bottom: 22px;
     }
 
     .progress-top {
       display: flex;
       justify-content: space-between;
-      gap: 20px;
+      align-items: center;
 
-      margin-bottom: 10px;
+      margin-bottom: 8px;
 
       font-family: "DM Mono", monospace;
-      font-size: 0.72rem;
-
+      font-size: 0.67rem;
       color: var(--muted);
     }
 
     .progress-bar {
       width: 100%;
-      height: 3px;
-
-      background: var(--border);
-
+      height: 2px;
+      background: rgba(232, 237, 245, 0.08);
       overflow: hidden;
     }
 
     .progress-fill {
-      width: 0%;
+      width: 6.66%;
       height: 100%;
-
       background: var(--cyan);
+      box-shadow: 0 0 8px rgba(77, 232, 255, 0.5);
 
       transition: width 0.3s ease;
     }
@@ -232,51 +208,92 @@
     .question {
       display: none;
 
-      padding-bottom: 80px;
+      border: 1px solid var(--border);
+      background: rgba(16, 24, 39, 0.42);
     }
 
     .question.active {
       display: block;
     }
 
-    .question-number {
-      font-family: "DM Mono", monospace;
+    .question-header {
+      padding: 28px 25px 12px;
+    }
 
-      color: var(--cyan);
-      font-size: 0.75rem;
+    .question-number {
+      margin-bottom: 9px;
+
+      font-family: "DM Mono", monospace;
+      font-size: 0.67rem;
       letter-spacing: 0.08em;
 
-      margin-bottom: 16px;
+      color: var(--cyan);
     }
 
     .question h2 {
-      font-family: "Space Grotesk", sans-serif;
+      margin: 0;
 
-      font-size: clamp(1.7rem, 4vw, 2.5rem);
-      line-height: 1.15;
-      letter-spacing: -0.04em;
-
-      margin-bottom: 30px;
+      font-size: clamp(1.35rem, 3vw, 1.8rem);
+      line-height: 1.25;
+      letter-spacing: -0.025em;
     }
 
+    /* =========================
+       SCENARIO
+    ========================= */
+
+    .scenario {
+      margin: 15px 25px 8px;
+      padding: 14px 16px;
+
+      border-left: 2px solid var(--violet);
+
+      background: rgba(139, 124, 255, 0.035);
+
+      color: var(--body);
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .scenario-label {
+      display: block;
+
+      margin-bottom: 5px;
+
+      font-family: "DM Mono", monospace;
+      font-size: 0.64rem;
+      letter-spacing: 0.08em;
+
+      color: var(--violet);
+    }
+
+    /* =========================
+       COMPACT OPTIONS
+    ========================= */
+
     .options {
-      display: grid;
-      gap: 12px;
+      display: flex;
+      flex-direction: column;
+
+      gap: 6px;
+
+      padding: 18px 25px 20px;
     }
 
     .option {
       width: 100%;
+      min-height: 48px;
 
       display: flex;
-      align-items: flex-start;
-      gap: 15px;
+      align-items: center;
+      gap: 12px;
 
-      padding: 18px 20px;
+      padding: 11px 14px;
 
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 7px;
 
-      background: rgba(16, 24, 39, 0.38);
+      background: rgba(7, 11, 20, 0.32);
 
       color: var(--body);
 
@@ -285,38 +302,205 @@
       cursor: pointer;
 
       transition:
-        border-color 0.2s ease,
-        background 0.2s ease,
-        transform 0.2s ease;
+        border-color 0.18s ease,
+        background 0.18s ease,
+        box-shadow 0.18s ease,
+        transform 0.18s ease;
     }
 
-    .option:hover {
+    .option:hover:not(.disabled) {
       border-color: var(--border-hover);
-      background: rgba(16, 24, 39, 0.7);
-      transform: translateX(3px);
+      background: rgba(16, 24, 39, 0.65);
+    }
+
+    .option:active:not(.disabled) {
+      transform: translateY(1px);
     }
 
     .option-letter {
       flex-shrink: 0;
 
-      width: 26px;
-      height: 26px;
+      width: 23px;
+      height: 23px;
 
       display: flex;
       align-items: center;
       justify-content: center;
 
       border: 1px solid var(--border);
-      border-radius: 50%;
+      border-radius: 5px;
 
       font-family: "DM Mono", monospace;
-      font-size: 0.72rem;
+      font-size: 0.66rem;
 
       color: var(--muted);
     }
 
     .option-text {
-      padding-top: 1px;
+      flex: 1;
+
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+
+    .option::after {
+      content: "+";
+
+      flex-shrink: 0;
+
+      color: var(--muted);
+
+      font-family: "DM Mono", monospace;
+      font-size: 0.75rem;
+
+      transition: transform 0.2s ease;
+    }
+
+    .option:hover:not(.disabled)::after {
+      color: var(--cyan);
+    }
+
+    /* =========================
+       CORRECT
+    ========================= */
+
+    .option.correct {
+      border-color: var(--green);
+
+      color: var(--green);
+
+      background: rgba(57, 255, 136, 0.045);
+
+      box-shadow:
+        0 0 7px rgba(57, 255, 136, 0.25),
+        inset 0 0 14px rgba(57, 255, 136, 0.025);
+    }
+
+    .option.correct::after {
+      content: "✓";
+      color: var(--green);
+    }
+
+    .option.correct .option-letter {
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    /* =========================
+       WRONG
+    ========================= */
+
+    .option.wrong {
+      border-color: var(--red);
+
+      color: var(--red);
+
+      background: rgba(255, 77, 109, 0.045);
+
+      box-shadow:
+        0 0 7px rgba(255, 77, 109, 0.25),
+        inset 0 0 14px rgba(255, 77, 109, 0.025);
+    }
+
+    .option.wrong::after {
+      content: "×";
+      color: var(--red);
+    }
+
+    .option.wrong .option-letter {
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    .option.disabled {
+      cursor: default;
+    }
+
+    .option.disabled:not(.correct):not(.wrong) {
+      opacity: 0.42;
+    }
+
+    /* =========================
+       FEEDBACK
+    ========================= */
+
+    .feedback {
+      display: none;
+
+      margin: 0 25px 18px;
+      padding: 13px 16px;
+
+      border-left: 2px solid var(--green);
+
+      background: rgba(57, 255, 136, 0.025);
+
+      color: var(--body);
+
+      font-size: 0.82rem;
+    }
+
+    .feedback.show {
+      display: block;
+    }
+
+    .feedback.wrong-feedback {
+      border-left-color: var(--red);
+      background: rgba(255, 77, 109, 0.025);
+    }
+
+    .feedback-title {
+      margin-bottom: 3px;
+
+      font-family: "DM Mono", monospace;
+      font-size: 0.67rem;
+      letter-spacing: 0.08em;
+
+      color: var(--green);
+    }
+
+    .wrong-feedback .feedback-title {
+      color: var(--red);
+    }
+
+    /* =========================
+       NEXT
+    ========================= */
+
+    .next-area {
+      display: none;
+
+      padding: 0 25px 22px;
+
+      text-align: right;
+    }
+
+    .next-area.show {
+      display: block;
+    }
+
+    .next-button {
+      border: 0;
+
+      padding: 10px 16px;
+
+      background: transparent;
+
+      color: var(--text);
+
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+
+      cursor: pointer;
+
+      transition: color 0.2s ease;
+    }
+
+    .next-button:hover {
+      color: var(--cyan);
+    }
+
+    .next-button span {
+      color: var(--cyan);
     }
 
     /* =========================
@@ -326,7 +510,7 @@
     .result {
       display: none;
 
-      padding: 70px 0 110px;
+      padding: 55px 0 100px;
     }
 
     .result.active {
@@ -335,171 +519,130 @@
 
     .result-label {
       font-family: "DM Mono", monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
 
       color: var(--cyan);
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
 
       margin-bottom: 15px;
     }
 
     .result h2 {
-      font-family: "Space Grotesk", sans-serif;
+      margin: 0;
 
-      font-size: clamp(2.5rem, 6vw, 4.5rem);
-      line-height: 1;
+      font-size: clamp(2.3rem, 6vw, 4rem);
+      line-height: 1.05;
 
-      letter-spacing: -0.06em;
-
-      margin-bottom: 25px;
+      letter-spacing: -0.04em;
     }
 
     .score {
+      margin-top: 35px;
+
       font-family: "DM Mono", monospace;
+      font-size: clamp(3rem, 8vw, 5rem);
 
-      color: var(--cyan);
+      color: var(--green);
 
-      font-size: 1rem;
-
-      margin-bottom: 35px;
+      text-shadow: 0 0 16px rgba(57, 255, 136, 0.25);
     }
 
     .result-message {
-      max-width: 650px;
+      max-width: 620px;
+
+      margin: 12px 0 45px;
 
       color: var(--body);
-
-      margin-bottom: 55px;
     }
 
     /* =========================
        NEXT TRACKS
     ========================= */
 
-    .next-section {
-      border-top: 1px solid var(--border);
+    .tracks-label {
+      margin-bottom: 12px;
 
-      padding-top: 45px;
-    }
-
-    .next-label {
       font-family: "DM Mono", monospace;
-
-      color: var(--muted);
-
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       letter-spacing: 0.08em;
-      text-transform: uppercase;
 
-      margin-bottom: 25px;
+      color: var(--muted);
     }
 
-    .next-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
+    .track-list {
+      border-top: 1px solid var(--border);
     }
 
-    .next-card {
-      padding: 23px;
+    .track {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
 
-      border: 1px solid var(--border);
-      border-radius: 12px;
+      padding: 18px 0;
 
-      transition:
-        border-color 0.2s ease,
-        transform 0.2s ease;
+      border-bottom: 1px solid var(--border);
+
+      text-decoration: none;
+
+      transition: padding 0.2s ease;
     }
 
-    .next-card:hover {
-      border-color: var(--border-hover);
-      transform: translateY(-3px);
+    .track:hover {
+      padding-left: 8px;
+      padding-right: 8px;
     }
 
-    .next-card span {
-      font-family: "DM Mono", monospace;
+    .track h3 {
+      margin: 0 0 3px;
 
-      color: var(--cyan);
-
-      font-size: 0.7rem;
+      font-size: 1rem;
+      font-weight: 500;
     }
 
-    .next-card h3 {
-      font-family: "Space Grotesk", sans-serif;
+    .track p {
+      margin: 0;
 
-      margin: 10px 0 6px;
-
-      font-size: 1.15rem;
-    }
-
-    .next-card p {
       color: var(--muted);
 
-      font-size: 0.85rem;
+      font-size: 0.78rem;
+    }
+
+    .track-arrow {
+      color: var(--cyan);
+      font-family: "DM Mono", monospace;
     }
 
     /* =========================
-       BUTTONS
+       RESULT ACTIONS
     ========================= */
 
-    .actions {
+    .result-actions {
       display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
+      gap: 22px;
 
-      margin-top: 45px;
+      margin-top: 35px;
     }
 
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+    .result-actions button,
+    .result-actions a {
+      border: 0;
+      background: none;
 
-      padding: 12px 18px;
+      padding: 0;
 
-      border: 1px solid var(--border);
-      border-radius: 8px;
+      color: var(--muted);
 
       font-family: "DM Mono", monospace;
-      font-size: 0.78rem;
+      font-size: 0.7rem;
 
-      color: var(--text);
-
-      background: transparent;
+      text-decoration: none;
 
       cursor: pointer;
-
-      transition:
-        border-color 0.2s ease,
-        color 0.2s ease,
-        background 0.2s ease;
     }
 
-    .button:hover {
-      border-color: var(--border-hover);
+    .result-actions button:hover,
+    .result-actions a:hover {
       color: var(--cyan);
-      background: rgba(77, 232, 255, 0.03);
-    }
-
-    .button.primary {
-      border-color: rgba(77, 232, 255, 0.35);
-      color: var(--cyan);
-    }
-
-    /* =========================
-       FOOTER
-    ========================= */
-
-    footer {
-      padding: 35px 0;
-
-      border-top: 1px solid var(--border);
-
-      color: var(--muted);
-
-      font-family: "DM Mono", monospace;
-      font-size: 0.72rem;
     }
 
     /* =========================
@@ -509,27 +652,65 @@
     @media (max-width: 650px) {
 
       .container {
-        width: min(var(--max), calc(100% - 28px));
+        width: min(calc(100% - 30px), var(--max));
+      }
+
+      nav {
+        height: 65px;
       }
 
       .nav-inner {
-        min-height: 62px;
+        width: min(calc(100% - 30px), 1180px);
       }
 
-      .back-link {
-        font-size: 0.7rem;
+      .hero {
+        padding: 65px 0 40px;
       }
 
-      .intro {
-        padding: 80px 0 55px;
+      .hero-description {
+        font-size: 0.95rem;
       }
 
-      .next-grid {
-        grid-template-columns: 1fr;
+      .question-header {
+        padding: 20px 16px 8px;
+      }
+
+      .scenario {
+        margin-left: 16px;
+        margin-right: 16px;
+      }
+
+      .options {
+        padding: 15px 16px 18px;
+        gap: 5px;
       }
 
       .option {
-        padding: 16px;
+        min-height: 45px;
+        padding: 9px 11px;
+      }
+
+      .option-text {
+        font-size: 0.84rem;
+      }
+
+      .feedback {
+        margin-left: 16px;
+        margin-right: 16px;
+      }
+
+      .next-area {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .result {
+        padding-top: 35px;
+      }
+
+      .result-actions {
+        flex-direction: column;
+        gap: 15px;
       }
     }
   </style>
@@ -538,15 +719,14 @@
 <body>
 
   <!-- =========================
-       NAVIGATION
-  ========================== -->
+       NAV
+  ========================= -->
 
   <nav>
-
-    <div class="container nav-inner">
+    <div class="nav-inner">
 
       <a href="index.html" class="brand">
-        KS<span>CybSec</span>
+        KSCyb<span>Sec</span>
       </a>
 
       <a href="index.html" class="back-link">
@@ -554,42 +734,36 @@
       </a>
 
     </div>
-
   </nav>
 
 
   <!-- =========================
        INTRO
-  ========================== -->
+  ========================= -->
 
   <main>
 
-    <section class="intro">
+    <section class="hero">
 
       <div class="container">
 
         <div class="eyebrow">
-          Beginner Path · Final Step
+          BEGINNER PATH · FINAL STEP
         </div>
 
         <h1>
-          Put the<br>
-          pieces <span>together.</span>
+          Put the pieces together.
         </h1>
 
-        <p>
-          You've followed the first 15 clues.
-          Now let's see how well the ideas connect.
-          This isn't about memorising definitions —
-          think about what you've learned.
+        <p class="hero-description">
+          You have followed the clues through the beginner path.
+          Now see if you can recognize those ideas when they appear
+          in simple real-world situations.
         </p>
 
-        <div class="intro-meta">
+        <div class="meta">
           <span>15 QUESTIONS</span>
-          <span>·</span>
           <span>BEGINNER LEVEL</span>
-          <span>·</span>
-          <span>NO LOGIN</span>
         </div>
 
       </div>
@@ -599,743 +773,1000 @@
 
     <!-- =========================
          QUIZ
-    ========================== -->
+    ========================= -->
 
-    <section id="quiz-section">
+    <section class="quiz-section" id="quiz">
 
       <div class="container">
 
         <div class="progress-wrap">
 
           <div class="progress-top">
-
-            <span id="progress-text">
-              QUESTION 01 / 15
-            </span>
-
-            <span id="progress-percent">
-              0%
-            </span>
-
+            <span id="progressText">QUESTION 01 / 15</span>
+            <span id="progressPercent">7%</span>
           </div>
 
           <div class="progress-bar">
-
-            <div
-              class="progress-fill"
-              id="progress-fill"
-            ></div>
-
+            <div class="progress-fill" id="progressFill"></div>
           </div>
 
         </div>
 
 
-        <div id="questions">
+        <!-- QUESTION 1 -->
 
+        <div class="question active">
 
-          <!-- QUESTION 1 -->
-
-          <div class="question active" data-question="0">
+          <div class="question-header">
 
             <div class="question-number">
-              CLUE 01
+              CLUE 001
             </div>
 
             <h2>
-              What is the main goal of cybersecurity?
+              A company wants to protect its computers and data from attacks.
+              What field is this?
             </h2>
-
-            <div class="options">
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">A</span>
-                <span class="option-text">
-                  To make every computer run faster
-                </span>
-              </button>
-
-              <button class="option" data-answer="1">
-                <span class="option-letter">B</span>
-                <span class="option-text">
-                  To protect systems, data and people from threats
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">C</span>
-                <span class="option-text">
-                  To prevent people from using the Internet
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">D</span>
-                <span class="option-text">
-                  To replace all passwords with encryption
-                </span>
-              </button>
-
-            </div>
 
           </div>
 
+          <div class="scenario">
 
-          <!-- QUESTION 2 -->
+            <span class="scenario-label">
+              SCENARIO
+            </span>
 
-          <div class="question" data-question="1">
-
-            <div class="question-number">
-              CLUE 02
-            </div>
-
-            <h2>
-              What does an IP address primarily identify?
-            </h2>
-
-            <div class="options">
-
-              <button class="option" data-answer="1">
-                <span class="option-letter">A</span>
-                <span class="option-text">
-                  A device or network interface on a network
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">B</span>
-                <span class="option-text">
-                  A specific password
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">C</span>
-                <span class="option-text">
-                  A type of malware
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">D</span>
-                <span class="option-text">
-                  A browser extension
-                </span>
-              </button>
-
-            </div>
+            The company is reviewing its systems, networks and employees
+            to reduce security risks.
 
           </div>
 
+          <div class="options">
 
-          <!-- QUESTION 3 -->
+            <button class="option" data-answer="correct">
+              <span class="option-letter">A</span>
+              <span class="option-text">Cybersecurity</span>
+            </button>
 
-          <div class="question" data-question="2">
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">B</span>
+              <span class="option-text">Database management</span>
+            </button>
 
-            <div class="question-number">
-              CLUE 03
-            </div>
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">C</span>
+              <span class="option-text">Web design</span>
+            </button>
 
-            <h2>
-              What is the purpose of a network port?
-            </h2>
-
-            <div class="options">
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">A</span>
-                <span class="option-text">
-                  To physically connect two computers
-                </span>
-              </button>
-
-              <button class="option" data-answer="1">
-                <span class="option-letter">B</span>
-                <span class="option-text">
-                  To identify a network service or application endpoint
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">C</span>
-                <span class="option-text">
-                  To store files permanently
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">D</span>
-                <span class="option-text">
-                  To encrypt an IP address
-                </span>
-              </button>
-
-            </div>
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">D</span>
+              <span class="option-text">Data visualization</span>
+            </button>
 
           </div>
 
+          <div class="feedback">
+            <div class="feedback-title">CORRECT</div>
+            Cybersecurity focuses on protecting systems, networks, devices
+            and data from threats.
+          </div>
 
-          <!-- QUESTION 4 -->
+          <div class="next-area">
+            <button class="next-button">
+              NEXT CLUE <span>→</span>
+            </button>
+          </div>
 
-          <div class="question" data-question="3">
+        </div>
+
+
+        <!-- QUESTION 2 -->
+
+        <div class="question">
+
+          <div class="question-header">
 
             <div class="question-number">
-              CLUE 04
+              CLUE 002
             </div>
 
             <h2>
-              Which statement best describes TCP?
+              Your computer needs to communicate with another device.
+              What identifies the device on the network?
             </h2>
-
-            <div class="options">
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">A</span>
-                <span class="option-text">
-                  It never checks whether data arrived
-                </span>
-              </button>
-
-              <button class="option" data-answer="1">
-                <span class="option-letter">B</span>
-                <span class="option-text">
-                  It provides reliable, ordered delivery
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">C</span>
-                <span class="option-text">
-                  It is only used for DNS
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">D</span>
-                <span class="option-text">
-                  It cannot establish a connection
-                </span>
-              </button>
-
-            </div>
 
           </div>
 
+          <div class="scenario">
 
-          <!-- QUESTION 5 -->
+            <span class="scenario-label">SCENARIO</span>
 
-          <div class="question" data-question="4">
-
-            <div class="question-number">
-              CLUE 05
-            </div>
-
-            <h2>
-              What problem does DNS solve?
-            </h2>
-
-            <div class="options">
-
-              <button class="option" data-answer="1">
-                <span class="option-letter">A</span>
-                <span class="option-text">
-                  It translates domain names into IP addresses
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">B</span>
-                <span class="option-text">
-                  It scans computers for malware
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">C</span>
-                <span class="option-text">
-                  It encrypts every website
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">D</span>
-                <span class="option-text">
-                  It blocks all unwanted traffic
-                </span>
-              </button>
-
-            </div>
+            A technician asks for the device's network address so
+            they can identify which machine they are connecting to.
 
           </div>
 
+          <div class="options">
 
-          <!-- QUESTION 6 -->
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">A</span>
+              <span class="option-text">Port number</span>
+            </button>
 
-          <div class="question" data-question="5">
+            <button class="option" data-answer="correct">
+              <span class="option-letter">B</span>
+              <span class="option-text">IP address</span>
+            </button>
 
-            <div class="question-number">
-              CLUE 06
-            </div>
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">C</span>
+              <span class="option-text">Protocol name</span>
+            </button>
 
-            <h2>
-              What does HTTPS add to HTTP?
-            </h2>
-
-            <div class="options">
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">A</span>
-                <span class="option-text">
-                  A guarantee that the website is trustworthy
-                </span>
-              </button>
-
-              <button class="option" data-answer="1">
-                <span class="option-letter">B</span>
-                <span class="option-text">
-                  Encryption and authentication through TLS
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">C</span>
-                <span class="option-text">
-                  A faster Internet connection
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">D</span>
-                <span class="option-text">
-                  Protection against every type of cyber attack
-                </span>
-              </button>
-
-            </div>
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">D</span>
+              <span class="option-text">File extension</span>
+            </button>
 
           </div>
 
+          <div class="feedback">
+            <div class="feedback-title">CORRECT</div>
+            An IP address identifies a device or network interface
+            on an IP network.
+          </div>
 
-          <!-- QUESTION 7 -->
+          <div class="next-area">
+            <button class="next-button">
+              NEXT CLUE <span>→</span>
+            </button>
+          </div>
 
-          <div class="question" data-question="6">
+        </div>
+
+
+        <!-- QUESTION 3 -->
+
+        <div class="question">
+
+          <div class="question-header">
 
             <div class="question-number">
-              CLUE 07
+              CLUE 003
             </div>
 
             <h2>
-              What is a firewall mainly used for?
+              A scan shows port 80 is open on a server.
+              What does that usually suggest?
             </h2>
-
-            <div class="options">
-
-              <button class="option" data-answer="1">
-                <span class="option-letter">A</span>
-                <span class="option-text">
-                  Controlling network traffic according to rules
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">B</span>
-                <span class="option-text">
-                  Creating passwords
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">C</span>
-                <span class="option-text">
-                  Translating domain names
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">D</span>
-                <span class="option-text">
-                  Compressing network packets
-                </span>
-              </button>
-
-            </div>
 
           </div>
 
+          <div class="scenario">
 
-          <!-- QUESTION 8 -->
+            <span class="scenario-label">SCENARIO</span>
 
-          <div class="question" data-question="7">
-
-            <div class="question-number">
-              CLUE 08
-            </div>
-
-            <h2>
-              Which of these is malware?
-            </h2>
-
-            <div class="options">
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">A</span>
-                <span class="option-text">
-                  A firewall rule
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">B</span>
-                <span class="option-text">
-                  A DNS record
-                </span>
-              </button>
-
-              <button class="option" data-answer="1">
-                <span class="option-letter">C</span>
-                <span class="option-text">
-                  Ransomware
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">D</span>
-                <span class="option-text">
-                  HTTPS
-                </span>
-              </button>
-
-            </div>
+            You run a basic network scan and see TCP port 80
+            responding on a server.
 
           </div>
 
+          <div class="options">
 
-          <!-- QUESTION 9 -->
+            <button class="option" data-answer="correct">
+              <span class="option-letter">A</span>
+              <span class="option-text">A web service may be listening there</span>
+            </button>
 
-          <div class="question" data-question="8">
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">B</span>
+              <span class="option-text">The server must be using HTTPS</span>
+            </button>
 
-            <div class="question-number">
-              CLUE 09
-            </div>
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">C</span>
+              <span class="option-text">The port identifies the device itself</span>
+            </button>
 
-            <h2>
-              What is phishing mainly trying to exploit?
-            </h2>
-
-            <div class="options">
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">A</span>
-                <span class="option-text">
-                  CPU temperature
-                </span>
-              </button>
-
-              <button class="option" data-answer="1">
-                <span class="option-letter">B</span>
-                <span class="option-text">
-                  Human trust and behaviour
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">C</span>
-                <span class="option-text">
-                  DNS speed
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">D</span>
-                <span class="option-text">
-                  Hard-drive capacity
-                </span>
-              </button>
-
-            </div>
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">D</span>
+              <span class="option-text">The service is automatically secure</span>
+            </button>
 
           </div>
 
+          <div class="feedback">
+            <div class="feedback-title">CORRECT</div>
+            Port 80 is commonly associated with HTTP, so an open port
+            can indicate that a web service is listening there.
+          </div>
 
-          <!-- QUESTION 10 -->
+          <div class="next-area">
+            <button class="next-button">
+              NEXT CLUE <span>→</span>
+            </button>
+          </div>
 
-          <div class="question" data-question="9">
+        </div>
+
+
+        <!-- QUESTION 4 -->
+
+        <div class="question">
+
+          <div class="question-header">
 
             <div class="question-number">
-              CLUE 10
+              CLUE 004
             </div>
 
             <h2>
-              What question does authentication answer?
+              You send important data using TCP.
+              What is TCP designed to provide?
             </h2>
-
-            <div class="options">
-
-              <button class="option" data-answer="1">
-                <span class="option-letter">A</span>
-                <span class="option-text">
-                  "Who are you?"
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">B</span>
-                <span class="option-text">
-                  "What are you allowed to do?"
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">C</span>
-                <span class="option-text">
-                  "What IP address are you using?"
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">D</span>
-                <span class="option-text">
-                  "Which port is open?"
-                </span>
-              </button>
-
-            </div>
 
           </div>
 
+          <div class="scenario">
 
-          <!-- QUESTION 11 -->
+            <span class="scenario-label">SCENARIO</span>
 
-          <div class="question" data-question="10">
-
-            <div class="question-number">
-              CLUE 11
-            </div>
-
-            <h2>
-              Which statement about hashing is correct?
-            </h2>
-
-            <div class="options">
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">A</span>
-                <span class="option-text">
-                  Hashing is designed to be easily reversed
-                </span>
-              </button>
-
-              <button class="option" data-answer="1">
-                <span class="option-letter">B</span>
-                <span class="option-text">
-                  Hashing produces a fixed-length representation of data
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">C</span>
-                <span class="option-text">
-                  Hashing always hides data from network attackers
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">D</span>
-                <span class="option-text">
-                  Hashing and encoding are exactly the same
-                </span>
-              </button>
-
-            </div>
+            A file is being transferred and the sender needs reliable
+            delivery rather than simply sending packets without checking them.
 
           </div>
 
+          <div class="options">
 
-          <!-- QUESTION 12 -->
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">A</span>
+              <span class="option-text">Automatic encryption</span>
+            </button>
 
-          <div class="question" data-question="11">
+            <button class="option" data-answer="correct">
+              <span class="option-letter">B</span>
+              <span class="option-text">Reliable, ordered delivery</span>
+            </button>
 
-            <div class="question-number">
-              CLUE 12
-            </div>
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">C</span>
+              <span class="option-text">DNS name resolution</span>
+            </button>
 
-            <h2>
-              What does the "I" in the CIA Triad stand for?
-            </h2>
-
-            <div class="options">
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">A</span>
-                <span class="option-text">
-                  Identification
-                </span>
-              </button>
-
-              <button class="option" data-answer="1">
-                <span class="option-letter">B</span>
-                <span class="option-text">
-                  Integrity
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">C</span>
-                <span class="option-text">
-                  Internet
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">D</span>
-                <span class="option-text">
-                  Investigation
-                </span>
-              </button>
-
-            </div>
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">D</span>
+              <span class="option-text">Firewall filtering</span>
+            </button>
 
           </div>
 
+          <div class="feedback">
+            <div class="feedback-title">CORRECT</div>
+            TCP uses mechanisms such as acknowledgements and sequencing
+            to provide reliable, ordered communication.
+          </div>
 
-          <!-- QUESTION 13 -->
+          <div class="next-area">
+            <button class="next-button">
+              NEXT CLUE <span>→</span>
+            </button>
+          </div>
 
-          <div class="question" data-question="12">
+        </div>
+
+
+        <!-- QUESTION 5 -->
+
+        <div class="question">
+
+          <div class="question-header">
 
             <div class="question-number">
-              CLUE 13
+              CLUE 005
             </div>
 
             <h2>
-              Which action comes first in many cyber attacks?
+              You type a website name instead of an IP address.
+              What helps find its IP address?
             </h2>
-
-            <div class="options">
-
-              <button class="option" data-answer="1">
-                <span class="option-letter">A</span>
-                <span class="option-text">
-                  Reconnaissance and information gathering
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">B</span>
-                <span class="option-text">
-                  Deleting every log
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">C</span>
-                <span class="option-text">
-                  Encrypting every file
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">D</span>
-                <span class="option-text">
-                  Shutting down the victim's network
-                </span>
-              </button>
-
-            </div>
 
           </div>
 
+          <div class="scenario">
 
-          <!-- QUESTION 14 -->
+            <span class="scenario-label">SCENARIO</span>
 
-          <div class="question" data-question="13">
-
-            <div class="question-number">
-              CLUE 14
-            </div>
-
-            <h2>
-              A user logs in successfully but cannot open a restricted file. What concept is most relevant?
-            </h2>
-
-            <div class="options">
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">A</span>
-                <span class="option-text">
-                  Authentication
-                </span>
-              </button>
-
-              <button class="option" data-answer="1">
-                <span class="option-letter">B</span>
-                <span class="option-text">
-                  Authorization
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">C</span>
-                <span class="option-text">
-                  Encoding
-                </span>
-              </button>
-
-              <button class="option" data-answer="0">
-                <span class="option-letter">D</span>
-                <span class="option-text">
-                  DNS
-                </span>
-              </button>
-
-            </div>
+            Your browser needs to find the network address associated
+            with a domain such as example.com.
 
           </div>
 
+          <div class="options">
 
-          <!-- QUESTION 15 -->
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">A</span>
+              <span class="option-text">HTTP</span>
+            </button>
 
-          <div class="question" data-question="14">
+            <button class="option" data-answer="correct">
+              <span class="option-letter">B</span>
+              <span class="option-text">DNS</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">C</span>
+              <span class="option-text">FTP</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">D</span>
+              <span class="option-text">SMTP</span>
+            </button>
+
+          </div>
+
+          <div class="feedback">
+            <div class="feedback-title">CORRECT</div>
+            DNS translates domain names into IP addresses that
+            systems can use to communicate.
+          </div>
+
+          <div class="next-area">
+            <button class="next-button">
+              NEXT CLUE <span>→</span>
+            </button>
+          </div>
+
+        </div>
+
+
+        <!-- QUESTION 6 -->
+
+        <div class="question">
+
+          <div class="question-header">
 
             <div class="question-number">
-              CLUE 15
+              CLUE 006
             </div>
 
             <h2>
-              Which sequence best represents a simplified attack lifecycle?
+              A website uses HTTPS instead of HTTP.
+              What does HTTPS add?
             </h2>
 
-            <div class="options">
+          </div>
 
-              <button class="option" data-answer="0">
-                <span class="option-letter">A</span>
-                <span class="option-text">
-                  Defend → Scan → Ignore → Attack
-                </span>
-              </button>
+          <div class="scenario">
 
-              <button class="option" data-answer="1">
-                <span class="option-letter">B</span>
-                <span class="option-text">
-                  Reconnaissance → Initial Access → Exploitation → Actions on Objectives
-                </span>
-              </button>
+            <span class="scenario-label">SCENARIO</span>
 
-              <button class="option" data-answer="0">
-                <span class="option-letter">C</span>
-                <span class="option-text">
-                  Password → DNS → Firewall → Browser
-                </span>
-              </button>
+            You are entering information into a website and notice
+            the address begins with HTTPS.
 
-              <button class="option" data-answer="0">
-                <span class="option-letter">D</span>
-                <span class="option-text">
-                  Encrypt → Hash → Encode → Delete
-                </span>
-              </button>
+          </div>
 
+          <div class="options">
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">A</span>
+              <span class="option-text">A different IP address</span>
+            </button>
+
+            <button class="option" data-answer="correct">
+              <span class="option-letter">B</span>
+              <span class="option-text">TLS protection for the connection</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">C</span>
+              <span class="option-text">A new DNS record</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">D</span>
+              <span class="option-text">A firewall between every user and server</span>
+            </button>
+
+          </div>
+
+          <div class="feedback">
+            <div class="feedback-title">CORRECT</div>
+            HTTPS uses TLS to help protect data exchanged between
+            the client and the server.
+          </div>
+
+          <div class="next-area">
+            <button class="next-button">
+              NEXT CLUE <span>→</span>
+            </button>
+          </div>
+
+        </div>
+
+
+        <!-- QUESTION 7 -->
+
+        <div class="question">
+
+          <div class="question-header">
+
+            <div class="question-number">
+              CLUE 007
             </div>
 
+            <h2>
+              A firewall sees an incoming connection that violates
+              its rules. What can it do?
+            </h2>
+
+          </div>
+
+          <div class="scenario">
+
+            <span class="scenario-label">SCENARIO</span>
+
+            An organization's firewall receives a connection that
+            is not allowed by its configured rules.
+
+          </div>
+
+          <div class="options">
+
+            <button class="option" data-answer="correct">
+              <span class="option-letter">A</span>
+              <span class="option-text">Block or allow traffic based on its rules</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">B</span>
+              <span class="option-text">Automatically remove every virus</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">C</span>
+              <span class="option-text">Recover every deleted file</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">D</span>
+              <span class="option-text">Create passwords for users</span>
+            </button>
+
+          </div>
+
+          <div class="feedback">
+            <div class="feedback-title">CORRECT</div>
+            Firewalls control network traffic according to configured
+            rules and policies.
+          </div>
+
+          <div class="next-area">
+            <button class="next-button">
+              NEXT CLUE <span>→</span>
+            </button>
+          </div>
+
+        </div>
+
+
+        <!-- QUESTION 8 -->
+
+        <div class="question">
+
+          <div class="question-header">
+
+            <div class="question-number">
+              CLUE 008
+            </div>
+
+            <h2>
+              Files on a computer suddenly become encrypted and
+              the attacker demands payment. What is this?
+            </h2>
+
+          </div>
+
+          <div class="scenario">
+
+            <span class="scenario-label">SCENARIO</span>
+
+            A user can no longer open their documents and sees
+            a message demanding money to restore access.
+
+          </div>
+
+          <div class="options">
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">A</span>
+              <span class="option-text">Spyware</span>
+            </button>
+
+            <button class="option" data-answer="correct">
+              <span class="option-letter">B</span>
+              <span class="option-text">Ransomware</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">C</span>
+              <span class="option-text">Firewall</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">D</span>
+              <span class="option-text">Adware</span>
+            </button>
+
+          </div>
+
+          <div class="feedback">
+            <div class="feedback-title">CORRECT</div>
+            Ransomware is malware that can encrypt or otherwise
+            block access to data and demand payment.
+          </div>
+
+          <div class="next-area">
+            <button class="next-button">
+              NEXT CLUE <span>→</span>
+            </button>
+          </div>
+
+        </div>
+
+
+        <!-- QUESTION 9 -->
+
+        <div class="question">
+
+          <div class="question-header">
+
+            <div class="question-number">
+              CLUE 009
+            </div>
+
+            <h2>
+              You receive an email pretending to be your bank and
+              asking you to click a login link. What should you suspect?
+            </h2>
+
+          </div>
+
+          <div class="scenario">
+
+            <span class="scenario-label">SCENARIO</span>
+
+            The message creates urgency and asks you to enter
+            your banking credentials through a provided link.
+
+          </div>
+
+          <div class="options">
+
+            <button class="option" data-answer="correct">
+              <span class="option-letter">A</span>
+              <span class="option-text">Phishing</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">B</span>
+              <span class="option-text">DNS resolution</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">C</span>
+              <span class="option-text">Network segmentation</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">D</span>
+              <span class="option-text">Data compression</span>
+            </button>
+
+          </div>
+
+          <div class="feedback">
+            <div class="feedback-title">CORRECT</div>
+            Phishing attempts to trick people into revealing information
+            or taking an unsafe action.
+          </div>
+
+          <div class="next-area">
+            <button class="next-button">
+              NEXT CLUE <span>→</span>
+            </button>
+          </div>
+
+        </div>
+
+
+        <!-- QUESTION 10 -->
+
+        <div class="question">
+
+          <div class="question-header">
+
+            <div class="question-number">
+              CLUE 010
+            </div>
+
+            <h2>
+              A website asks for your username and password.
+              Which security concept is checking who you are?
+            </h2>
+
+          </div>
+
+          <div class="scenario">
+
+            <span class="scenario-label">SCENARIO</span>
+
+            You enter your credentials and the system checks
+            whether they belong to your account.
+
+          </div>
+
+          <div class="options">
+
+            <button class="option" data-answer="correct">
+              <span class="option-letter">A</span>
+              <span class="option-text">Authentication</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">B</span>
+              <span class="option-text">Authorization</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">C</span>
+              <span class="option-text">Encryption</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">D</span>
+              <span class="option-text">Logging</span>
+            </button>
+
+          </div>
+
+          <div class="feedback">
+            <div class="feedback-title">CORRECT</div>
+            Authentication answers: "Who are you?"
+            Authorization answers: "What are you allowed to access?"
+          </div>
+
+          <div class="next-area">
+            <button class="next-button">
+              NEXT CLUE <span>→</span>
+            </button>
+          </div>
+
+        </div>
+
+
+        <!-- QUESTION 11 -->
+
+        <div class="question">
+
+          <div class="question-header">
+
+            <div class="question-number">
+              CLUE 011
+            </div>
+
+            <h2>
+              A website stores passwords as hashes instead of plain text.
+              Why?
+            </h2>
+
+          </div>
+
+          <div class="scenario">
+
+            <span class="scenario-label">SCENARIO</span>
+
+            A database is compromised. The attacker finds password
+            hash values rather than a list of readable passwords.
+
+          </div>
+
+          <div class="options">
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">A</span>
+              <span class="option-text">To make passwords easier to read</span>
+            </button>
+
+            <button class="option" data-answer="correct">
+              <span class="option-letter">B</span>
+              <span class="option-text">To avoid storing passwords directly in plain text</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">C</span>
+              <span class="option-text">To turn passwords into IP addresses</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">D</span>
+              <span class="option-text">To make passwords public</span>
+            </button>
+
+          </div>
+
+          <div class="feedback">
+            <div class="feedback-title">CORRECT</div>
+            Hashing provides a one-way transformation commonly used
+            for storing password verifiers rather than plain passwords.
+          </div>
+
+          <div class="next-area">
+            <button class="next-button">
+              NEXT CLUE <span>→</span>
+            </button>
+          </div>
+
+        </div>
+
+
+        <!-- QUESTION 12 -->
+
+        <div class="question">
+
+          <div class="question-header">
+
+            <div class="question-number">
+              CLUE 012
+            </div>
+
+            <h2>
+              A company wants to make sure its files have not been
+              changed without permission. Which CIA principle applies?
+            </h2>
+
+          </div>
+
+          <div class="scenario">
+
+            <span class="scenario-label">SCENARIO</span>
+
+            An important report must remain unchanged unless
+            an authorized employee modifies it.
+
+          </div>
+
+          <div class="options">
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">A</span>
+              <span class="option-text">Confidentiality</span>
+            </button>
+
+            <button class="option" data-answer="correct">
+              <span class="option-letter">B</span>
+              <span class="option-text">Integrity</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">C</span>
+              <span class="option-text">Availability</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">D</span>
+              <span class="option-text">Authentication</span>
+            </button>
+
+          </div>
+
+          <div class="feedback">
+            <div class="feedback-title">CORRECT</div>
+            Integrity means keeping information accurate and protected
+            from unauthorized modification.
+          </div>
+
+          <div class="next-area">
+            <button class="next-button">
+              NEXT CLUE <span>→</span>
+            </button>
+          </div>
+
+        </div>
+
+
+        <!-- QUESTION 13 -->
+
+        <div class="question">
+
+          <div class="question-header">
+
+            <div class="question-number">
+              CLUE 013
+            </div>
+
+            <h2>
+              Before attempting an attack, someone gathers information
+              about a target. What stage is this?
+            </h2>
+
+          </div>
+
+          <div class="scenario">
+
+            <span class="scenario-label">SCENARIO</span>
+
+            An attacker looks for domains, IP addresses,
+            technologies and publicly available information
+            about an organization.
+
+          </div>
+
+          <div class="options">
+
+            <button class="option" data-answer="correct">
+              <span class="option-letter">A</span>
+              <span class="option-text">Reconnaissance</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">B</span>
+              <span class="option-text">Recovery</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">C</span>
+              <span class="option-text">Authentication</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">D</span>
+              <span class="option-text">Data backup</span>
+            </button>
+
+          </div>
+
+          <div class="feedback">
+            <div class="feedback-title">CORRECT</div>
+            Reconnaissance is the information-gathering stage where
+            a target is studied before further actions.
+          </div>
+
+          <div class="next-area">
+            <button class="next-button">
+              NEXT CLUE <span>→</span>
+            </button>
+          </div>
+
+        </div>
+
+
+        <!-- QUESTION 14 -->
+
+        <div class="question">
+
+          <div class="question-header">
+
+            <div class="question-number">
+              CLUE 014
+            </div>
+
+            <h2>
+              A user successfully logs in but cannot open the
+              administrator settings. What concept controls this?
+            </h2>
+
+          </div>
+
+          <div class="scenario">
+
+            <span class="scenario-label">SCENARIO</span>
+
+            The system knows who the user is, but the user does not
+            have permission to access a particular resource.
+
+          </div>
+
+          <div class="options">
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">A</span>
+              <span class="option-text">Authentication</span>
+            </button>
+
+            <button class="option" data-answer="correct">
+              <span class="option-letter">B</span>
+              <span class="option-text">Authorization</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">C</span>
+              <span class="option-text">Encryption</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">D</span>
+              <span class="option-text">DNS</span>
+            </button>
+
+          </div>
+
+          <div class="feedback">
+            <div class="feedback-title">CORRECT</div>
+            Authorization determines what an authenticated user
+            is allowed to access or do.
+          </div>
+
+          <div class="next-area">
+            <button class="next-button">
+              NEXT CLUE <span>→</span>
+            </button>
+          </div>
+
+        </div>
+
+
+        <!-- QUESTION 15 -->
+
+        <div class="question">
+
+          <div class="question-header">
+
+            <div class="question-number">
+              CLUE 015
+            </div>
+
+            <h2>
+              Someone gathers information about a target, finds a way
+              in, and then tries to access resources. What does this show?
+            </h2>
+
+          </div>
+
+          <div class="scenario">
+
+            <span class="scenario-label">SCENARIO</span>
+
+            The activity happens in stages rather than as one single action:
+            information gathering comes before exploitation and access.
+
+          </div>
+
+          <div class="options">
+
+            <button class="option" data-answer="correct">
+              <span class="option-letter">A</span>
+              <span class="option-text">An attack can follow a sequence of stages</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">B</span>
+              <span class="option-text">Every attack starts with malware</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">C</span>
+              <span class="option-text">Network attacks always use the same tool</span>
+            </button>
+
+            <button class="option" data-answer="wrong">
+              <span class="option-letter">D</span>
+              <span class="option-text">Authentication prevents every attack</span>
+            </button>
+
+          </div>
+
+          <div class="feedback">
+            <div class="feedback-title">CORRECT</div>
+            Real attacks can involve multiple stages, such as
+            reconnaissance, initial access, exploitation and actions
+            after gaining access.
+          </div>
+
+          <div class="next-area">
+            <button class="next-button">
+              SEE YOUR RESULT <span>→</span>
+            </button>
           </div>
 
         </div>
@@ -1347,130 +1778,135 @@
 
     <!-- =========================
          RESULT
-    ========================== -->
+    ========================= -->
 
     <section class="result" id="result">
 
       <div class="container">
 
         <div class="result-label">
-          Beginner Path · Complete
+          BEGINNER PATH · COMPLETE
         </div>
 
         <h2>
-          You connected<br>
-          the clues.
+          You connected the clues.
         </h2>
 
         <div class="score" id="score">
-          SCORE: 0 / 15
+          0 / 15
         </div>
 
-        <p class="result-message" id="result-message">
+        <p class="result-message" id="resultMessage">
           Your result will appear here.
         </p>
 
 
-        <div class="next-section">
+        <div class="tracks-label">
+          WHERE TO GO NEXT
+        </div>
 
-          <div class="next-label">
-            WHERE DO YOU GO NEXT?
-          </div>
+        <div class="track-list">
 
+          <a
+            href="articles/what-is-osint.html"
+            class="track"
+          >
 
-          <div class="next-grid">
-
-            <a href="#osint" class="next-card">
-
-              <span>
-                INVESTIGATE
-              </span>
+            <div>
 
               <h3>
-                OSINT
+                OSINT · Investigation
               </h3>
 
               <p>
-                Learn how to find, connect and verify
-                publicly available information.
+                Learn how public information becomes useful when
+                clues are connected and verified.
               </p>
 
-            </a>
+            </div>
+
+            <div class="track-arrow">
+              →
+            </div>
+
+          </a>
 
 
-            <a href="#defensive" class="next-card">
+          <a href="#" class="track">
 
-              <span>
-                DEFEND
-              </span>
+            <div>
 
               <h3>
                 Defensive Security
               </h3>
 
               <p>
-                Explore detection, monitoring,
-                investigation and response.
+                Explore monitoring, detection and security operations.
               </p>
 
-            </a>
+            </div>
+
+            <div class="track-arrow">
+              →
+            </div>
+
+          </a>
 
 
-            <a href="#web-security" class="next-card">
+          <a href="#" class="track">
 
-              <span>
-                BUILD & BREAK
-              </span>
+            <div>
 
               <h3>
                 Web Security
               </h3>
 
               <p>
-                Understand how web applications
-                work and where weaknesses appear.
+                Start understanding how web applications can be
+                analyzed and secured.
               </p>
 
-            </a>
+            </div>
+
+            <div class="track-arrow">
+              →
+            </div>
+
+          </a>
 
 
-            <a href="#offensive" class="next-card">
+          <a href="#" class="track">
 
-              <span>
-                EXPLORE
-              </span>
+            <div>
 
               <h3>
                 Offensive Security
               </h3>
 
               <p>
-                Learn how attackers discover and
-                understand weaknesses.
+                Learn how attackers discover and exploit weaknesses.
               </p>
 
-            </a>
+            </div>
 
-          </div>
+            <div class="track-arrow">
+              →
+            </div>
+
+          </a>
+
+        </div>
 
 
-          <div class="actions">
+        <div class="result-actions">
 
-            <button
-              class="button primary"
-              id="retry-button"
-            >
-              Try Again
-            </button>
+          <button id="retryButton">
+            TRY AGAIN
+          </button>
 
-            <a
-              href="index.html"
-              class="button"
-            >
-              Back to KSCybSec
-            </a>
-
-          </div>
+          <a href="index.html">
+            BACK TO KSCybSec
+          </a>
 
         </div>
 
@@ -1481,54 +1917,21 @@
   </main>
 
 
-  <!-- =========================
-       FOOTER
-  ========================== -->
-
-  <footer>
-
-    <div class="container">
-
-      KSCybSec · Learn · Try · Think · Verify
-
-    </div>
-
-  </footer>
-
-
-  <!-- =========================
-       JAVASCRIPT
-  ========================== -->
-
   <script>
 
-    const questions =
-      document.querySelectorAll(".question");
+    const questions = document.querySelectorAll(".question");
 
-    const quizSection =
-      document.querySelector("#quiz-section");
+    const progressFill = document.getElementById("progressFill");
+    const progressText = document.getElementById("progressText");
+    const progressPercent = document.getElementById("progressPercent");
 
-    const resultSection =
-      document.querySelector("#result");
+    const quiz = document.getElementById("quiz");
+    const result = document.getElementById("result");
 
-    const progressFill =
-      document.querySelector("#progress-fill");
+    const scoreElement = document.getElementById("score");
+    const resultMessage = document.getElementById("resultMessage");
 
-    const progressText =
-      document.querySelector("#progress-text");
-
-    const progressPercent =
-      document.querySelector("#progress-percent");
-
-    const scoreElement =
-      document.querySelector("#score");
-
-    const resultMessage =
-      document.querySelector("#result-message");
-
-    const retryButton =
-      document.querySelector("#retry-button");
-
+    const retryButton = document.getElementById("retryButton");
 
     let currentQuestion = 0;
     let score = 0;
@@ -1541,68 +1944,121 @@
     function showQuestion(index) {
 
       questions.forEach((question, i) => {
-
-        question.classList.toggle(
-          "active",
-          i === index
-        );
-
+        question.classList.toggle("active", i === index);
       });
 
-      const number =
-        String(index + 1).padStart(2, "0");
-
-      const percentage =
-        Math.round((index / questions.length) * 100);
+      const number = String(index + 1).padStart(2, "0");
+      const percent = Math.round(((index + 1) / questions.length) * 100);
 
       progressText.textContent =
         `QUESTION ${number} / ${questions.length}`;
 
       progressPercent.textContent =
-        `${percentage}%`;
+        `${percent}%`;
 
       progressFill.style.width =
-        `${percentage}%`;
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
+        `${percent}%`;
     }
 
 
     /* =========================
-       ANSWERS
+       FEEDBACK
     ========================= */
 
-    document
-      .querySelectorAll(".option")
-      .forEach((option) => {
+    function showFeedback(question, selectedOption) {
 
-        option.addEventListener("click", () => {
+      const options = question.querySelectorAll(".option");
+      const feedback = question.querySelector(".feedback");
+      const nextArea = question.querySelector(".next-area");
 
-          const answer =
-            Number(option.dataset.answer);
+      const isCorrect =
+        selectedOption.dataset.answer === "correct";
 
-          if (answer === 1) {
-            score++;
-          }
 
-          currentQuestion++;
+      options.forEach(option => {
 
-          if (currentQuestion < questions.length) {
+        option.classList.add("disabled");
 
-            showQuestion(currentQuestion);
-
-          } else {
-
-            finishQuiz();
-
-          }
-
-        });
+        if (option.dataset.answer === "correct") {
+          option.classList.add("correct");
+        }
 
       });
+
+
+      if (isCorrect) {
+
+        score++;
+
+        feedback.classList.remove("wrong-feedback");
+
+        feedback.querySelector(".feedback-title").textContent =
+          "CORRECT";
+
+      } else {
+
+        selectedOption.classList.add("wrong");
+
+        feedback.classList.add("wrong-feedback");
+
+        feedback.querySelector(".feedback-title").textContent =
+          "NOT QUITE";
+
+      }
+
+
+      feedback.classList.add("show");
+
+      nextArea.classList.add("show");
+    }
+
+
+    /* =========================
+       OPTION CLICK
+    ========================= */
+
+    document.querySelectorAll(".option").forEach(option => {
+
+      option.addEventListener("click", function () {
+
+        const question = this.closest(".question");
+
+        if (
+          question.querySelector(".option.disabled")
+        ) {
+          return;
+        }
+
+        showFeedback(question, this);
+
+      });
+
+    });
+
+
+    /* =========================
+       NEXT QUESTION
+    ========================= */
+
+    document.querySelectorAll(".next-button").forEach(button => {
+
+      button.addEventListener("click", function () {
+
+        currentQuestion++;
+
+        if (currentQuestion < questions.length) {
+
+          showQuestion(currentQuestion);
+
+        } else {
+
+          finishQuiz();
+
+        }
+
+      });
+
+    });
 
 
     /* =========================
@@ -1611,50 +2067,47 @@
 
     function finishQuiz() {
 
-      quizSection.style.display = "none";
+      quiz.style.display = "none";
 
-      resultSection.classList.add("active");
-
-      progressFill.style.width = "100%";
-
-      progressText.textContent =
-        "CHALLENGE COMPLETE";
-
-      progressPercent.textContent =
-        "100%";
-
-
-      scoreElement.textContent =
-        `SCORE: ${score} / ${questions.length}`;
-
+      result.classList.add("active");
 
       const percentage =
-        Math.round(
-          (score / questions.length) * 100
-        );
+        Math.round((score / questions.length) * 100);
 
+      scoreElement.textContent =
+        `${score} / ${questions.length}`;
 
       if (percentage >= 90) {
 
         resultMessage.textContent =
-          "Excellent foundation. You were able to connect most of the concepts across the path. You're ready to start exploring deeper cybersecurity topics.";
+          "You have a strong grasp of the beginner foundations. The next step is to start applying these ideas through practical investigation and security exercises.";
 
       } else if (percentage >= 70) {
 
         resultMessage.textContent =
-          "Solid foundation. You understand the major ideas, and a little more practice will help connect them more naturally.";
+          "You have a solid foundation. A few concepts may need another look, but you are ready to start connecting them through practical exercises.";
 
       } else if (percentage >= 50) {
 
         resultMessage.textContent =
-          "You've got several important pieces. Consider revisiting a few of the articles before moving deeper.";
+          "You have the beginnings of a cybersecurity foundation. Revisiting a few articles before moving deeper will help connect the concepts.";
 
       } else {
 
         resultMessage.textContent =
-          "This is only the beginning. Revisit the articles, follow the clues again, and try the challenge once more.";
+          "The clues are starting to connect. Revisiting the beginner path and trying the challenge again will strengthen the foundation.";
 
       }
+
+
+      progressText.textContent =
+        "PATH COMPLETE";
+
+      progressPercent.textContent =
+        "100%";
+
+      progressFill.style.width =
+        "100%";
 
 
       window.scrollTo({
@@ -1669,16 +2122,53 @@
        RETRY
     ========================= */
 
-    retryButton.addEventListener("click", () => {
+    retryButton.addEventListener("click", function () {
 
       currentQuestion = 0;
       score = 0;
 
-      quizSection.style.display = "block";
+      questions.forEach(question => {
 
-      resultSection.classList.remove("active");
+        question.classList.remove("active");
+
+        question.querySelectorAll(".option").forEach(option => {
+
+          option.classList.remove(
+            "disabled",
+            "correct",
+            "wrong"
+          );
+
+        });
+
+        const feedback =
+          question.querySelector(".feedback");
+
+        feedback.classList.remove(
+          "show",
+          "wrong-feedback"
+        );
+
+        feedback.querySelector(".feedback-title").textContent =
+          "CORRECT";
+
+        question
+          .querySelector(".next-area")
+          .classList.remove("show");
+
+      });
+
+
+      quiz.style.display = "block";
+
+      result.classList.remove("active");
 
       showQuestion(0);
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
 
     });
 
