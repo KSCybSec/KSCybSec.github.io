@@ -118,6 +118,12 @@
       color: var(--cyan);
     }
 
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
     .nav-links {
       display: flex;
       align-items: center;
@@ -133,6 +139,61 @@
 
     .nav-links a:hover {
       color: var(--text);
+    }
+
+    /* Mobile menu button */
+
+    .nav-toggle {
+      display: none;
+
+      width: 40px;
+      height: 40px;
+
+      border: 1px solid var(--border);
+      border-radius: 9px;
+
+      background: transparent;
+
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 5px;
+
+      cursor: pointer;
+    }
+
+    .nav-toggle span {
+      display: block;
+
+      width: 18px;
+      height: 1.5px;
+
+      background: var(--text);
+      border-radius: 2px;
+
+      transition:
+        transform 0.25s ease,
+        opacity 0.25s ease;
+    }
+
+    .nav-toggle:hover {
+      border-color: var(--border-hover);
+    }
+
+    .nav-toggle.active span:nth-child(1) {
+      transform: translateY(6.5px) rotate(45deg);
+    }
+
+    .nav-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .nav-toggle.active span:nth-child(3) {
+      transform: translateY(-6.5px) rotate(-45deg);
+    }
+
+    .mobile-nav {
+      display: none;
     }
 
     /* =========================
@@ -505,6 +566,72 @@
       font-size: 1.2rem;
     }
 
+    /* Beginner Path completion */
+
+    .path-complete {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+
+      margin-top: 55px;
+      padding: 30px 0;
+
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+
+      transition:
+        padding 0.25s ease,
+        color 0.25s ease;
+    }
+
+    .path-complete:hover {
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+
+    .path-complete-label {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+
+      margin-bottom: 8px;
+    }
+
+    .path-complete h3 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.35rem;
+      margin-bottom: 4px;
+    }
+
+    .path-complete p {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .path-complete-arrow {
+      color: var(--cyan);
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    /* =========================
+       OSINT TRACK
+    ========================= */
+
+    .osint-track {
+      padding: 95px 0;
+    }
+
+    .osint-track-header {
+      margin-bottom: 45px;
+    }
+
+    .osint-track .article-row {
+      border-top: 1px solid var(--border);
+    }
+
     /* =========================
        TOPICS
     ========================= */
@@ -797,8 +924,62 @@
         min-height: 62px;
       }
 
+      .nav-right {
+        gap: 10px;
+      }
+
       .nav-links {
         display: none;
+      }
+
+      .nav-toggle {
+        display: flex;
+      }
+
+      /* Mobile dropdown */
+
+      .mobile-nav {
+        position: fixed;
+        top: 62px;
+        left: 0;
+        right: 0;
+
+        z-index: 99;
+
+        padding: 12px 14px 18px;
+
+        background: rgba(7, 11, 20, 0.97);
+        backdrop-filter: blur(18px);
+
+        border-bottom: 1px solid var(--border);
+
+        display: none;
+      }
+
+      .mobile-nav.open {
+        display: grid;
+        gap: 3px;
+      }
+
+      .mobile-nav a {
+        display: block;
+
+        padding: 12px 14px;
+
+        color: var(--muted);
+
+        font-size: 0.92rem;
+
+        border-radius: 8px;
+
+        transition:
+          color 0.2s ease,
+          background 0.2s ease;
+      }
+
+      .mobile-nav a:hover {
+        color: var(--text);
+        background: rgba(77, 232, 255, 0.04);
       }
 
       .hero {
@@ -842,6 +1023,10 @@
         display: none;
       }
 
+      .path-complete {
+        padding: 25px 0;
+      }
+
       .steps {
         flex-wrap: wrap;
       }
@@ -874,15 +1059,58 @@
         KS<span>CybSec</span>
       </a>
 
-      <div class="nav-links">
-        <a href="#start">Start Here</a>
-        <a href="#latest">Articles</a>
-        <a href="#topics">Topics</a>
-        <a href="#explore">Explore</a>
-        <a href="#about">About</a>
+      <div class="nav-right">
+
+        <div class="nav-links">
+          <a href="#start">Start Here</a>
+          <a href="#latest">Articles</a>
+          <a href="#topics">Topics</a>
+          <a href="#explore">Explore</a>
+          <a href="#about">About</a>
+        </div>
+
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
       </div>
 
     </div>
+
+    <!-- Mobile Navigation -->
+
+    <div class="mobile-nav" id="mobile-nav">
+
+      <a href="#start">
+        Start Here
+      </a>
+
+      <a href="#latest">
+        Articles
+      </a>
+
+      <a href="#topics">
+        Topics
+      </a>
+
+      <a href="#explore">
+        Explore
+      </a>
+
+      <a href="#about">
+        About
+      </a>
+
+    </div>
+
   </nav>
 
 
@@ -947,8 +1175,6 @@
 
       <div class="start-options">
 
-        <!-- Beginner Path -->
-
         <a
           href="articles/what-is-cybersecurity.html"
           class="start-option reveal"
@@ -969,8 +1195,6 @@
 
         </a>
 
-
-        <!-- Understand -->
 
         <a
           href="#topics"
@@ -993,8 +1217,6 @@
         </a>
 
 
-        <!-- Explore -->
-
         <a
           href="#explore"
           class="start-option reveal"
@@ -1015,8 +1237,6 @@
 
         </a>
 
-
-        <!-- Browse -->
 
         <a
           href="#latest"
@@ -1046,7 +1266,7 @@
 
 
   <!-- =========================
-       FEATURED
+       FEATURED OSINT
   ========================== -->
 
   <section class="featured">
@@ -1102,7 +1322,7 @@
 
 
   <!-- =========================
-       LATEST ARTICLES
+       BEGINNER PATH
   ========================== -->
 
   <section class="latest" id="latest">
@@ -1112,16 +1332,17 @@
       <div class="reveal">
 
         <div class="section-label">
-          Follow your curiosity
+          BEGINNER PATH · 001—015
         </div>
 
         <h2 class="section-title">
-          Articles
+          Build the foundation.
         </h2>
 
         <p class="section-description">
-          Start anywhere. Follow the questions.
-          Connect the ideas.
+          Start with the basics, connect the concepts,
+          and gradually build a picture of how cybersecurity
+          works in the real world.
         </p>
 
       </div>
@@ -1129,7 +1350,7 @@
 
       <div class="latest-list">
 
-        <!-- Beginner Path -->
+        <!-- 001 -->
 
         <a
           href="articles/what-is-cybersecurity.html"
@@ -1158,6 +1379,8 @@
         </a>
 
 
+        <!-- 002 -->
+
         <a
           href="articles/how-does-the-internet-work.html"
           class="article-row reveal"
@@ -1184,6 +1407,8 @@
 
         </a>
 
+
+        <!-- 003 -->
 
         <a
           href="articles/what-is-an-ip-address.html"
@@ -1212,6 +1437,8 @@
         </a>
 
 
+        <!-- 004 -->
+
         <a
           href="articles/what-are-ports.html"
           class="article-row reveal"
@@ -1238,6 +1465,8 @@
 
         </a>
 
+
+        <!-- 005 -->
 
         <a
           href="articles/tcp-vs-udp.html"
@@ -1266,6 +1495,8 @@
         </a>
 
 
+        <!-- 006 -->
+
         <a
           href="articles/what-is-dns.html"
           class="article-row reveal"
@@ -1292,6 +1523,8 @@
 
         </a>
 
+
+        <!-- 007 -->
 
         <a
           href="articles/http-vs-https.html"
@@ -1320,6 +1553,8 @@
         </a>
 
 
+        <!-- 008 -->
+
         <a
           href="articles/what-happens-when-you-visit-a-website.html"
           class="article-row reveal"
@@ -1346,6 +1581,8 @@
 
         </a>
 
+
+        <!-- 009 -->
 
         <a
           href="articles/what-is-a-firewall.html"
@@ -1374,6 +1611,8 @@
         </a>
 
 
+        <!-- 010 -->
+
         <a
           href="articles/what-is-malware.html"
           class="article-row reveal"
@@ -1400,6 +1639,8 @@
 
         </a>
 
+
+        <!-- 011 -->
 
         <a
           href="articles/what-is-phishing.html"
@@ -1428,6 +1669,8 @@
         </a>
 
 
+        <!-- 012 -->
+
         <a
           href="articles/authentication-vs-authorization.html"
           class="article-row reveal"
@@ -1454,6 +1697,8 @@
 
         </a>
 
+
+        <!-- 013 -->
 
         <a
           href="articles/encryption-hashing-encoding.html"
@@ -1482,6 +1727,8 @@
         </a>
 
 
+        <!-- 014 -->
+
         <a
           href="articles/cia-triad.html"
           class="article-row reveal"
@@ -1509,6 +1756,8 @@
         </a>
 
 
+        <!-- 015 -->
+
         <a
           href="articles/how-cyber-attacks-work.html"
           class="article-row reveal"
@@ -1535,36 +1784,98 @@
 
         </a>
 
+      </div>
 
-        <!-- Existing OSINT article -->
 
-        <a
-          href="articles/what-is-osint.html"
-          class="article-row reveal"
-        >
+      <!-- Beginner Path Complete -->
 
-          <div class="article-number">
-            016
+      <a
+        href="beginner-challenge.html"
+        class="path-complete reveal"
+      >
+
+        <div>
+
+          <div class="path-complete-label">
+            BEGINNER PATH · COMPLETE
           </div>
 
-          <div>
-            <h3>
-              What Is OSINT?
-            </h3>
+          <h3>
+            Ready to put the pieces together?
+          </h3>
 
-            <p>
-              Learn how publicly available information
-              becomes useful when the pieces are connected.
-            </p>
-          </div>
+          <p>
+            Take the beginner challenge and see how much
+            of the foundation you can connect.
+          </p>
 
-          <div class="article-arrow">
-            →
-          </div>
+        </div>
 
-        </a>
+        <span class="path-complete-arrow">
+          →
+        </span>
+
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       OSINT TRACK
+  ========================== -->
+
+  <section class="osint-track" id="osint">
+
+    <div class="container">
+
+      <div class="osint-track-header reveal">
+
+        <div class="section-label">
+          INVESTIGATION TRACK · OSINT
+        </div>
+
+        <h2 class="section-title">
+          Follow the clues.
+        </h2>
+
+        <p class="section-description">
+          OSINT is a separate investigation path.
+          Learn how publicly available information can be
+          discovered, connected and verified.
+        </p>
 
       </div>
+
+
+      <a
+        href="articles/what-is-osint.html"
+        class="article-row reveal"
+      >
+
+        <div class="article-number">
+          OSINT
+        </div>
+
+        <div>
+
+          <h3>
+            What Is OSINT?
+          </h3>
+
+          <p>
+            Learn how publicly available information
+            becomes useful when the pieces are connected.
+          </p>
+
+        </div>
+
+        <div class="article-arrow">
+          →
+        </div>
+
+      </a>
 
     </div>
 
@@ -1600,77 +1911,101 @@
       <div class="topics-list">
 
         <a href="#latest" class="topic reveal">
+
           <div>
             <h3>Fundamentals</h3>
             <p>Build the foundation.</p>
           </div>
+
           <span class="topic-arrow">→</span>
+
         </a>
 
 
         <a href="#latest" class="topic reveal">
+
           <div>
             <h3>Networking</h3>
             <p>Understand how systems communicate.</p>
           </div>
+
           <span class="topic-arrow">→</span>
+
         </a>
 
 
         <a href="#latest" class="topic reveal">
+
           <div>
             <h3>Web Security</h3>
             <p>Explore how websites can be attacked and protected.</p>
           </div>
+
           <span class="topic-arrow">→</span>
+
         </a>
 
 
         <a href="#explore" class="topic reveal">
+
           <div>
             <h3>Offensive Security</h3>
             <p>Think like an attacker to understand weaknesses.</p>
           </div>
+
           <span class="topic-arrow">→</span>
+
         </a>
 
 
         <a href="#explore" class="topic reveal">
+
           <div>
             <h3>Defensive Security</h3>
             <p>Detect, investigate and respond.</p>
           </div>
+
           <span class="topic-arrow">→</span>
+
         </a>
 
 
         <a
-          href="articles/what-is-osint.html"
+          href="#osint"
           class="topic reveal"
         >
+
           <div>
             <h3>OSINT</h3>
             <p>Find, connect and verify public information.</p>
           </div>
+
           <span class="topic-arrow">→</span>
+
         </a>
 
 
         <a href="#explore" class="topic reveal">
+
           <div>
             <h3>Digital Forensics</h3>
             <p>Investigate what happened after the clues appear.</p>
           </div>
+
           <span class="topic-arrow">→</span>
+
         </a>
 
 
         <a href="#explore" class="topic reveal">
+
           <div>
             <h3>Malware & Threats</h3>
             <p>Understand malicious software and threats.</p>
           </div>
+
           <span class="topic-arrow">→</span>
+
         </a>
 
       </div>
@@ -1756,7 +2091,7 @@
         </a>
 
 
-        <a href="articles/what-is-osint.html" class="explore-item reveal">
+        <a href="#osint" class="explore-item reveal">
 
           <span>04</span>
 
@@ -1807,6 +2142,7 @@
         </p>
 
         <div class="steps">
+
           <span>Learn</span>
           <b>→</b>
           <span>Try</span>
@@ -1814,6 +2150,7 @@
           <span>Think</span>
           <b>→</b>
           <span>Verify</span>
+
         </div>
 
       </div>
@@ -1937,6 +2274,10 @@
 
   <script>
 
+    /* =========================
+       REVEAL ANIMATION
+    ========================= */
+
     const revealElements =
       document.querySelectorAll(".reveal");
 
@@ -1966,6 +2307,91 @@
     revealElements.forEach((element) => {
 
       observer.observe(element);
+
+    });
+
+
+    /* =========================
+       MOBILE NAVIGATION
+    ========================= */
+
+    const navToggle =
+      document.querySelector(".nav-toggle");
+
+    const mobileNav =
+      document.querySelector("#mobile-nav");
+
+
+    navToggle.addEventListener("click", () => {
+
+      const isOpen =
+        mobileNav.classList.toggle("open");
+
+      navToggle.classList.toggle(
+        "active",
+        isOpen
+      );
+
+      navToggle.setAttribute(
+        "aria-expanded",
+        String(isOpen)
+      );
+
+      navToggle.setAttribute(
+        "aria-label",
+        isOpen
+          ? "Close navigation menu"
+          : "Open navigation menu"
+      );
+
+    });
+
+
+    /* Close mobile menu after selecting a link */
+
+    const mobileLinks =
+      mobileNav.querySelectorAll("a");
+
+
+    mobileLinks.forEach((link) => {
+
+      link.addEventListener("click", () => {
+
+        mobileNav.classList.remove("open");
+
+        navToggle.classList.remove("active");
+
+        navToggle.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
+        navToggle.setAttribute(
+          "aria-label",
+          "Open navigation menu"
+        );
+
+      });
+
+    });
+
+
+    /* Close menu if window becomes desktop */
+
+    window.addEventListener("resize", () => {
+
+      if (window.innerWidth > 650) {
+
+        mobileNav.classList.remove("open");
+
+        navToggle.classList.remove("active");
+
+        navToggle.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
+      }
 
     });
 
