@@ -143,52 +143,59 @@
       letter-spacing: 0.08em;
     }
 
-    .login-screen {
+    .login-box {
       max-width: 500px;
       margin: auto;
-      padding: 30px;
+      padding: 28px;
+      background: rgba(7, 11, 20, 0.55);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      background: rgba(7, 11, 20, 0.65);
+      border-radius: 14px;
     }
 
-    .login-header {
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 1.3rem;
-      margin-bottom: 24px;
+    .login-row {
+      margin-bottom: 17px;
     }
 
-    .input {
-      padding: 13px 15px;
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      margin-bottom: 12px;
+    .login-label {
+      display: block;
       color: var(--muted);
       font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      margin-bottom: 6px;
+    }
+
+    .login-value {
+      padding: 11px 13px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      background: rgba(255,255,255,0.02);
+      font-family: "DM Mono", monospace;
       font-size: 0.85rem;
     }
 
-    .button {
-      padding: 13px;
-      border-radius: 9px;
-      background: rgba(77, 232, 255, 0.12);
-      border: 1px solid rgba(77, 232, 255, 0.35);
-      color: var(--cyan);
+    .login-button {
+      margin-top: 5px;
       text-align: center;
+      padding: 11px;
+      border-radius: 8px;
+      background: rgba(77, 232, 255, 0.08);
+      color: var(--cyan);
+      border: 1px solid rgba(77, 232, 255, 0.25);
       font-family: "DM Mono", monospace;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
     }
 
     .flow {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 16px;
       align-items: center;
       text-align: center;
     }
 
     .flow-item {
-      padding: 24px 14px;
+      padding: 24px 15px;
       border: 1px solid var(--border);
       border-radius: 14px;
       background: rgba(7, 11, 20, 0.5);
@@ -210,39 +217,11 @@
       font-size: 1.4rem;
     }
 
-    .split {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 22px;
-      margin: 40px 0;
-    }
-
-    .concept {
-      padding: 28px;
-      border-top: 2px solid var(--cyan);
-      background: var(--surface);
-      border-radius: 0 0 16px 16px;
-    }
-
-    .concept:nth-child(2) {
-      border-top-color: var(--purple);
-    }
-
-    .concept h3 {
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 1.5rem;
-      margin-bottom: 10px;
-    }
-
-    .concept .question-small {
-      color: var(--cyan);
-      font-family: "DM Mono", monospace;
-      font-size: 0.8rem;
-      margin-bottom: 14px;
-    }
-
-    .concept:nth-child(2) .question-small {
-      color: var(--purple);
+    .investigation {
+      margin: 45px 0;
+      padding: 30px;
+      border-left: 2px solid var(--cyan);
+      background: rgba(77, 232, 255, 0.035);
     }
 
     .example-list {
@@ -260,37 +239,16 @@
       color: var(--text);
     }
 
-    .investigation {
-      margin: 45px 0;
-      padding: 30px;
-      border-left: 2px solid var(--cyan);
-      background: rgba(77, 232, 255, 0.035);
-    }
-
-    .investigation strong {
-      color: var(--text);
-    }
-
-    .mini-flow {
+    .warning {
       margin: 35px 0;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      padding: 22px 25px;
+      border: 1px solid rgba(139, 124, 255, 0.3);
+      border-radius: 14px;
+      background: rgba(139, 124, 255, 0.045);
     }
 
-    .mini-step {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 18px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: var(--surface);
-    }
-
-    .mini-step span {
-      color: var(--muted);
-      font-size: 0.85rem;
+    .warning strong {
+      color: var(--purple);
     }
 
     .takeaway {
@@ -357,10 +315,6 @@
         transform: rotate(90deg);
       }
 
-      .split {
-        grid-template-columns: 1fr;
-      }
-
       .visual {
         padding: 22px;
       }
@@ -390,236 +344,167 @@
       you're allowed to do everything.
     </p>
 
+
     <div class="visual">
 
       <div class="visual-title">A LOGIN REQUEST</div>
 
-      <div class="login-screen">
-        <div class="login-header">Secure Portal</div>
+      <div class="login-box">
 
-        <div class="input">username: kamali</div>
-        <div class="input">password: •••••••••</div>
+        <div class="login-row">
+          <span class="login-label">USERNAME</span>
+          <div class="login-value">kamali</div>
+        </div>
 
-        <div class="button">SIGN IN</div>
+        <div class="login-row">
+          <span class="login-label">PASSWORD</span>
+          <div class="login-value">••••••••••</div>
+        </div>
+
+        <div class="login-button">
+          VERIFY IDENTITY
+        </div>
+
       </div>
 
     </div>
-
-    <h2 class="question">
-      You entered the correct password.
-      What happens next?
-    </h2>
-
-    <p>
-      The system has to answer two different questions.
-    </p>
-
-    <div class="flow">
-
-      <div class="flow-item">
-        <strong>WHO?</strong>
-        <span>Are you really Kamali?</span>
-      </div>
-
-      <div class="arrow">→</div>
-
-      <div class="flow-item">
-        <strong>WHAT?</strong>
-        <span>What are you allowed to access?</span>
-      </div>
-
-    </div>
-
-    <p style="margin-top: 35px;">
-      These two questions are closely related, but they are not the same.
-    </p>
 
 
     <h2 class="question">
-      Authentication
+      What is the system trying to find out?
     </h2>
-
-    <p>
-      <strong>Authentication</strong> is the process of verifying
-      who someone or something claims to be.
-    </p>
-
-    <div class="split">
-
-      <div class="concept">
-        <div class="question-small">AUTHENTICATION ASKS</div>
-        <h3>“Who are you?”</h3>
-
-        <p>
-          The system checks evidence that supports your identity.
-        </p>
-      </div>
-
-      <div class="concept">
-        <div class="question-small">COMMON METHODS</div>
-        <h3>Proof of identity</h3>
-
-        <p>
-          Passwords, PINs, fingerprints, security keys,
-          and multi-factor authentication can all be used.
-        </p>
-      </div>
-
-    </div>
 
     <div class="visual">
 
-      <div class="visual-title">AUTHENTICATION FLOW</div>
+      <div class="visual-title">TWO DIFFERENT QUESTIONS</div>
 
       <div class="flow">
 
         <div class="flow-item">
-          <strong>USER</strong>
-          <span>Claims an identity</span>
+          <strong>WHO?</strong>
+          <span>Are you really Kamali?</span>
         </div>
 
         <div class="arrow">→</div>
 
         <div class="flow-item">
-          <strong>PROOF</strong>
-          <span>Password / MFA / key</span>
-        </div>
-
-        <div class="arrow">→</div>
-
-        <div class="flow-item">
-          <strong>IDENTITY</strong>
-          <span>Verified</span>
+          <strong>WHAT?</strong>
+          <span>What are you allowed to access?</span>
         </div>
 
       </div>
 
     </div>
 
-    <p>
-      For example, when you sign in to an account with a password,
-      the service checks whether the credentials match the account.
-    </p>
-
-    <p>
-      If the verification succeeds, you have been <strong>authenticated</strong>.
-    </p>
-
 
     <h2 class="question">
-      But being authenticated isn't the end.
+      First clue: Authentication
     </h2>
 
     <p>
-      Imagine you've successfully signed into a university system.
+      Authentication is the process of verifying someone's identity.
+    </p>
+
+    <p>
+      When you enter a username and password, the system is essentially
+      asking:
     </p>
 
     <div class="investigation">
 
       <p>
-        Your identity is verified.
-      </p>
-
-      <p>
-        But should you automatically be able to:
-      </p>
-
-      <div class="example-list">
-        <div>→ View another student's grades?</div>
-        <div>→ Delete a course?</div>
-        <div>→ Change administrator settings?</div>
-        <div>→ Download confidential records?</div>
-      </div>
-
-      <p>
-        Probably not.
+        <strong>“Can I verify that you are really this user?”</strong>
       </p>
 
     </div>
-
-
-    <h2 class="question">
-      Authorization
-    </h2>
 
     <p>
-      <strong>Authorization</strong> determines what an authenticated
-      user is allowed to access or do.
+      Authentication can use different types of evidence.
     </p>
 
-    <div class="split">
+    <div class="example-list">
 
-      <div class="concept">
-        <div class="question-small">AUTHORIZATION ASKS</div>
-        <h3>“What can you do?”</h3>
-
-        <p>
-          The system checks the permissions associated with your identity.
-        </p>
+      <div>
+        <strong>Something you know</strong> — password or PIN
       </div>
 
-      <div class="concept">
-        <div class="question-small">EXAMPLES</div>
-        <h3>Permissions</h3>
-
-        <p>
-          Read, write, delete, create, modify,
-          administer, or access specific resources.
-        </p>
+      <div>
+        <strong>Something you have</strong> — security key or authentication device
       </div>
 
-    </div>
-
-
-    <div class="visual">
-
-      <div class="visual-title">ONE LOGIN · DIFFERENT PERMISSIONS</div>
-
-      <div class="mini-flow">
-
-        <div class="mini-step">
-          <strong>Student</strong>
-          <span>View own profile</span>
-        </div>
-
-        <div class="mini-step">
-          <strong>Teacher</strong>
-          <span>View and update course records</span>
-        </div>
-
-        <div class="mini-step">
-          <strong>Administrator</strong>
-          <span>Manage users and system settings</span>
-        </div>
-
+      <div>
+        <strong>Something you are</strong> — fingerprint or facial recognition
       </div>
 
     </div>
 
     <p>
-      All three users can be authenticated successfully.
-      Their permissions can still be very different.
+      Multi-factor authentication combines multiple categories
+      to provide stronger identity verification.
     </p>
 
 
     <h2 class="question">
-      The easiest way to remember it
+      The login succeeded.
     </h2>
 
     <div class="visual">
+
+      <div class="visual-title">AUTHENTICATION RESULT</div>
 
       <div class="flow">
 
         <div class="flow-item">
-          <strong>AUTHENTICATION</strong>
-          <span>Who are you?</span>
+          <strong>CREDENTIALS</strong>
+          <span>Identity evidence provided</span>
         </div>
 
         <div class="arrow">→</div>
 
         <div class="flow-item">
-          <strong>AUTHORIZATION</strong>
-          <span>What can you do?</span>
+          <strong>AUTHENTICATED</strong>
+          <span>The system accepted the identity</span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <p>
+      But something important still hasn't been answered.
+    </p>
+
+
+    <h2 class="question">
+      What is this user allowed to do?
+    </h2>
+
+
+    <h2 class="question">
+      Second clue: Authorization
+    </h2>
+
+    <p>
+      Authorization determines what an authenticated user is
+      allowed to access or perform.
+    </p>
+
+    <div class="visual">
+
+      <div class="visual-title">ACCESS DECISION</div>
+
+      <div class="flow">
+
+        <div class="flow-item">
+          <strong>AUTHENTICATED USER</strong>
+          <span>Identity has been verified</span>
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="flow-item">
+          <strong>PERMISSIONS</strong>
+          <span>What can this user access?</span>
         </div>
 
       </div>
@@ -627,115 +512,155 @@
     </div>
 
 
-    <h2 class="question">
-      Here's where cybersecurity gets interesting.
-    </h2>
+    <p>
+      Consider a college system.
+    </p>
+
+    <div class="example-list">
+
+      <div>
+        <strong>Student:</strong>
+        view their own marks.
+      </div>
+
+      <div>
+        <strong>Teacher:</strong>
+        enter or update marks for their classes.
+      </div>
+
+      <div>
+        <strong>Administrator:</strong>
+        manage users and system settings.
+      </div>
+
+    </div>
 
     <p>
-      Imagine an attacker obtains a legitimate user's password.
+      All three users may successfully authenticate.
+      Their authorization can still be completely different.
     </p>
+
+
+    <h2 class="question">
+      Here's where security gets interesting.
+    </h2>
 
     <div class="visual">
 
       <div class="visual-title">A POSSIBLE ATTACK PATH</div>
 
-      <div class="mini-flow">
+      <div class="flow">
 
-        <div class="mini-step">
-          <strong>1 · Password stolen</strong>
+        <div class="flow-item">
+          <strong>PASSWORD STOLEN</strong>
           <span>Attacker obtains credentials</span>
         </div>
 
-        <div class="mini-step">
-          <strong>2 · Login succeeds</strong>
+        <div class="arrow">→</div>
+
+        <div class="flow-item">
+          <strong>LOGIN</strong>
           <span>Authentication may succeed</span>
         </div>
 
-        <div class="mini-step">
-          <strong>3 · Permissions checked</strong>
-          <span>Authorization determines access</span>
-        </div>
-
-        <div class="mini-step">
-          <strong>4 · Activity monitored</strong>
-          <span>Logs can reveal unusual behavior</span>
-        </div>
-
       </div>
 
-    </div>
-
-    <p>
-      This is why security doesn't stop at passwords.
-      Strong authentication helps protect identity,
-      while authorization limits what that identity can do.
-    </p>
-
-    <div class="investigation">
-
-      <p>
-        A security analyst might therefore ask:
-      </p>
-
-      <div class="example-list">
-        <div><strong>Who</strong> logged in?</div>
-        <div><strong>How</strong> was the identity verified?</div>
-        <div><strong>What</strong> resources were accessed?</div>
-        <div><strong>Was</strong> that access expected?</div>
-      </div>
-
-      <p>
-        Authentication and authorization become important clues
-        when investigating suspicious activity.
-      </p>
-
-    </div>
-
-
-    <h2 class="question">
-      One more important distinction
-    </h2>
-
-    <p>
-      A system can have strong authentication and still have
-      poor authorization.
-    </p>
-
-    <p>
-      For example, a legitimate employee may successfully log in,
-      but a mistake in permissions could give that employee access
-      to information they should never have been able to see.
-    </p>
-
-    <p>
-      That's why security requires both identity verification
-      <strong>and</strong> appropriate permissions.
-    </p>
-
-
-    <div class="visual">
-
-      <div class="visual-title">THE SECURITY CHAIN</div>
+      <div style="height:20px;"></div>
 
       <div class="flow">
 
         <div class="flow-item">
-          <strong>IDENTITY</strong>
-          <span>Who?</span>
+          <strong>PERMISSIONS</strong>
+          <span>System checks access</span>
         </div>
 
         <div class="arrow">→</div>
+
+        <div class="flow-item">
+          <strong>MONITORING</strong>
+          <span>Activity can be investigated</span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <p>
+      This is why authentication and authorization are separate
+      security controls.
+    </p>
+
+    <div class="warning">
+      <strong>Important:</strong>
+      A successful login does not mean the user should automatically
+      have access to everything.
+    </div>
+
+
+    <h2 class="question">
+      Now think like a security analyst.
+    </h2>
+
+    <p>
+      You notice an account accessing a sensitive file.
+      Instead of immediately deciding that something is wrong,
+      you start asking questions.
+    </p>
+
+    <div class="investigation">
+
+      <div class="example-list">
+
+        <div>
+          <strong>Who logged in?</strong>
+        </div>
+
+        <div>
+          <strong>How was the identity verified?</strong>
+        </div>
+
+        <div>
+          <strong>What did the account access?</strong>
+        </div>
+
+        <div>
+          <strong>Was the account actually authorized to access it?</strong>
+        </div>
+
+        <div>
+          <strong>Was the activity expected?</strong>
+        </div>
+
+      </div>
+
+    </div>
+
+    <p>
+      The important clue is that identity and permission
+      are two different parts of the investigation.
+    </p>
+
+
+    <h2 class="question">
+      One sentence to remember.
+    </h2>
+
+    <div class="visual">
+
+      <div class="visual-title">THE DISTINCTION</div>
+
+      <div class="flow">
 
         <div class="flow-item">
           <strong>AUTHENTICATION</strong>
-          <span>Prove it</span>
+          <span>“Who are you?”</span>
         </div>
 
-        <div class="arrow">→</div>
+        <div class="arrow">+</div>
 
         <div class="flow-item">
           <strong>AUTHORIZATION</strong>
-          <span>Allow only what's permitted</span>
+          <span>“What are you allowed to do?”</span>
         </div>
 
       </div>
@@ -747,18 +672,20 @@
 
       <div class="takeaway-label">TAKEAWAY</div>
 
-      <h2>Authentication proves identity. Authorization controls access.</h2>
+      <h2>Identity comes before permission.</h2>
 
       <p>
-        Think of authentication as answering
-        <strong>“Who are you?”</strong>
-        and authorization as answering
-        <strong>“What are you allowed to do?”</strong>
+        <strong>Authentication</strong> verifies who a user or system is.
       </p>
 
       <p>
-        In cybersecurity, both matter because a verified identity
-        should not automatically have unlimited access.
+        <strong>Authorization</strong> determines what that authenticated
+        identity is allowed to access or do.
+      </p>
+
+      <p>
+        A secure system needs both. Strong authentication does not
+        automatically guarantee correct authorization.
       </p>
 
     </div>
