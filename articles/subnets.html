@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Subnets — Dividing a Network · KSCybSec</title>
+  <meta name="description" content="Understand how subnets divide networks into smaller sections and why that matters in cybersecurity.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #070B14;
+      --surface: #0B1120;
+      --surface-2: #101827;
+      --text: #E8EDF5;
+      --muted: #8995AA;
+      --cyan: #4DE8FF;
+      --purple: #8B7CFF;
+      --border: rgba(232, 237, 245, 0.10);
+      --soft-border: rgba(77, 232, 255, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Space Grotesk", sans-serif;
+      line-height: 1.7;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .container {
+      width: min(1080px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(7, 11, 20, 0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .brand span {
+      color: var(--cyan);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .menu-btn {
+      display: none;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      padding: 9px 11px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .mobile-menu {
+      display: none;
+      padding-bottom: 18px;
+    }
+
+    .mobile-menu a {
+      display: block;
+      padding: 11px 0;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .mobile-menu.open {
+      display: block;
+    }
+
+    .article-hero {
+      padding: 105px 0 65px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .eyebrow {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      max-width: 850px;
+      margin: 0;
+      font-size: clamp(2.7rem, 7vw, 5.3rem);
+      line-height: 1.02;
+      letter-spacing: -0.055em;
+      font-weight: 600;
+    }
+
+    .hero-description {
+      max-width: 650px;
+      margin: 27px 0 0;
+      color: var(--muted);
+      font-size: 1.12rem;
+    }
+
+    .article-meta {
+      margin-top: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px 26px;
+      color: var(--muted);
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+    }
+
+    .article {
+      width: min(760px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 78px 0 100px;
+    }
+
+    .article p {
+      margin: 0 0 25px;
+      color: #C5CEDD;
+      font-size: 1.03rem;
+    }
+
+    .story {
+      border-left: 2px solid var(--cyan);
+      padding: 4px 0 4px 25px;
+      margin: 0 0 65px;
+    }
+
+    .story p {
+      color: var(--text);
+      font-size: 1.13rem;
+      margin-bottom: 0;
+    }
+
+    .visual {
+      position: relative;
+      margin: 55px 0 65px;
+      min-height: 360px;
+      border: 1px solid var(--border);
+      background:
+        linear-gradient(rgba(77, 232, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(77, 232, 255, 0.035) 1px, transparent 1px),
+        var(--surface);
+      background-size: 34px 34px;
+      overflow: hidden;
+    }
+
+    .visual-label {
+      position: absolute;
+      top: 20px;
+      left: 22px;
+      font-family: "DM Mono", monospace;
+      color: var(--muted);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+    }
+
+    .network-box {
+      position: absolute;
+      border: 1px solid rgba(77, 232, 255, 0.25);
+      background: rgba(77, 232, 255, 0.025);
+    }
+
+    .network-box.main {
+      left: 8%;
+      right: 8%;
+      top: 25%;
+      height: 56%;
+    }
+
+    .network-box.sub-one {
+      left: 10%;
+      top: 30%;
+      width: 37%;
+      height: 45%;
+      border-color: rgba(77, 232, 255, 0.38);
+    }
+
+    .network-box.sub-two {
+      right: 10%;
+      top: 30%;
+      width: 37%;
+      height: 45%;
+      border-color: rgba(139, 124, 255, 0.38);
+    }
+
+    .network-label {
+      position: absolute;
+      top: 9px;
+      left: 12px;
+      font-family: "DM Mono", monospace;
+      font-size: 0.62rem;
+      color: var(--muted);
+    }
+
+    .node {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 0 5px rgba(77, 232, 255, 0.07);
+    }
+
+    .node.one {
+      left: 18%;
+      top: 55%;
+    }
+
+    .node.two {
+      left: 34%;
+      top: 64%;
+    }
+
+    .node.three {
+      right: 34%;
+      top: 54%;
+      background: var(--purple);
+      box-shadow: 0 0 0 5px rgba(139, 124, 255, 0.07);
+    }
+
+    .node.four {
+      right: 18%;
+      top: 65%;
+      background: var(--purple);
+      box-shadow: 0 0 0 5px rgba(139, 124, 255, 0.07);
+    }
+
+    .divider {
+      position: absolute;
+      left: 50%;
+      top: 31%;
+      bottom: 26%;
+      border-left: 1px dashed rgba(232, 237, 245, 0.20);
+    }
+
+    .split-label {
+      position: absolute;
+      left: 50%;
+      top: 84%;
+      transform: translateX(-50%);
+      color: var(--muted);
+      font-family: "DM Mono", monospace;
+      font-size: 0.64rem;
+    }
+
+    .flow {
+      margin: 45px 0;
+      padding: 28px 24px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .flow-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+    }
+
+    .flow-item {
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: #C5CEDD;
+    }
+
+    .flow-item.highlight {
+      color: var(--cyan);
+      border-color: var(--soft-border);
+    }
+
+    .flow-arrow {
+      color: var(--muted);
+    }
+
+    .binary-visual {
+      margin: 50px 0;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .binary-title {
+      padding: 17px 20px;
+      border-bottom: 1px solid var(--border);
+      font-family: "DM Mono", monospace;
+      color: var(--muted);
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+    }
+
+    .binary-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--border);
+      font-family: "DM Mono", monospace;
+      font-size: 0.74rem;
+    }
+
+    .binary-row:last-child {
+      border-bottom: 0;
+    }
+
+    .binary-row div {
+      padding: 15px 20px;
+    }
+
+    .binary-row div:first-child {
+      color: var(--cyan);
+      border-right: 1px solid var(--border);
+    }
+
+    .binary-row div:last-child {
+      color: var(--muted);
+    }
+
+    .security-note {
+      margin: 45px 0;
+      padding: 22px 24px;
+      border-left: 2px solid var(--purple);
+      background: rgba(139, 124, 255, 0.045);
+    }
+
+    .security-note p {
+      margin: 0;
+    }
+
+    .section {
+      margin: 70px 0;
+    }
+
+    h2 {
+      margin: 0 0 24px;
+      font-size: clamp(1.65rem, 4vw, 2.25rem);
+      line-height: 1.15;
+      letter-spacing: -0.035em;
+    }
+
+    h2::before {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin: 0 12px 5px 0;
+      border-radius: 50%;
+      background: var(--cyan);
+    }
+
+    h3 {
+      margin: 38px 0 13px;
+      font-size: 1.12rem;
+    }
+
+    .question {
+      margin: 70px 0;
+      padding: 30px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .question-label {
+      margin-bottom: 12px;
+      color: var(--cyan);
+      font-family: "DM Mono", monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+    }
+
+    .question p {
+      color: var(--text);
+      font-size: 1.2rem;
+      margin: 0;
+    }
+
+    .takeaway {
+      margin-top: 80px;
+      padding: 30px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .takeaway-label {
+      margin-bottom: 15px;
+      color: var(--cyan);
+      font-family: "DM Mono", monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+    }
+
+    .takeaway p {
+      color: var(--text);
+      font-size: 1.08rem;
+      margin: 0;
+    }
+
+    .article-next {
+      margin-top: 80px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .article-next-label {
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .article-next a {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      text-decoration: none;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.15rem;
+      transition: color 0.2s ease;
+    }
+
+    .article-next a:hover {
+      color: var(--cyan);
+    }
+
+    .article-next .next-arrow {
+      color: var(--cyan);
+      font-size: 1rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 35px 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 700px) {
+      .container {
+        width: min(100% - 28px, 1080px);
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .menu-btn {
+        display: block;
+      }
+
+      .article-hero {
+        padding: 78px 0 50px;
+      }
+
+      .article {
+        width: min(100% - 28px, 760px);
+        padding-top: 58px;
+      }
+
+      .visual {
+        min-height: 400px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .article-meta {
+        flex-direction: column;
+        gap: 7px;
+      }
+
+      .visual {
+        min-height: 440px;
+      }
+
+      .network-box.main {
+        left: 5%;
+        right: 5%;
+      }
+
+      .network-box.sub-one {
+        left: 7%;
+        width: 39%;
+      }
+
+      .network-box.sub-two {
+        right: 7%;
+        width: 39%;
+      }
+
+      .binary-row {
+        grid-template-columns: 1fr;
+      }
+
+      .binary-row div:first-child {
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="container">
+      <div class="nav-inner">
+
+        <a href="../index.html" class="brand">
+          KSCyb<span>Sec</span>
+        </a>
+
+        <div class="nav-links">
+          <a href="../index.html#start">Start Here</a>
+          <a href="../index.html#latest">Articles</a>
+          <a href="../index.html#topics">Topics</a>
+          <a href="../index.html#explore">Explore</a>
+          <a href="../index.html#about">About</a>
+        </div>
+
+        <button
+          class="menu-btn"
+          type="button"
+          aria-label="Open menu"
+          aria-expanded="false"
+        >
+          ☰
+        </button>
+
+      </div>
+
+      <div class="mobile-menu">
+        <a href="../index.html#start">Start Here</a>
+        <a href="../index.html#latest">Articles</a>
+        <a href="../index.html#topics">Topics</a>
+        <a href="../index.html#explore">Explore</a>
+        <a href="../index.html#about">About</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="article-hero">
+    <div class="container">
+
+      <div class="eyebrow">
+        Guide 021 · Networking · Beginner
+      </div>
+
+      <h1>
+        Subnets: Dividing a Network
+      </h1>
+
+      <p class="hero-description">
+        A network can contain hundreds or thousands of devices.
+        How do we divide that huge space into smaller, understandable pieces?
+      </p>
+
+      <div class="article-meta">
+        <span>NETWORKING</span>
+        <span>BEGINNER</span>
+        <span>~5 MIN READ</span>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="article">
+
+    <section class="story reveal">
+
+      <p>
+        Imagine a college network with 2,000 devices.
+      </p>
+
+      <p style="margin-top:18px;">
+        Students are using laptops.
+        Staff have their own computers.
+        Servers are running in another part of the building.
+        Security cameras are connected too.
+      </p>
+
+      <p style="margin-top:18px;">
+        Putting every device into one giant network would make the environment
+        difficult to organize.
+      </p>
+
+      <p style="margin-top:18px;">
+        So instead of treating the network as one enormous space,
+        we divide it into smaller ones.
+      </p>
+
+    </section>
+
+    <div class="visual reveal">
+
+      <div class="visual-label">
+        ONE NETWORK → MULTIPLE NETWORKS
+      </div>
+
+      <div class="network-box main">
+        <div class="network-label">
+          192.168.1.0/24 · ORIGINAL NETWORK
+        </div>
+      </div>
+
+      <div class="network-box sub-one">
+        <div class="network-label">
+          SUBNET A
+        </div>
+      </div>
+
+      <div class="network-box sub-two">
+        <div class="network-label">
+          SUBNET B
+        </div>
+      </div>
+
+      <div class="node one"></div>
+      <div class="node two"></div>
+      <div class="node three"></div>
+      <div class="node four"></div>
+
+      <div class="divider"></div>
+
+      <div class="split-label">
+        NETWORK DIVIDED
+      </div>
+
+    </div>
+
+    <section class="section reveal">
+
+      <h2>What is a subnet?</h2>
+
+      <p>
+        A <strong>subnet</strong>, short for subnetted network,
+        is a smaller logical network created from a larger IP network.
+      </p>
+
+      <p>
+        Subnetting allows network administrators to divide addresses into
+        manageable groups.
+      </p>
+
+      <p>
+        Think of it like a large building.
+        The building is the network.
+        Different rooms or departments are the subnets.
+      </p>
+
+      <div class="flow">
+
+        <div class="flow-row">
+
+          <div class="flow-item highlight">
+            Large Network
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item">
+            Subnet A
+          </div>
+
+          <div class="flow-arrow">
+            +
+          </div>
+
+          <div class="flow-item">
+            Subnet B
+          </div>
+
+          <div class="flow-arrow">
+            +
+          </div>
+
+          <div class="flow-item">
+            Subnet C
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="section reveal">
+
+      <h2>The clue inside an IP address</h2>
+
+      <p>
+        Earlier, we saw addresses such as:
+      </p>
+
+      <div class="binary-visual">
+
+        <div class="binary-title">
+          EXAMPLE · IPv4 ADDRESS
+        </div>
+
+        <div class="binary-row">
+          <div>IP ADDRESS</div>
+          <div>192.168.1.24</div>
+        </div>
+
+        <div class="binary-row">
+          <div>SUBNET MASK</div>
+          <div>255.255.255.0</div>
+        </div>
+
+      </div>
+
+      <p>
+        The subnet mask helps a device determine which part of an IP address
+        represents the network and which part represents the individual device.
+      </p>
+
+      <p>
+        You don't need to become a binary expert yet.
+        The important idea is that the address contains information about
+        <strong>where the device belongs</strong>.
+      </p>
+
+    </section>
+
+    <section class="section reveal">
+
+      <h2>A simple example</h2>
+
+      <p>
+        Consider this network:
+      </p>
+
+      <div class="flow">
+
+        <div class="flow-row">
+
+          <div class="flow-item highlight">
+            192.168.1.0/24
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item">
+            256 total addresses
+          </div>
+
+        </div>
+
+      </div>
+
+      <p>
+        A `/24` network is a common notation used to describe the size of
+        an IPv4 network.
+      </p>
+
+      <p>
+        In the familiar private IPv4 range above, the usable host addresses
+        are commonly:
+      </p>
+
+      <div class="flow">
+
+        <div class="flow-row">
+
+          <div class="flow-item">
+            192.168.1.1
+          </div>
+
+          <div class="flow-arrow">
+            …
+          </div>
+
+          <div class="flow-item highlight">
+            192.168.1.254
+          </div>
+
+        </div>
+
+      </div>
+
+      <p>
+        The `.0` address identifies the network itself, while `.255` is the
+        broadcast address for this traditional `/24` IPv4 subnet.
+      </p>
+
+      <p>
+        So this gives us 254 commonly usable host addresses.
+      </p>
+
+    </section>
+
+    <section class="section reveal">
+
+      <h2>Why divide it?</h2>
+
+      <p>
+        Imagine putting students, staff, servers, and security cameras
+        into one giant broadcast domain.
+      </p>
+
+      <p>
+        It may work technically, but it becomes harder to manage and control.
+      </p>
+
+      <p>
+        Subnets allow networks to be organized according to purpose.
+      </p>
+
+      <div class="visual reveal" style="min-height:330px;">
+
+        <div class="visual-label">
+          EXAMPLE · DEPARTMENTAL NETWORKS
+        </div>
+
+        <div style="
+          position:absolute;
+          left:8%;
+          top:28%;
+          width:25%;
+          height:38%;
+          border:1px solid rgba(77,232,255,.30);
+          background:rgba(77,232,255,.025);
+        ">
+          <span style="
+            position:absolute;
+            top:12px;
+            left:14px;
+            font-family:'DM Mono',monospace;
+            font-size:.65rem;
+            color:#4DE8FF;
+          ">
+            STUDENTS
+          </span>
+        </div>
+
+        <div style="
+          position:absolute;
+          left:37.5%;
+          top:28%;
+          width:25%;
+          height:38%;
+          border:1px solid rgba(139,124,255,.30);
+          background:rgba(139,124,255,.025);
+        ">
+          <span style="
+            position:absolute;
+            top:12px;
+            left:14px;
+            font-family:'DM Mono',monospace;
+            font-size:.65rem;
+            color:#8B7CFF;
+          ">
+            STAFF
+          </span>
+        </div>
+
+        <div style="
+          position:absolute;
+          right:8%;
+          top:28%;
+          width:25%;
+          height:38%;
+          border:1px solid rgba(77,232,255,.30);
+          background:rgba(77,232,255,.025);
+        ">
+          <span style="
+            position:absolute;
+            top:12px;
+            left:14px;
+            font-family:'DM Mono',monospace;
+            font-size:.65rem;
+            color:#4DE8FF;
+          ">
+            SERVERS
+          </span>
+        </div>
+
+      </div>
+
+      <p>
+        A network can therefore be designed so that different groups of
+        devices live in different IP ranges.
+      </p>
+
+    </section>
+
+    <section class="section reveal">
+
+      <h2>Subnets and security</h2>
+
+      <p>
+        Subnetting is also useful from a security perspective.
+      </p>
+
+      <p>
+        Separating devices into different network segments can make it easier
+        to control which systems are allowed to communicate with each other.
+      </p>
+
+      <div class="security-note">
+
+        <p>
+          For example, an organization might place public-facing servers,
+          employee devices, and sensitive internal systems into different
+          network segments and then use routing or firewall rules to control
+          traffic between them.
+        </p>
+
+      </div>
+
+      <p>
+        A subnet does not automatically make a network secure.
+        It simply gives administrators a structure that can be used
+        to apply security controls.
+      </p>
+
+    </section>
+
+    <section class="question reveal">
+
+      <div class="question-label">
+        PAUSE FOR A SECOND
+      </div>
+
+      <p>
+        If a large network is divided into smaller IP networks,
+        what might become easier to manage: the devices, the traffic,
+        or both?
+      </p>
+
+    </section>
+
+    <section class="section reveal">
+
+      <h2>One address, one place</h2>
+
+      <p>
+        Now the pieces are starting to connect.
+      </p>
+
+      <div class="flow">
+
+        <div class="flow-row">
+
+          <div class="flow-item">
+            DHCP
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item highlight">
+            IP Address
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item">
+            Subnet
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item">
+            Local Network
+          </div>
+
+        </div>
+
+      </div>
+
+      <p>
+        DHCP can give a device an IP address.
+        The subnet tells the device which network that address belongs to.
+      </p>
+
+      <p>
+        And if the device needs to communicate with another device
+        on that local network, ARP can help it discover the destination's
+        MAC address.
+      </p>
+
+      <p>
+        But what happens when the destination is <strong>not</strong>
+        on the local network?
+      </p>
+
+      <p>
+        That's when another important network device becomes part of the story:
+        the <strong>router</strong>.
+      </p>
+
+    </section>
+
+    <section class="takeaway reveal">
+
+      <div class="takeaway-label">
+        TAKEAWAY · 021
+      </div>
+
+      <p>
+        <strong>Subnets divide a larger IP network into smaller logical networks.</strong>
+        They help organize devices, control network boundaries, and make large
+        environments easier to manage. A subnet mask or prefix such as
+        <strong>/24</strong> helps define which addresses belong to the network.
+      </p>
+
+    </section>
+
+    <div class="article-next reveal">
+
+      <div class="article-next-label">
+        NEXT CLUE · 022
+      </div>
+
+      <a href="routers.html">
+        Routers — How Traffic Finds Its Way
+        <span class="next-arrow">→</span>
+      </a>
+
+    </div>
+
+  </main>
+
+  <footer>
+
+    <div class="container">
+      KSCybSec · Cybersecurity knowledge, one clue at a time.
+    </div>
+
+  </footer>
+
+  <script>
+    const menuButton = document.querySelector(".menu-btn");
+    const mobileMenu = document.querySelector(".mobile-menu");
+
+    if (menuButton && mobileMenu) {
+      menuButton.addEventListener("click", () => {
+        const isOpen = mobileMenu.classList.toggle("open");
+        menuButton.setAttribute("aria-expanded", String(isOpen));
+      });
+    }
+
+    const revealElements = document.querySelectorAll(".reveal");
+
+    if ("IntersectionObserver" in window) {
+
+      const observer = new IntersectionObserver(
+        entries => {
+
+          entries.forEach(entry => {
+
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+
+          });
+
+        },
+        { threshold: 0.12 }
+      );
+
+      revealElements.forEach(element => {
+        observer.observe(element);
+      });
+
+    } else {
+
+      revealElements.forEach(element => {
+        element.classList.add("visible");
+      });
+
+    }
+  </script>
+
+</body>
+</html>
