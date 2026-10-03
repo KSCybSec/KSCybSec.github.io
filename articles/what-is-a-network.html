@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>What Is a Network? — Guide 016 · Networking · Beginner | KSCybSec</title>
+
+  <meta name="description" content="What is a network? Follow a simple story to understand how devices connect, communicate, and exchange information.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #070B14;
+      --surface: #0B1120;
+      --surface-2: #101827;
+      --text: #E8EDF5;
+      --muted: #8995AA;
+      --cyan: #4DE8FF;
+      --purple: #8B7CFF;
+      --border: rgba(137,149,170,0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Space Grotesk", sans-serif;
+      line-height: 1.75;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .container {
+      width: min(900px, calc(100% - 40px));
+      margin: auto;
+    }
+
+    /* NAV */
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7, 11, 20, 0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      width: min(1180px, calc(100% - 40px));
+      margin: auto;
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .brand span {
+      color: var(--cyan);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: 0;
+      color: var(--text);
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+
+    /* HERO */
+
+    .article-hero {
+      padding: 100px 0 75px;
+    }
+
+    .eyebrow {
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      color: var(--cyan);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      line-height: 1.02;
+      letter-spacing: -0.045em;
+      max-width: 850px;
+    }
+
+    h1 span {
+      color: var(--cyan);
+    }
+
+    .hero-subtitle {
+      max-width: 680px;
+      margin-top: 26px;
+      color: var(--muted);
+      font-size: 1.15rem;
+      line-height: 1.8;
+    }
+
+    .article-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-top: 30px;
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    /* ARTICLE */
+
+    article {
+      padding-bottom: 80px;
+    }
+
+    .article-content {
+      font-size: 1.04rem;
+    }
+
+    .article-content p {
+      margin: 0 0 25px;
+      color: #cdd5e2;
+    }
+
+    .article-content strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .article-content h2 {
+      margin: 75px 0 25px;
+      font-size: 2rem;
+      line-height: 1.2;
+      letter-spacing: -0.025em;
+    }
+
+    .article-content h3 {
+      margin: 48px 0 18px;
+      font-size: 1.3rem;
+    }
+
+    .article-content h2::before {
+      content: "·";
+      color: var(--cyan);
+      margin-right: 12px;
+    }
+
+    /* STORY OPENING */
+
+    .story {
+      border-left: 2px solid var(--cyan);
+      padding: 5px 0 5px 26px;
+      margin: 45px 0;
+    }
+
+    .story p {
+      font-size: 1.12rem;
+      color: var(--text);
+    }
+
+    /* VISUAL */
+
+    .visual-wrap {
+      margin: 50px 0 55px;
+      padding: 34px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background:
+        radial-gradient(circle at 50% 50%, rgba(77,232,255,0.06), transparent 55%);
+    }
+
+    .visual-label {
+      font-family: "DM Mono", monospace;
+      color: var(--muted);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    /* NETWORK VISUAL */
+
+    .network-map {
+      position: relative;
+      min-height: 330px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+    }
+
+    .network-node {
+      border: 1px solid rgba(77,232,255,0.4);
+      background: rgba(16,24,39,0.9);
+      padding: 12px 18px;
+      min-width: 145px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .network-node small {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-family: "DM Mono", monospace;
+      font-size: 0.62rem;
+    }
+
+    .network-router {
+      border-color: var(--cyan);
+      box-shadow: 0 0 30px rgba(77,232,255,0.07);
+    }
+
+    .network-devices {
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      gap: 20px;
+      position: relative;
+    }
+
+    .network-line {
+      position: absolute;
+      width: 1px;
+      background: linear-gradient(
+        to bottom,
+        rgba(77,232,255,0.7),
+        rgba(77,232,255,0.12)
+      );
+      top: 54px;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .device-line {
+      position: absolute;
+      height: 1px;
+      background: rgba(77,232,255,0.35);
+      top: -38px;
+      left: 16%;
+      right: 16%;
+    }
+
+    .device {
+      min-width: 120px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      text-align: center;
+    }
+
+    .device-icon {
+      font-size: 1.2rem;
+      margin-bottom: 4px;
+    }
+
+    .device-name {
+      font-size: 0.82rem;
+    }
+
+    .device-type {
+      color: var(--muted);
+      font-family: "DM Mono", monospace;
+      font-size: 0.58rem;
+      margin-top: 3px;
+    }
+
+    /* COMMUNICATION VISUAL */
+
+    .communication {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 25px;
+      min-height: 180px;
+    }
+
+    .comm-device {
+      padding: 22px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .comm-device .label {
+      color: var(--muted);
+      font-family: "DM Mono", monospace;
+      font-size: 0.65rem;
+      margin-bottom: 8px;
+    }
+
+    .comm-device h3 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .comm-arrow {
+      color: var(--cyan);
+      font-size: 1.4rem;
+    }
+
+    .packet {
+      margin-top: 14px;
+      font-family: "DM Mono", monospace;
+      font-size: 0.62rem;
+      color: var(--muted);
+    }
+
+    /* FOUR IDEAS */
+
+    .four-ideas {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin: 45px 0;
+    }
+
+    .idea {
+      background: var(--surface);
+      padding: 22px 18px;
+    }
+
+    .idea-number {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.65rem;
+      margin-bottom: 12px;
+    }
+
+    .idea h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .idea p {
+      margin: 0;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    /* QUESTION */
+
+    .question {
+      margin: 55px 0;
+      padding: 30px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .question-label {
+      font-family: "DM Mono", monospace;
+      font-size: 0.68rem;
+      color: var(--cyan);
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+
+    .question p {
+      font-size: 1.25rem;
+      color: var(--text);
+      margin: 0;
+    }
+
+    /* TAKEAWAY */
+
+    .takeaway {
+      margin-top: 70px;
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .takeaway-label {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 18px;
+    }
+
+    .takeaway-main {
+      font-size: 1.35rem;
+      color: var(--text);
+    }
+
+    /* NEXT */
+
+    .article-next {
+      margin-top: 80px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .article-next-label {
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .article-next a {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      text-decoration: none;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.15rem;
+      transition: color 0.2s ease;
+    }
+
+    .article-next a:hover {
+      color: var(--cyan);
+    }
+
+    .article-next .next-arrow {
+      color: var(--cyan);
+      font-size: 1rem;
+    }
+
+    /* FOOTER */
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 35px 0;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .footer-inner {
+      width: min(1180px, calc(100% - 40px));
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    /* REVEAL */
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 700px) {
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        padding: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .article-hero {
+        padding: 70px 0 55px;
+      }
+
+      .visual-wrap {
+        padding: 24px 15px;
+      }
+
+      .network-map {
+        min-height: 360px;
+      }
+
+      .network-devices {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .device-line {
+        display: none;
+      }
+
+      .four-ideas {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .communication {
+        grid-template-columns: 1fr;
+      }
+
+      .comm-arrow {
+        transform: rotate(90deg);
+        justify-self: center;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 430px) {
+
+      .container {
+        width: min(100% - 28px, 900px);
+      }
+
+      h1 {
+        font-size: 2.7rem;
+      }
+
+      .four-ideas {
+        grid-template-columns: 1fr;
+      }
+
+      .network-node {
+        min-width: 125px;
+      }
+
+      .device {
+        min-width: 105px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVIGATION -->
+
+  <nav>
+    <div class="nav-inner">
+
+      <a href="../index.html" class="brand">
+        KS<span>CybSec</span>
+      </a>
+
+      <div class="nav-links" id="navLinks">
+        <a href="../index.html">Start Here</a>
+        <a href="../index.html#latest">Articles</a>
+        <a href="../index.html#topics">Topics</a>
+        <a href="../index.html#explore">Explore</a>
+        <a href="../index.html#about">About</a>
+      </div>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+        ☰
+      </button>
+
+    </div>
+  </nav>
+
+
+  <!-- HERO -->
+
+  <header class="article-hero">
+    <div class="container">
+
+      <div class="eyebrow reveal">
+        Guide 016 · Networking · Beginner
+      </div>
+
+      <h1 class="reveal">
+        What Is a <span>Network?</span>
+      </h1>
+
+      <p class="hero-subtitle reveal">
+        Before we start scanning networks, tracing traffic, or investigating
+        suspicious connections, we need to understand one simple thing:
+        how devices talk to each other.
+      </p>
+
+      <div class="article-meta reveal">
+        <span>NETWORKING</span>
+        <span>·</span>
+        <span>~5 MIN READ</span>
+        <span>·</span>
+        <span>CLUE 016</span>
+      </div>
+
+    </div>
+  </header>
+
+
+  <!-- ARTICLE -->
+
+  <article>
+    <div class="container article-content">
+
+
+      <!-- OPENING STORY -->
+
+      <div class="story reveal">
+
+        <p>
+          You open your laptop.
+        </p>
+
+        <p>
+          Your phone is connected to Wi-Fi. A printer is sitting
+          somewhere in the room. You open a website and, within seconds,
+          the page appears.
+        </p>
+
+        <p>
+          None of these devices are sitting inside the same computer.
+          Yet somehow, they communicate.
+        </p>
+
+        <p>
+          <strong>So how do they find each other?</strong>
+        </p>
+
+      </div>
+
+
+      <!-- VISUAL 1 -->
+
+      <div class="visual-wrap reveal">
+
+        <div class="visual-label">
+          A small network
+        </div>
+
+        <div class="network-map">
+
+          <div class="network-line"></div>
+
+          <div class="network-node network-router">
+            Router
+            <small>connects the network</small>
+          </div>
+
+          <div class="network-devices">
+
+            <div class="device-line"></div>
+
+            <div class="device">
+              <div class="device-icon">💻</div>
+              <div class="device-name">Laptop</div>
+              <div class="device-type">DEVICE</div>
+            </div>
+
+            <div class="device">
+              <div class="device-icon">📱</div>
+              <div class="device-name">Phone</div>
+              <div class="device-type">DEVICE</div>
+            </div>
+
+            <div class="device">
+              <div class="device-icon">🖨</div>
+              <div class="device-name">Printer</div>
+              <div class="device-type">DEVICE</div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <p class="reveal">
+        This is the basic idea behind a <strong>network</strong>.
+      </p>
+
+      <p class="reveal">
+        A network is simply a group of devices that can
+        <strong>communicate with each other</strong>.
+      </p>
+
+      <p class="reveal">
+        It could be three devices connected to the same Wi-Fi router.
+        It could be hundreds of computers inside a company.
+        Or it could be millions of devices communicating across the
+        Internet.
+      </p>
+
+      <p class="reveal">
+        The size changes.
+        The basic idea doesn't.
+      </p>
+
+
+      <!-- SECTION -->
+
+      <h2 class="reveal">
+        But connecting a few devices isn't enough
+      </h2>
+
+      <p class="reveal">
+        Imagine walking into a room where ten people are talking at once.
+      </p>
+
+      <p class="reveal">
+        You want to send a message to one particular person.
+        If you don't know who they are, where they are, or how they
+        expect to receive the message, things get messy very quickly.
+      </p>
+
+      <p class="reveal">
+        Networks have the same problem.
+      </p>
+
+      <p class="reveal">
+        Devices need ways to identify each other.
+        They need ways to send information.
+        And they need agreed rules for how that information should travel.
+      </p>
+
+
+      <!-- FOUR IDEAS -->
+
+      <div class="four-ideas reveal">
+
+        <div class="idea">
+          <div class="idea-number">01</div>
+          <h3>Devices</h3>
+          <p>
+            Computers, phones, servers, printers and other connected systems.
+          </p>
+        </div>
+
+        <div class="idea">
+          <div class="idea-number">02</div>
+          <h3>Connections</h3>
+          <p>
+            Wired or wireless paths that allow information to move.
+          </p>
+        </div>
+
+        <div class="idea">
+          <div class="idea-number">03</div>
+          <h3>Addresses</h3>
+          <p>
+            Information that helps identify where communication should go.
+          </p>
+        </div>
+
+        <div class="idea">
+          <div class="idea-number">04</div>
+          <h3>Rules</h3>
+          <p>
+            Protocols that define how devices communicate.
+          </p>
+        </div>
+
+      </div>
+
+
+      <!-- STORY -->
+
+      <h2 class="reveal">
+        Let's follow one message
+      </h2>
+
+      <p class="reveal">
+        Let's say you're sitting at home and want to open a website.
+      </p>
+
+      <p class="reveal">
+        You click the link.
+      </p>
+
+      <p class="reveal">
+        It feels like one simple action.
+      </p>
+
+      <p class="reveal">
+        Behind the screen, though, your computer has to communicate with
+        other systems to make that happen.
+      </p>
+
+
+      <!-- VISUAL 2 -->
+
+      <div class="visual-wrap reveal">
+
+        <div class="visual-label">
+          Communication leaves a trail
+        </div>
+
+        <div class="communication">
+
+          <div class="comm-device">
+            <div class="label">SOURCE</div>
+            <h3>Your Laptop</h3>
+            <div class="packet">
+              request →
+            </div>
+          </div>
+
+          <div class="comm-arrow">
+            →
+          </div>
+
+          <div class="comm-device">
+            <div class="label">DESTINATION</div>
+            <h3>Remote Server</h3>
+            <div class="packet">
+              ← response
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <p class="reveal">
+        The information doesn't magically jump from your laptop to the
+        website's server.
+      </p>
+
+      <p class="reveal">
+        It travels through a network.
+      </p>
+
+      <p class="reveal">
+        Along the way, different networking technologies help decide
+        <strong>who should receive the data, where it should go,
+        and how it should get there.</strong>
+      </p>
+
+
+      <!-- QUESTION -->
+
+      <div class="question reveal">
+
+        <div class="question-label">
+          STOP & THINK
+        </div>
+
+        <p>
+          If two devices are connected, how does one know
+          <strong>which device</strong> it should talk to?
+        </p>
+
+      </div>
+
+
+      <!-- ADDRESSES -->
+
+      <h2 class="reveal">
+        That's where addresses come in
+      </h2>
+
+      <p class="reveal">
+        You've already met one kind of network address in the previous
+        path: the <strong>IP address</strong>.
+      </p>
+
+      <p class="reveal">
+        An IP address helps identify a device on a network and gives
+        networking equipment information about where traffic should go.
+      </p>
+
+      <p class="reveal">
+        But IP isn't the only kind of address you'll encounter.
+      </p>
+
+      <p class="reveal">
+        Devices also have <strong>MAC addresses</strong>, which are tied
+        to their network interfaces and are especially important when
+        communicating inside a local network.
+      </p>
+
+      <p class="reveal">
+        Don't worry about memorizing all of that yet.
+      </p>
+
+      <p class="reveal">
+        We're going to follow those clues one at a time.
+      </p>
+
+
+      <!-- NETWORK SCALE -->
+
+      <h2 class="reveal">
+        Not every network looks the same
+      </h2>
+
+      <p class="reveal">
+        The Wi-Fi network in your home is a network.
+      </p>
+
+      <p class="reveal">
+        A university computer lab can be a network.
+      </p>
+
+      <p class="reveal">
+        A company's internal infrastructure can contain many connected
+        networks.
+      </p>
+
+      <p class="reveal">
+        And the Internet connects networks across the world.
+      </p>
+
+      <p class="reveal">
+        That's why you'll soon hear terms such as
+        <strong>LAN, WAN, router, subnet, NAT</strong> and more.
+      </p>
+
+      <p class="reveal">
+        They aren't random vocabulary.
+        Each one describes a different piece of the communication puzzle.
+      </p>
+
+
+      <!-- SECURITY CONNECTION -->
+
+      <h2 class="reveal">
+        Why should a security learner care?
+      </h2>
+
+      <p class="reveal">
+        Because communication creates clues.
+      </p>
+
+      <p class="reveal">
+        When devices communicate, there are addresses.
+        There are connections.
+        There are services.
+        There are requests and responses.
+      </p>
+
+      <p class="reveal">
+        And when something unusual happens, those clues can become
+        extremely useful.
+      </p>
+
+      <p class="reveal">
+        A security analyst might ask:
+      </p>
+
+      <p class="reveal">
+        <strong>
+          Which device made this connection?
+          Where did it connect?
+          Which service was involved?
+          Was that communication expected?
+        </strong>
+      </p>
+
+      <p class="reveal">
+        Before we can investigate those questions, we need to understand
+        the network underneath them.
+      </p>
+
+
+      <!-- FINAL VISUAL -->
+
+      <div class="visual-wrap reveal">
+
+        <div class="visual-label">
+          The clues we'll follow
+        </div>
+
+        <div class="four-ideas">
+
+          <div class="idea">
+            <div class="idea-number">DEVICE</div>
+            <h3>Who?</h3>
+            <p>
+              Which system is communicating?
+            </p>
+          </div>
+
+          <div class="idea">
+            <div class="idea-number">ADDRESS</div>
+            <h3>Where?</h3>
+            <p>
+              Where should the information go?
+            </p>
+          </div>
+
+          <div class="idea">
+            <div class="idea-number">SERVICE</div>
+            <h3>What?</h3>
+            <p>
+              What is the device offering?
+            </p>
+          </div>
+
+          <div class="idea">
+            <div class="idea-number">TRAFFIC</div>
+            <h3>How?</h3>
+            <p>
+              How are the systems communicating?
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- TAKEAWAY -->
+
+      <div class="takeaway reveal">
+
+        <div class="takeaway-label">
+          TAKEAWAY
+        </div>
+
+        <div class="takeaway-main">
+          A network is a group of connected devices that
+          communicate using addresses, connections and agreed rules.
+        </div>
+
+      </div>
+
+
+      <!-- NEXT -->
+
+      <div class="article-next reveal">
+
+        <div class="article-next-label">
+          NEXT CLUE · 017
+        </div>
+
+        <a href="lan-wan-internet.html">
+          LAN, WAN & the Internet
+          <span class="next-arrow">→</span>
+        </a>
+
+      </div>
+
+    </div>
+  </article>
+
+
+  <!-- FOOTER -->
+
+  <footer>
+    <div class="footer-inner">
+      <span>© KSCybSec</span>
+      <span>Cybersecurity knowledge, one clue at a time.</span>
+    </div>
+  </footer>
+
+
+  <script>
+
+    /* Mobile navigation */
+
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    menuToggle.addEventListener("click", () => {
+      navLinks.classList.toggle("open");
+    });
+
+
+    /* Reveal animation */
+
+    const revealElements = document.querySelectorAll(".reveal");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.12
+      }
+    );
+
+    revealElements.forEach((element) => {
+      observer.observe(element);
+    });
+
+  </script>
+
+</body>
+</html>
