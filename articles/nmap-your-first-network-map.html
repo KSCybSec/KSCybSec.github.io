@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Nmap: Your First Network Map · KSCybSec</title>
+
+  <meta
+    name="description"
+    content="Learn what Nmap is, how network scanning works, and how to read your first basic Nmap result."
+  >
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --bg: #070B14;
+      --surface: #0B1120;
+      --surface-2: #101827;
+      --text: #E8EDF5;
+      --muted: #8995AA;
+      --cyan: #4DE8FF;
+      --purple: #8B7CFF;
+      --border: rgba(137, 149, 170, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Space Grotesk", sans-serif;
+      line-height: 1.75;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .container {
+      width: min(900px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    /* NAV */
+
+    nav {
+      border-bottom: 1px solid var(--border);
+      background: rgba(7, 11, 20, 0.92);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .nav-inner {
+      width: min(1180px, calc(100% - 40px));
+      margin: auto;
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand span {
+      color: var(--cyan);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .menu-button {
+      display: none;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      padding: 8px 11px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-family: "DM Mono", monospace;
+    }
+
+    /* HERO */
+
+    .article-hero {
+      padding: 110px 0 75px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .eyebrow {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      font-size: clamp(2.7rem, 7vw, 5rem);
+      line-height: 1.02;
+      letter-spacing: -0.055em;
+      margin: 0;
+      max-width: 760px;
+    }
+
+    .hero-description {
+      color: var(--muted);
+      max-width: 650px;
+      font-size: 1.12rem;
+      margin: 28px 0 0;
+    }
+
+    .meta {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+      color: var(--muted);
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+    }
+
+    /* ARTICLE */
+
+    article {
+      padding: 75px 0 100px;
+    }
+
+    section {
+      margin-bottom: 85px;
+    }
+
+    h2 {
+      font-size: clamp(1.7rem, 4vw, 2.3rem);
+      line-height: 1.2;
+      letter-spacing: -0.035em;
+      margin: 0 0 22px;
+    }
+
+    h3 {
+      font-size: 1.2rem;
+      margin: 32px 0 12px;
+    }
+
+    p {
+      color: #C7CFDD;
+      max-width: 720px;
+      margin: 0 0 20px;
+    }
+
+    strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .question {
+      margin: 35px 0;
+      padding-left: 22px;
+      border-left: 2px solid var(--cyan);
+      color: var(--text);
+      font-size: 1.12rem;
+    }
+
+    /* SCAN VISUAL */
+
+    .scan-visual {
+      position: relative;
+      margin: 45px 0 55px;
+      min-height: 350px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background:
+        linear-gradient(rgba(77, 232, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(77, 232, 255, 0.035) 1px, transparent 1px),
+        var(--surface);
+      background-size: 42px 42px;
+    }
+
+    .scan-visual::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(77, 232, 255, 0.55),
+        transparent
+      );
+      top: 50%;
+      left: 0;
+      opacity: 0.45;
+    }
+
+    .scanner {
+      position: absolute;
+      left: 10%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 110px;
+      height: 110px;
+      border: 1px solid var(--cyan);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--cyan);
+      font-family: "DM Mono", monospace;
+      font-size: 0.75rem;
+      background: rgba(7, 11, 20, 0.8);
+      box-shadow: 0 0 40px rgba(77, 232, 255, 0.08);
+    }
+
+    .scanner::before,
+    .scanner::after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(77, 232, 255, 0.22);
+      border-radius: 50%;
+    }
+
+    .scanner::before {
+      inset: 12px;
+    }
+
+    .scanner::after {
+      inset: -12px;
+    }
+
+    .scan-line {
+      position: absolute;
+      left: 22%;
+      right: 28%;
+      top: 50%;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        var(--cyan),
+        rgba(77, 232, 255, 0.1)
+      );
+    }
+
+    .target {
+      position: absolute;
+      right: 13%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 145px;
+      min-height: 150px;
+      border: 1px solid var(--border);
+      background: rgba(16, 24, 39, 0.88);
+      padding: 20px;
+    }
+
+    .target-title {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.7rem;
+      margin-bottom: 15px;
+    }
+
+    .target-line {
+      font-family: "DM Mono", monospace;
+      color: var(--muted);
+      font-size: 0.68rem;
+      margin: 8px 0;
+    }
+
+    .target-line span {
+      color: var(--text);
+    }
+
+    .scan-label {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 24px;
+      font-family: "DM Mono", monospace;
+      color: var(--muted);
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* RESULT VISUAL */
+
+    .result-visual {
+      margin: 40px 0 45px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 0;
+      font-family: "DM Mono", monospace;
+      font-size: 0.8rem;
+      overflow-x: auto;
+    }
+
+    .result-row {
+      display: grid;
+      grid-template-columns: 70px 90px 1fr;
+      gap: 18px;
+      padding: 10px 16px;
+      min-width: 500px;
+    }
+
+    .result-row.header {
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .result-row:not(.header) {
+      color: #C7CFDD;
+    }
+
+    .open {
+      color: var(--cyan);
+    }
+
+    /* COMMAND */
+
+    .command {
+      margin: 30px 0;
+      padding: 20px 22px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      overflow-x: auto;
+    }
+
+    .command-label {
+      color: var(--muted);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+
+    code {
+      font-family: "DM Mono", monospace;
+    }
+
+    .command code {
+      color: var(--text);
+      font-size: 0.82rem;
+      white-space: nowrap;
+    }
+
+    /* TAKEAWAY */
+
+    .takeaway {
+      margin-top: 70px;
+      padding-top: 35px;
+      border-top: 1px solid var(--border);
+    }
+
+    .takeaway-label {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 14px;
+    }
+
+    .takeaway p {
+      font-size: 1.08rem;
+      color: var(--text);
+    }
+
+    /* NEXT */
+
+    .article-next {
+      margin-top: 80px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .article-next-label {
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .article-next a {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      text-decoration: none;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.15rem;
+      transition: color 0.2s ease;
+    }
+
+    .article-next a:hover {
+      color: var(--cyan);
+    }
+
+    .article-next .next-arrow {
+      color: var(--cyan);
+      font-size: 1rem;
+    }
+
+    /* FOOTER */
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 30px 0;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    footer .container {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 700px) {
+      .container,
+      .nav-inner {
+        width: min(100% - 28px, 900px);
+      }
+
+      .article-hero {
+        padding: 75px 0 55px;
+      }
+
+      article {
+        padding: 55px 0 75px;
+      }
+
+      section {
+        margin-bottom: 65px;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        padding: 18px 20px;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .menu-button {
+        display: block;
+      }
+
+      .scan-visual {
+        min-height: 390px;
+      }
+
+      .scanner {
+        left: 7%;
+        width: 85px;
+        height: 85px;
+      }
+
+      .target {
+        right: 7%;
+        width: 125px;
+      }
+
+      .scan-line {
+        left: 18%;
+        right: 20%;
+      }
+    }
+
+    @media (max-width: 430px) {
+      h1 {
+        font-size: 2.65rem;
+      }
+
+      .hero-description {
+        font-size: 1rem;
+      }
+
+      .scan-visual {
+        min-height: 420px;
+      }
+
+      .scanner {
+        top: 35%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .target {
+        top: 68%;
+        left: 50%;
+        right: auto;
+        transform: translate(-50%, -50%);
+      }
+
+      .scan-line {
+        display: none;
+      }
+
+      .scan-label {
+        bottom: 15px;
+        text-align: center;
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="nav-inner">
+
+      <a class="brand" href="../index.html">
+        KSCyb<span>Sec</span>
+      </a>
+
+      <div class="nav-links" id="navLinks">
+        <a href="../index.html">Start Here</a>
+        <a href="../index.html#latest">Articles</a>
+        <a href="../index.html#topics">Topics</a>
+        <a href="../index.html#explore">Explore</a>
+        <a href="../index.html#about">About</a>
+      </div>
+
+      <button
+        class="menu-button"
+        id="menuButton"
+        type="button"
+        aria-label="Open navigation"
+        aria-expanded="false"
+      >
+        MENU
+      </button>
+
+    </div>
+  </nav>
+
+
+  <header class="article-hero">
+    <div class="container">
+
+      <div class="eyebrow">
+        NETWORKING · 027 · BEGINNER
+      </div>
+
+      <h1>
+        Nmap: Your First<br>
+        Network Map
+      </h1>
+
+      <p class="hero-description">
+        A network can contain many devices, services, and open doors.
+        Nmap helps you turn that invisible network into something you can inspect.
+      </p>
+
+      <div class="meta">
+        <span>NETWORKING</span>
+        <span>~5 MIN READ</span>
+        <span>LEARN · TRY · THINK</span>
+      </div>
+
+    </div>
+  </header>
+
+
+  <main>
+    <article>
+
+      <div class="container">
+
+        <!-- INTRO -->
+
+        <section>
+
+          <p>
+            So far, we've been following the clues one at a time.
+          </p>
+
+          <p>
+            A device has an <strong>IP address</strong>.
+            A service listens on a <strong>port</strong>.
+            A network connects many devices together.
+          </p>
+
+          <p>
+            But there's a problem.
+          </p>
+
+          <div class="question">
+            What if you don't know what's actually there?
+          </div>
+
+          <p>
+            Maybe you're responsible for a small lab network.
+            Maybe you're checking whether a server is exposing an unexpected service.
+            Or maybe you're simply trying to understand your own network.
+          </p>
+
+          <p>
+            Instead of checking everything manually, you can use a tool designed
+            to ask the network questions.
+          </p>
+
+          <p>
+            That tool is <strong>Nmap</strong>.
+          </p>
+
+        </section>
+
+
+        <!-- VISUAL -->
+
+        <section>
+
+          <div class="scan-visual">
+
+            <div class="scanner">
+              SCAN
+            </div>
+
+            <div class="scan-line"></div>
+
+            <div class="target">
+
+              <div class="target-title">
+                TARGET
+              </div>
+
+              <div class="target-line">
+                IP <span>192.168.1.20</span>
+              </div>
+
+              <div class="target-line">
+                PORT <span>443</span>
+              </div>
+
+              <div class="target-line">
+                SERVICE <span>HTTPS</span>
+              </div>
+
+            </div>
+
+            <div class="scan-label">
+              PROBE → RESPONSE → INTERPRET
+            </div>
+
+          </div>
+
+          <p>
+            Think of Nmap as a way of turning a network into a map.
+          </p>
+
+          <p>
+            You give it a target that you're authorized to examine.
+            Nmap sends probes and observes the responses.
+            Those responses become clues about the target.
+          </p>
+
+        </section>
+
+
+        <!-- WHAT IS NMAP -->
+
+        <section>
+
+          <h2>
+            So, what is Nmap?
+          </h2>
+
+          <p>
+            <strong>Nmap</strong> stands for
+            <strong>Network Mapper</strong>.
+          </p>
+
+          <p>
+            It is a network discovery and security auditing tool.
+            It can help identify hosts, discover ports, and determine
+            what network services may be available.
+          </p>
+
+          <p>
+            That makes it especially useful for understanding
+            the attack surface of a network.
+          </p>
+
+          <p>
+            Notice the wording:
+            <strong>understanding</strong> the attack surface.
+          </p>
+
+          <p>
+            Nmap doesn't automatically mean "hacking."
+            Security teams, administrators, students, and penetration testers
+            all use network scanning to understand systems they are authorized
+            to examine.
+          </p>
+
+        </section>
+
+
+        <!-- FIRST SCAN -->
+
+        <section>
+
+          <h2>
+            Your first scan
+          </h2>
+
+          <p>
+            Imagine you have a device in your own lab at:
+          </p>
+
+          <div class="command">
+
+            <div class="command-label">
+              EXAMPLE TARGET
+            </div>
+
+            <code>192.168.1.20</code>
+
+          </div>
+
+          <p>
+            A basic Nmap scan could look like this:
+          </p>
+
+          <div class="command">
+
+            <div class="command-label">
+              AUTHORIZED LAB EXAMPLE
+            </div>
+
+            <code>nmap 192.168.1.20</code>
+
+          </div>
+
+          <p>
+            Only scan systems you own or have explicit permission
+            to test.
+          </p>
+
+          <p>
+            Nmap then starts asking questions about the target.
+          </p>
+
+          <p>
+            Is the host reachable?
+            Which ports respond?
+            What services appear to be listening?
+          </p>
+
+          <p>
+            The exact output depends on the target and the scan,
+            but a simplified result might look like this:
+          </p>
+
+        </section>
+
+
+        <!-- RESULT -->
+
+        <section>
+
+          <div class="result-visual">
+
+            <div class="result-row header">
+              <span>PORT</span>
+              <span>STATE</span>
+              <span>SERVICE</span>
+            </div>
+
+            <div class="result-row">
+              <span>22/tcp</span>
+              <span class="open">open</span>
+              <span>ssh</span>
+            </div>
+
+            <div class="result-row">
+              <span>80/tcp</span>
+              <span class="open">open</span>
+              <span>http</span>
+            </div>
+
+            <div class="result-row">
+              <span>443/tcp</span>
+              <span class="open">open</span>
+              <span>https</span>
+            </div>
+
+          </div>
+
+          <p>
+            Suddenly, the machine isn't just an IP address anymore.
+          </p>
+
+          <p>
+            You have clues.
+          </p>
+
+        </section>
+
+
+        <!-- READING -->
+
+        <section>
+
+          <h2>
+            What did Nmap actually find?
+          </h2>
+
+          <p>
+            Let's slow down.
+          </p>
+
+          <h3>
+            22/tcp
+          </h3>
+
+          <p>
+            Port <strong>22</strong> is commonly associated with SSH,
+            a protocol used for secure remote administration.
+          </p>
+
+          <h3>
+            80/tcp
+          </h3>
+
+          <p>
+            Port <strong>80</strong> is commonly associated with HTTP,
+            the protocol used for ordinary web traffic.
+          </p>
+
+          <h3>
+            443/tcp
+          </h3>
+
+          <p>
+            Port <strong>443</strong> is commonly associated with HTTPS,
+            the encrypted version of HTTP used by most modern websites.
+          </p>
+
+          <p>
+            These are conventions, not guarantees.
+            A service can be configured to listen on a different port.
+          </p>
+
+          <p>
+            That's why a scan is only the beginning of an investigation.
+          </p>
+
+        </section>
+
+
+        <!-- STORY -->
+
+        <section>
+
+          <h2>
+            The map becomes a trail
+          </h2>
+
+          <p>
+            Imagine you're responsible for a small company server.
+          </p>
+
+          <p>
+            You know its IP address.
+            You know it is supposed to run a website.
+          </p>
+
+          <p>
+            You scan it.
+          </p>
+
+          <p>
+            The result shows:
+          </p>
+
+          <div class="result-visual">
+
+            <div class="result-row">
+              <span>80/tcp</span>
+              <span class="open">open</span>
+              <span>http</span>
+            </div>
+
+            <div class="result-row">
+              <span>443/tcp</span>
+              <span class="open">open</span>
+              <span>https</span>
+            </div>
+
+          </div>
+
+          <p>
+            That makes sense.
+            The server is supposed to host a website.
+          </p>
+
+          <p>
+            But suppose you also find another service that nobody expected.
+          </p>
+
+          <p>
+            Now the scan has created a question.
+          </p>
+
+          <div class="question">
+            Why is this service exposed?
+          </div>
+
+          <p>
+            That is where cybersecurity thinking begins.
+          </p>
+
+          <p>
+            The scan didn't tell you that something is vulnerable.
+            It gave you a clue worth investigating.
+          </p>
+
+        </section>
+
+
+        <!-- HOST UP -->
+
+        <section>
+
+          <h2>
+            "Host is up" is useful too
+          </h2>
+
+          <p>
+            Nmap can also tell you whether a target appears reachable.
+          </p>
+
+          <p>
+            You may see a message indicating that the
+            <strong>host is up</strong>.
+          </p>
+
+          <p>
+            This matters because an IP address existing on paper
+            doesn't necessarily mean a device is currently responding.
+          </p>
+
+          <p>
+            So your investigation starts becoming a simple chain:
+          </p>
+
+          <div class="result-visual">
+
+            <div class="result-row">
+              <span>HOST</span>
+              <span class="open">UP</span>
+              <span>The device responds</span>
+            </div>
+
+            <div class="result-row">
+              <span>PORT</span>
+              <span class="open">OPEN</span>
+              <span>Something is accepting connections</span>
+            </div>
+
+            <div class="result-row">
+              <span>SERVICE</span>
+              <span class="open">KNOWN</span>
+              <span>A likely service is identified</span>
+            </div>
+
+          </div>
+
+          <p>
+            Each answer gives you another piece of the map.
+          </p>
+
+        </section>
+
+
+        <!-- SECURITY -->
+
+        <section>
+
+          <h2>
+            Why defenders care about Nmap
+          </h2>
+
+          <p>
+            Scanning isn't only useful for people trying to break into systems.
+          </p>
+
+          <p>
+            A defender can use it to check whether a machine is exposing
+            services that shouldn't be there.
+          </p>
+
+          <p>
+            For example:
+          </p>
+
+          <p>
+            A server is supposed to provide HTTPS.
+            A scan shows HTTPS.
+            Everything looks expected.
+          </p>
+
+          <p>
+            But another administrative service is also reachable from a network
+            where it wasn't supposed to be exposed.
+          </p>
+
+          <p>
+            The scan has just helped reveal an
+            <strong>unexpected attack surface</strong>.
+          </p>
+
+          <p>
+            This is one reason visibility matters in defensive security.
+            You can't investigate what you don't know exists.
+          </p>
+
+        </section>
+
+
+        <!-- THINK -->
+
+        <section>
+
+          <h2>
+            Don't stop at the port
+          </h2>
+
+          <p>
+            Here's an important habit.
+          </p>
+
+          <p>
+            Don't look at an Nmap result and immediately think:
+          </p>
+
+          <div class="question">
+            "Open port = vulnerability."
+          </div>
+
+          <p>
+            That's not how it works.
+          </p>
+
+          <p>
+            An open port usually means that something is listening
+            and accepting connections.
+          </p>
+
+          <p>
+            Whether that service is configured safely,
+            outdated, exposed unnecessarily, or vulnerable
+            requires further investigation.
+          </p>
+
+          <p>
+            Nmap gives you the map.
+            It doesn't finish the investigation for you.
+          </p>
+
+        </section>
+
+
+        <!-- TAKEAWAY -->
+
+        <section class="takeaway">
+
+          <div class="takeaway-label">
+            TAKEAWAY
+          </div>
+
+          <p>
+            Nmap helps turn an unknown network into something you can inspect.
+            It can reveal reachable hosts, open ports, and likely services.
+          </p>
+
+          <p>
+            The important skill isn't memorizing commands.
+            It's learning to look at the results and ask:
+            <strong>What does this clue tell me?</strong>
+          </p>
+
+        </section>
+
+
+        <!-- NEXT -->
+
+        <div class="article-next">
+
+          <div class="article-next-label">
+            NEXT CLUE · 028
+          </div>
+
+          <a href="reading-an-nmap-scan.html">
+            Reading an Nmap Scan
+            <span class="next-arrow">→</span>
+          </a>
+
+        </div>
+
+      </div>
+
+    </article>
+  </main>
+
+
+  <footer>
+    <div class="container">
+      <span>KSCybSec — Cybersecurity knowledge, one clue at a time.</span>
+      <span>Learn · Try · Think · Verify</span>
+    </div>
+  </footer>
+
+
+  <script>
+    const menuButton = document.getElementById("menuButton");
+    const navLinks = document.getElementById("navLinks");
+
+    menuButton.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+
+      menuButton.setAttribute(
+        "aria-expanded",
+        String(isOpen)
+      );
+    });
+
+    navLinks.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        menuButton.setAttribute("aria-expanded", "false");
+      });
+    });
+  </script>
+
+</body>
+</html>
