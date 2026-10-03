@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>NAT — How Private Networks Reach the Internet · KSCybSec</title>
+  <meta name="description" content="Understand how Network Address Translation allows devices using private IP addresses to communicate with the Internet.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #070B14;
+      --surface: #0B1120;
+      --surface-2: #101827;
+      --text: #E8EDF5;
+      --muted: #8995AA;
+      --cyan: #4DE8FF;
+      --purple: #8B7CFF;
+      --border: rgba(232, 237, 245, 0.10);
+      --soft-border: rgba(77, 232, 255, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Space Grotesk", sans-serif;
+      line-height: 1.7;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .container {
+      width: min(1080px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(7, 11, 20, 0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .brand span {
+      color: var(--cyan);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .menu-btn {
+      display: none;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      padding: 9px 11px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .mobile-menu {
+      display: none;
+      padding-bottom: 18px;
+    }
+
+    .mobile-menu a {
+      display: block;
+      padding: 11px 0;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .mobile-menu.open {
+      display: block;
+    }
+
+    .article-hero {
+      padding: 105px 0 65px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .eyebrow {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      max-width: 900px;
+      margin: 0;
+      font-size: clamp(2.7rem, 7vw, 5.3rem);
+      line-height: 1.02;
+      letter-spacing: -0.055em;
+      font-weight: 600;
+    }
+
+    .hero-description {
+      max-width: 700px;
+      margin: 27px 0 0;
+      color: var(--muted);
+      font-size: 1.12rem;
+    }
+
+    .article-meta {
+      margin-top: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px 26px;
+      color: var(--muted);
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+    }
+
+    .article {
+      width: min(760px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 78px 0 100px;
+    }
+
+    .article p {
+      margin: 0 0 25px;
+      color: #C5CEDD;
+      font-size: 1.03rem;
+    }
+
+    .story {
+      border-left: 2px solid var(--cyan);
+      padding: 4px 0 4px 25px;
+      margin: 0 0 65px;
+    }
+
+    .story p {
+      color: var(--text);
+      font-size: 1.13rem;
+      margin-bottom: 0;
+    }
+
+    .visual {
+      position: relative;
+      margin: 55px 0 65px;
+      min-height: 410px;
+      border: 1px solid var(--border);
+      background:
+        linear-gradient(rgba(77, 232, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(77, 232, 255, 0.035) 1px, transparent 1px),
+        var(--surface);
+      background-size: 34px 34px;
+      overflow: hidden;
+    }
+
+    .visual-label {
+      position: absolute;
+      top: 20px;
+      left: 22px;
+      font-family: "DM Mono", monospace;
+      color: var(--muted);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+    }
+
+    .network-zone {
+      position: absolute;
+      top: 30%;
+      height: 46%;
+      border: 1px solid rgba(77, 232, 255, 0.20);
+      background: rgba(77, 232, 255, 0.018);
+    }
+
+    .network-zone.private {
+      left: 5%;
+      width: 34%;
+    }
+
+    .network-zone.public {
+      right: 5%;
+      width: 34%;
+      border-color: rgba(139, 124, 255, 0.24);
+      background: rgba(139, 124, 255, 0.018);
+    }
+
+    .zone-title {
+      position: absolute;
+      top: 11px;
+      left: 13px;
+      font-family: "DM Mono", monospace;
+      font-size: 0.61rem;
+      color: var(--muted);
+    }
+
+    .nat-box {
+      position: absolute;
+      left: 50%;
+      top: 42%;
+      width: 125px;
+      height: 80px;
+      transform: translate(-50%, -50%);
+      border: 1px solid var(--soft-border);
+      background: var(--surface-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-family: "DM Mono", monospace;
+      font-size: 0.67rem;
+      color: var(--cyan);
+    }
+
+    .device {
+      position: absolute;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 0 5px rgba(77, 232, 255, 0.06);
+    }
+
+    .device.one {
+      left: 13%;
+      top: 48%;
+    }
+
+    .device.two {
+      left: 27%;
+      top: 61%;
+    }
+
+    .server {
+      position: absolute;
+      right: 14%;
+      top: 49%;
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+      background: var(--purple);
+      box-shadow: 0 0 0 5px rgba(139, 124, 255, 0.06);
+    }
+
+    .connection {
+      position: absolute;
+      height: 1px;
+      background: rgba(77, 232, 255, 0.30);
+      top: 42%;
+    }
+
+    .connection.left {
+      left: 18%;
+      width: 32%;
+    }
+
+    .connection.right {
+      left: 50%;
+      width: 32%;
+      background: rgba(139, 124, 255, 0.28);
+    }
+
+    .address {
+      position: absolute;
+      font-family: "DM Mono", monospace;
+      font-size: 0.61rem;
+    }
+
+    .address.private {
+      left: 9%;
+      top: 75%;
+      color: var(--cyan);
+    }
+
+    .address.public {
+      right: 8%;
+      top: 75%;
+      color: var(--purple);
+    }
+
+    .translation {
+      position: absolute;
+      left: 50%;
+      top: 71%;
+      transform: translateX(-50%);
+      color: var(--muted);
+      font-family: "DM Mono", monospace;
+      font-size: 0.60rem;
+      white-space: nowrap;
+    }
+
+    .flow {
+      margin: 45px 0;
+      padding: 28px 24px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .flow-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+    }
+
+    .flow-item {
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: #C5CEDD;
+    }
+
+    .flow-item.highlight {
+      color: var(--cyan);
+      border-color: var(--soft-border);
+    }
+
+    .flow-arrow {
+      color: var(--muted);
+    }
+
+    .translation-table {
+      margin: 50px 0;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .table-title {
+      padding: 17px 20px;
+      border-bottom: 1px solid var(--border);
+      font-family: "DM Mono", monospace;
+      color: var(--muted);
+      font-size: 0.70rem;
+      letter-spacing: 0.06em;
+    }
+
+    .table-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--border);
+      font-family: "DM Mono", monospace;
+      font-size: 0.71rem;
+    }
+
+    .table-row:last-child {
+      border-bottom: 0;
+    }
+
+    .table-row div {
+      padding: 14px 17px;
+    }
+
+    .table-row div:first-child {
+      color: var(--cyan);
+      border-right: 1px solid var(--border);
+    }
+
+    .table-row div:last-child {
+      color: #AEB8C9;
+    }
+
+    .security-note {
+      margin: 45px 0;
+      padding: 22px 24px;
+      border-left: 2px solid var(--purple);
+      background: rgba(139, 124, 255, 0.045);
+    }
+
+    .security-note p {
+      margin: 0;
+    }
+
+    .section {
+      margin: 70px 0;
+    }
+
+    h2 {
+      margin: 0 0 24px;
+      font-size: clamp(1.65rem, 4vw, 2.25rem);
+      line-height: 1.15;
+      letter-spacing: -0.035em;
+    }
+
+    h2::before {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin: 0 12px 5px 0;
+      border-radius: 50%;
+      background: var(--cyan);
+    }
+
+    .question {
+      margin: 70px 0;
+      padding: 30px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .question-label {
+      margin-bottom: 12px;
+      color: var(--cyan);
+      font-family: "DM Mono", monospace;
+      font-size: 0.70rem;
+      letter-spacing: 0.08em;
+    }
+
+    .question p {
+      color: var(--text);
+      font-size: 1.2rem;
+      margin: 0;
+    }
+
+    .takeaway {
+      margin-top: 80px;
+      padding: 30px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .takeaway-label {
+      margin-bottom: 15px;
+      color: var(--cyan);
+      font-family: "DM Mono", monospace;
+      font-size: 0.70rem;
+      letter-spacing: 0.08em;
+    }
+
+    .takeaway p {
+      color: var(--text);
+      font-size: 1.08rem;
+      margin: 0;
+    }
+
+    .article-next {
+      margin-top: 80px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .article-next-label {
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .article-next a {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      text-decoration: none;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.15rem;
+      transition: color 0.2s ease;
+    }
+
+    .article-next a:hover {
+      color: var(--cyan);
+    }
+
+    .article-next .next-arrow {
+      color: var(--cyan);
+      font-size: 1rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 35px 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 700px) {
+      .container {
+        width: min(100% - 28px, 1080px);
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .menu-btn {
+        display: block;
+      }
+
+      .article-hero {
+        padding: 78px 0 50px;
+      }
+
+      .article {
+        width: min(100% - 28px, 760px);
+        padding-top: 58px;
+      }
+
+      .visual {
+        min-height: 430px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .article-meta {
+        flex-direction: column;
+        gap: 7px;
+      }
+
+      .visual {
+        min-height: 470px;
+      }
+
+      .network-zone.private,
+      .network-zone.public {
+        width: 29%;
+      }
+
+      .network-zone.private {
+        left: 3%;
+      }
+
+      .network-zone.public {
+        right: 3%;
+      }
+
+      .connection.left {
+        left: 14%;
+        width: 36%;
+      }
+
+      .connection.right {
+        left: 50%;
+        width: 36%;
+      }
+
+      .table-row {
+        grid-template-columns: 1fr;
+      }
+
+      .table-row div:first-child {
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .translation {
+        white-space: normal;
+        width: 130px;
+        text-align: center;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="container">
+      <div class="nav-inner">
+
+        <a href="../index.html" class="brand">
+          KSCyb<span>Sec</span>
+        </a>
+
+        <div class="nav-links">
+          <a href="../index.html#start">Start Here</a>
+          <a href="../index.html#latest">Articles</a>
+          <a href="../index.html#topics">Topics</a>
+          <a href="../index.html#explore">Explore</a>
+          <a href="../index.html#about">About</a>
+        </div>
+
+        <button
+          class="menu-btn"
+          type="button"
+          aria-label="Open menu"
+          aria-expanded="false"
+        >
+          ☰
+        </button>
+
+      </div>
+
+      <div class="mobile-menu">
+        <a href="../index.html#start">Start Here</a>
+        <a href="../index.html#latest">Articles</a>
+        <a href="../index.html#topics">Topics</a>
+        <a href="../index.html#explore">Explore</a>
+        <a href="../index.html#about">About</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="article-hero">
+    <div class="container">
+
+      <div class="eyebrow">
+        Guide 023 · Networking · Beginner
+      </div>
+
+      <h1>
+        NAT: How Private Networks Reach the Internet
+      </h1>
+
+      <p class="hero-description">
+        Your laptop has a private IP address. The website is somewhere on the
+        public Internet. So how does that private address actually communicate
+        with the outside world?
+      </p>
+
+      <div class="article-meta">
+        <span>NETWORKING</span>
+        <span>BEGINNER</span>
+        <span>~5 MIN READ</span>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="article">
+
+    <section class="story reveal">
+
+      <p>
+        Look at the IP address of a device on a typical home network.
+      </p>
+
+      <p style="margin-top:18px;">
+        It might be something like
+        <strong>192.168.1.24</strong>.
+      </p>
+
+      <p style="margin-top:18px;">
+        Your phone might have another private address.
+        Your laptop has another.
+        Your smart TV has another.
+      </p>
+
+      <p style="margin-top:18px;">
+        Yet all of them can open websites on the Internet.
+      </p>
+
+      <p style="margin-top:18px;">
+        There is a clue sitting at the edge of your network:
+        <strong>NAT.</strong>
+      </p>
+
+    </section>
+
+    <div class="visual reveal">
+
+      <div class="visual-label">
+        PRIVATE NETWORK → NAT → PUBLIC INTERNET
+      </div>
+
+      <div class="network-zone private">
+        <div class="zone-title">
+          PRIVATE NETWORK
+        </div>
+      </div>
+
+      <div class="network-zone public">
+        <div class="zone-title">
+          PUBLIC INTERNET
+        </div>
+      </div>
+
+      <div class="device one"></div>
+      <div class="device two"></div>
+      <div class="server"></div>
+
+      <div class="connection left"></div>
+      <div class="connection right"></div>
+
+      <div class="nat-box">
+        NAT<br>
+        TRANSLATION
+      </div>
+
+      <div class="address private">
+        192.168.1.24
+      </div>
+
+      <div class="address public">
+        203.0.113.10
+      </div>
+
+      <div class="translation">
+        PRIVATE ADDRESS ↔ PUBLIC ADDRESS
+      </div>
+
+    </div>
+
+    <section class="section reveal">
+
+      <h2>The problem with private addresses</h2>
+
+      <p>
+        IPv4 addresses are limited.
+        There are only about 4.3 billion possible IPv4 addresses,
+        and the world has far more devices than that.
+      </p>
+
+      <p>
+        To make large numbers of devices possible, networks commonly use
+        <strong>private IPv4 address ranges</strong>.
+      </p>
+
+      <div class="translation-table">
+
+        <div class="table-title">
+          COMMON PRIVATE IPv4 RANGES
+        </div>
+
+        <div class="table-row">
+          <div>10.0.0.0/8</div>
+          <div>10.0.0.0 – 10.255.255.255</div>
+        </div>
+
+        <div class="table-row">
+          <div>172.16.0.0/12</div>
+          <div>172.16.0.0 – 172.31.255.255</div>
+        </div>
+
+        <div class="table-row">
+          <div>192.168.0.0/16</div>
+          <div>192.168.0.0 – 192.168.255.255</div>
+        </div>
+
+      </div>
+
+      <p>
+        These addresses are intended for use inside private networks.
+        They are not globally unique Internet addresses.
+      </p>
+
+    </section>
+
+    <section class="section reveal">
+
+      <h2>Enter NAT</h2>
+
+      <p>
+        <strong>NAT</strong> stands for
+        <strong>Network Address Translation</strong>.
+      </p>
+
+      <p>
+        NAT allows a network device, commonly a router or firewall,
+        to translate between private and public IP addressing.
+      </p>
+
+      <p>
+        That means many devices inside a private network can communicate
+        with the Internet through a public-facing address.
+      </p>
+
+      <div class="flow">
+
+        <div class="flow-row">
+
+          <div class="flow-item">
+            192.168.1.24
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item highlight">
+            NAT
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item">
+            Public IP
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="section reveal">
+
+      <h2>Follow one request</h2>
+
+      <p>
+        Your laptop wants to visit a website.
+      </p>
+
+      <p>
+        Inside your home network, the laptop might be:
+      </p>
+
+      <div class="flow">
+
+        <div class="flow-row">
+
+          <div class="flow-item highlight">
+            192.168.1.24
+          </div>
+
+        </div>
+
+      </div>
+
+      <p>
+        The laptop sends its traffic toward the default gateway.
+        The router receives it and performs the necessary translation
+        before forwarding the traffic toward the Internet.
+      </p>
+
+      <div class="flow">
+
+        <div class="flow-row">
+
+          <div class="flow-item">
+            Laptop
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item">
+            Router
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item highlight">
+            NAT
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item">
+            Internet
+          </div>
+
+        </div>
+
+      </div>
+
+      <p>
+        From the perspective of the outside network, the traffic can appear
+        to come from the public-facing address rather than the laptop's
+        private address.
+      </p>
+
+    </section>
+
+    <section class="section reveal">
+
+      <h2>It's not just the IP address</h2>
+
+      <p>
+        There is another important detail.
+      </p>
+
+      <p>
+        A home network can contain several devices that all need to access
+        the Internet at the same time.
+      </p>
+
+      <p>
+        So NAT commonly works together with port information to keep
+        different connections separate.
+      </p>
+
+      <div class="translation-table">
+
+        <div class="table-title">
+          SIMPLIFIED TRANSLATION VIEW
+        </div>
+
+        <div class="table-row">
+          <div>192.168.1.24 : 51520</div>
+          <div>203.0.113.10 : 40001</div>
+        </div>
+
+        <div class="table-row">
+          <div>192.168.1.25 : 51521</div>
+          <div>203.0.113.10 : 40002</div>
+        </div>
+
+        <div class="table-row">
+          <div>192.168.1.30 : 51522</div>
+          <div>203.0.113.10 : 40003</div>
+        </div>
+
+      </div>
+
+      <p>
+        The exact implementation depends on the NAT method and device,
+        but the basic idea is that the translation process keeps track
+        of different connections.
+      </p>
+
+    </section>
+
+    <section class="section reveal">
+
+      <h2>When the reply comes back</h2>
+
+      <p>
+        The story doesn't end when the request leaves.
+      </p>
+
+      <p>
+        The website sends a response back toward the public address.
+      </p>
+
+      <div class="flow">
+
+        <div class="flow-row">
+
+          <div class="flow-item">
+            Website
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item highlight">
+            Public IP
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item">
+            NAT
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item">
+            Laptop
+          </div>
+
+        </div>
+
+      </div>
+
+      <p>
+        The NAT device uses the information it kept about the connection
+        to determine which internal device should receive the returning traffic.
+      </p>
+
+      <p>
+        That's how a single public-facing network connection can support
+        communication from many private devices.
+      </p>
+
+    </section>
+
+    <section class="section reveal">
+
+      <h2>NAT is not the same as a firewall</h2>
+
+      <p>
+        These two concepts are often mentioned together, but they are not
+        the same thing.
+      </p>
+
+      <div class="security-note">
+
+        <p>
+          NAT is primarily about address and connection translation.
+          A firewall is designed to enforce traffic rules and decide what
+          should be allowed or blocked.
+        </p>
+
+      </div>
+
+      <p>
+        A router can perform NAT and also contain firewall functionality,
+        which is why the two can appear together in a typical home network.
+      </p>
+
+      <p>
+        NAT may also make some unsolicited inbound connections more difficult,
+        depending on the configuration, but it should not be treated as
+        a replacement for proper firewall controls.
+      </p>
+
+    </section>
+
+    <section class="question reveal">
+
+      <div class="question-label">
+        PAUSE FOR A SECOND
+      </div>
+
+      <p>
+        If three devices inside your home all use private IP addresses,
+        how can the outside world distinguish their separate connections
+        when they share one public address?
+      </p>
+
+    </section>
+
+    <section class="section reveal">
+
+      <h2>Another piece of the network puzzle</h2>
+
+      <p>
+        We can now trace the journey more clearly:
+      </p>
+
+      <div class="flow">
+
+        <div class="flow-row">
+
+          <div class="flow-item">
+            Device
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item">
+            Subnet
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item">
+            Router
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item highlight">
+            NAT
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item">
+            Internet
+          </div>
+
+        </div>
+
+      </div>
+
+      <p>
+        A device gets network information.
+        It determines whether a destination is local or remote.
+        A router provides the path between networks.
+        NAT can translate private addressing for Internet communication.
+      </p>
+
+      <p>
+        But the Internet is not just a collection of IP addresses.
+        Behind those addresses are services — websites, mail servers,
+        DNS servers, remote-access services, and many others.
+      </p>
+
+      <p>
+        So our next question is:
+        <strong>what exactly is running at the other end of a network connection?</strong>
+      </p>
+
+    </section>
+
+    <section class="takeaway reveal">
+
+      <div class="takeaway-label">
+        TAKEAWAY · 023
+      </div>
+
+      <p>
+        <strong>NAT translates network addressing so devices using private
+        IPv4 addresses can communicate through a public-facing address.</strong>
+        It commonly works with connection and port information to keep
+        multiple internal connections separate. NAT and firewalls are related
+        in many network devices, but they serve different primary purposes.
+      </p>
+
+    </section>
+
+    <div class="article-next reveal">
+
+      <div class="article-next-label">
+        NEXT CLUE · 024
+      </div>
+
+      <a href="common-network-protocols.html">
+        Common Network Protocols
+        <span class="next-arrow">→</span>
+      </a>
+
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      KSCybSec · Cybersecurity knowledge, one clue at a time.
+    </div>
+  </footer>
+
+  <script>
+    const menuButton = document.querySelector(".menu-btn");
+    const mobileMenu = document.querySelector(".mobile-menu");
+
+    if (menuButton && mobileMenu) {
+      menuButton.addEventListener("click", () => {
+        const isOpen = mobileMenu.classList.toggle("open");
+        menuButton.setAttribute("aria-expanded", String(isOpen));
+      });
+    }
+
+    const revealElements = document.querySelectorAll(".reveal");
+
+    if ("IntersectionObserver" in window) {
+
+      const observer = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12 }
+      );
+
+      revealElements.forEach(element => {
+        observer.observe(element);
+      });
+
+    } else {
+
+      revealElements.forEach(element => {
+        element.classList.add("visible");
+      });
+
+    }
+  </script>
+
+</body>
+</html>
