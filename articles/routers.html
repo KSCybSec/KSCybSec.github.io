@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Routers — How Traffic Finds Its Way · KSCybSec</title>
+  <meta name="description" content="Understand how routers move traffic between different networks and help packets find their way.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #070B14;
+      --surface: #0B1120;
+      --surface-2: #101827;
+      --text: #E8EDF5;
+      --muted: #8995AA;
+      --cyan: #4DE8FF;
+      --purple: #8B7CFF;
+      --border: rgba(232, 237, 245, 0.10);
+      --soft-border: rgba(77, 232, 255, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Space Grotesk", sans-serif;
+      line-height: 1.7;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .container {
+      width: min(1080px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(7, 11, 20, 0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .brand span {
+      color: var(--cyan);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .menu-btn {
+      display: none;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      padding: 9px 11px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .mobile-menu {
+      display: none;
+      padding-bottom: 18px;
+    }
+
+    .mobile-menu a {
+      display: block;
+      padding: 11px 0;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .mobile-menu.open {
+      display: block;
+    }
+
+    .article-hero {
+      padding: 105px 0 65px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .eyebrow {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      max-width: 900px;
+      margin: 0;
+      font-size: clamp(2.7rem, 7vw, 5.3rem);
+      line-height: 1.02;
+      letter-spacing: -0.055em;
+      font-weight: 600;
+    }
+
+    .hero-description {
+      max-width: 680px;
+      margin: 27px 0 0;
+      color: var(--muted);
+      font-size: 1.12rem;
+    }
+
+    .article-meta {
+      margin-top: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px 26px;
+      color: var(--muted);
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+    }
+
+    .article {
+      width: min(760px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 78px 0 100px;
+    }
+
+    .article p {
+      margin: 0 0 25px;
+      color: #C5CEDD;
+      font-size: 1.03rem;
+    }
+
+    .story {
+      border-left: 2px solid var(--cyan);
+      padding: 4px 0 4px 25px;
+      margin: 0 0 65px;
+    }
+
+    .story p {
+      color: var(--text);
+      font-size: 1.13rem;
+      margin-bottom: 0;
+    }
+
+    .visual {
+      position: relative;
+      margin: 55px 0 65px;
+      min-height: 390px;
+      border: 1px solid var(--border);
+      background:
+        linear-gradient(rgba(77, 232, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(77, 232, 255, 0.035) 1px, transparent 1px),
+        var(--surface);
+      background-size: 34px 34px;
+      overflow: hidden;
+    }
+
+    .visual-label {
+      position: absolute;
+      top: 20px;
+      left: 22px;
+      font-family: "DM Mono", monospace;
+      color: var(--muted);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+    }
+
+    .network {
+      position: absolute;
+      inset: 0;
+    }
+
+    .zone {
+      position: absolute;
+      top: 29%;
+      height: 43%;
+      border: 1px solid rgba(77, 232, 255, 0.20);
+      background: rgba(77, 232, 255, 0.018);
+    }
+
+    .zone.left {
+      left: 6%;
+      width: 27%;
+    }
+
+    .zone.center {
+      left: 36.5%;
+      width: 27%;
+      border-color: rgba(139, 124, 255, 0.28);
+      background: rgba(139, 124, 255, 0.018);
+    }
+
+    .zone.right {
+      right: 6%;
+      width: 27%;
+    }
+
+    .zone-label {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      font-family: "DM Mono", monospace;
+      color: var(--muted);
+      font-size: 0.60rem;
+    }
+
+    .router-node {
+      position: absolute;
+      left: 50%;
+      top: 45%;
+      width: 82px;
+      height: 82px;
+      transform: translate(-50%, -50%);
+      border: 1px solid var(--soft-border);
+      background: var(--surface-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-family: "DM Mono", monospace;
+      font-size: 0.67rem;
+      color: var(--cyan);
+    }
+
+    .device-node {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 0 5px rgba(77, 232, 255, 0.06);
+    }
+
+    .device-node.a {
+      left: 14%;
+      top: 49%;
+    }
+
+    .device-node.b {
+      left: 27%;
+      top: 60%;
+    }
+
+    .device-node.c {
+      right: 27%;
+      top: 49%;
+      background: var(--purple);
+      box-shadow: 0 0 0 5px rgba(139, 124, 255, 0.06);
+    }
+
+    .device-node.d {
+      right: 14%;
+      top: 61%;
+      background: var(--purple);
+      box-shadow: 0 0 0 5px rgba(139, 124, 255, 0.06);
+    }
+
+    .route-line {
+      position: absolute;
+      height: 1px;
+      top: 45%;
+      background: rgba(77, 232, 255, 0.30);
+    }
+
+    .route-line.left {
+      left: 19%;
+      width: 31%;
+    }
+
+    .route-line.right {
+      left: 50%;
+      width: 31%;
+    }
+
+    .packet {
+      position: absolute;
+      left: 28%;
+      top: 34%;
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.64rem;
+    }
+
+    .destination {
+      position: absolute;
+      right: 10%;
+      top: 20%;
+      font-family: "DM Mono", monospace;
+      color: var(--muted);
+      font-size: 0.62rem;
+    }
+
+    .flow {
+      margin: 45px 0;
+      padding: 28px 24px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .flow-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+    }
+
+    .flow-item {
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: #C5CEDD;
+    }
+
+    .flow-item.highlight {
+      color: var(--cyan);
+      border-color: var(--soft-border);
+    }
+
+    .flow-arrow {
+      color: var(--muted);
+    }
+
+    .route-table {
+      margin: 50px 0;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .route-title {
+      padding: 17px 20px;
+      border-bottom: 1px solid var(--border);
+      font-family: "DM Mono", monospace;
+      color: var(--muted);
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+    }
+
+    .route-row {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr 1fr;
+      border-bottom: 1px solid var(--border);
+      font-family: "DM Mono", monospace;
+      font-size: 0.70rem;
+    }
+
+    .route-row:last-child {
+      border-bottom: 0;
+    }
+
+    .route-row div {
+      padding: 14px 16px;
+      border-right: 1px solid var(--border);
+    }
+
+    .route-row div:last-child {
+      border-right: 0;
+    }
+
+    .route-row.header {
+      color: var(--muted);
+    }
+
+    .route-row:not(.header) div:first-child {
+      color: var(--cyan);
+    }
+
+    .route-row:not(.header) div {
+      color: #AEB8C9;
+    }
+
+    .security-note {
+      margin: 45px 0;
+      padding: 22px 24px;
+      border-left: 2px solid var(--purple);
+      background: rgba(139, 124, 255, 0.045);
+    }
+
+    .security-note p {
+      margin: 0;
+    }
+
+    .section {
+      margin: 70px 0;
+    }
+
+    h2 {
+      margin: 0 0 24px;
+      font-size: clamp(1.65rem, 4vw, 2.25rem);
+      line-height: 1.15;
+      letter-spacing: -0.035em;
+    }
+
+    h2::before {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin: 0 12px 5px 0;
+      border-radius: 50%;
+      background: var(--cyan);
+    }
+
+    .question {
+      margin: 70px 0;
+      padding: 30px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .question-label {
+      margin-bottom: 12px;
+      color: var(--cyan);
+      font-family: "DM Mono", monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+    }
+
+    .question p {
+      color: var(--text);
+      font-size: 1.2rem;
+      margin: 0;
+    }
+
+    .takeaway {
+      margin-top: 80px;
+      padding: 30px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .takeaway-label {
+      margin-bottom: 15px;
+      color: var(--cyan);
+      font-family: "DM Mono", monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+    }
+
+    .takeaway p {
+      color: var(--text);
+      font-size: 1.08rem;
+      margin: 0;
+    }
+
+    .article-next {
+      margin-top: 80px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .article-next-label {
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .article-next a {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      text-decoration: none;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.15rem;
+      transition: color 0.2s ease;
+    }
+
+    .article-next a:hover {
+      color: var(--cyan);
+    }
+
+    .article-next .next-arrow {
+      color: var(--cyan);
+      font-size: 1rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 35px 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 700px) {
+      .container {
+        width: min(100% - 28px, 1080px);
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .menu-btn {
+        display: block;
+      }
+
+      .article-hero {
+        padding: 78px 0 50px;
+      }
+
+      .article {
+        width: min(100% - 28px, 760px);
+        padding-top: 58px;
+      }
+
+      .visual {
+        min-height: 410px;
+      }
+
+      .route-row {
+        grid-template-columns: 1fr;
+      }
+
+      .route-row div {
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .route-row div:last-child {
+        border-bottom: 0;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .article-meta {
+        flex-direction: column;
+        gap: 7px;
+      }
+
+      .visual {
+        min-height: 450px;
+      }
+
+      .zone.left,
+      .zone.right {
+        width: 25%;
+      }
+
+      .zone.left {
+        left: 4%;
+      }
+
+      .zone.right {
+        right: 4%;
+      }
+
+      .zone.center {
+        left: 34%;
+        width: 32%;
+      }
+
+      .device-node.a {
+        left: 10%;
+      }
+
+      .device-node.b {
+        left: 23%;
+      }
+
+      .device-node.c {
+        right: 23%;
+      }
+
+      .device-node.d {
+        right: 10%;
+      }
+
+      .route-line.left {
+        left: 16%;
+        width: 34%;
+      }
+
+      .route-line.right {
+        left: 50%;
+        width: 34%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="container">
+      <div class="nav-inner">
+
+        <a href="../index.html" class="brand">
+          KSCyb<span>Sec</span>
+        </a>
+
+        <div class="nav-links">
+          <a href="../index.html#start">Start Here</a>
+          <a href="../index.html#latest">Articles</a>
+          <a href="../index.html#topics">Topics</a>
+          <a href="../index.html#explore">Explore</a>
+          <a href="../index.html#about">About</a>
+        </div>
+
+        <button
+          class="menu-btn"
+          type="button"
+          aria-label="Open menu"
+          aria-expanded="false"
+        >
+          ☰
+        </button>
+
+      </div>
+
+      <div class="mobile-menu">
+        <a href="../index.html#start">Start Here</a>
+        <a href="../index.html#latest">Articles</a>
+        <a href="../index.html#topics">Topics</a>
+        <a href="../index.html#explore">Explore</a>
+        <a href="../index.html#about">About</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="article-hero">
+    <div class="container">
+
+      <div class="eyebrow">
+        Guide 022 · Networking · Beginner
+      </div>
+
+      <h1>
+        Routers: How Traffic Finds Its Way
+      </h1>
+
+      <p class="hero-description">
+        Your laptop is on one network. The website you want is somewhere else.
+        How does the data know where to go?
+      </p>
+
+      <div class="article-meta">
+        <span>NETWORKING</span>
+        <span>BEGINNER</span>
+        <span>~5 MIN READ</span>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="article">
+
+    <section class="story reveal">
+
+      <p>
+        Your laptop has an IP address.
+        Your phone has an IP address.
+        Your home network has its own little address space.
+      </p>
+
+      <p style="margin-top:18px;">
+        But when you open a website, the server is usually not sitting
+        inside your home network.
+      </p>
+
+      <p style="margin-top:18px;">
+        So the question changes:
+      </p>
+
+      <p style="margin-top:18px;">
+        <strong>How does your packet leave your network and find the next one?</strong>
+      </p>
+
+    </section>
+
+    <div class="visual reveal">
+
+      <div class="visual-label">
+        PACKET PATH · NETWORK → ROUTER → NETWORK
+      </div>
+
+      <div class="network">
+
+        <div class="zone left">
+          <div class="zone-label">
+            HOME NETWORK
+          </div>
+        </div>
+
+        <div class="zone center">
+          <div class="zone-label">
+            ROUTER
+          </div>
+        </div>
+
+        <div class="zone right">
+          <div class="zone-label">
+            REMOTE NETWORK
+          </div>
+        </div>
+
+        <div class="device-node a"></div>
+        <div class="device-node b"></div>
+        <div class="device-node c"></div>
+        <div class="device-node d"></div>
+
+        <div class="route-line left"></div>
+        <div class="route-line right"></div>
+
+        <div class="router-node">
+          ROUTER<br>
+          NEXT HOP
+        </div>
+
+        <div class="packet">
+          PACKET →
+        </div>
+
+        <div class="destination">
+          DESTINATION<br>
+          203.0.113.25
+        </div>
+
+      </div>
+
+    </div>
+
+    <section class="section reveal">
+
+      <h2>The device that connects networks</h2>
+
+      <p>
+        A <strong>router</strong> is a device that connects different networks
+        and forwards packets between them.
+      </p>
+
+      <p>
+        Your home router is a simple example.
+        It connects your local network to your Internet service provider's network.
+      </p>
+
+      <div class="flow">
+
+        <div class="flow-row">
+
+          <div class="flow-item">
+            Laptop
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item highlight">
+            Router
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item">
+            ISP
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item">
+            Internet
+          </div>
+
+        </div>
+
+      </div>
+
+      <p>
+        The router does not magically know the entire path to every device.
+        Instead, it examines where a packet needs to go and uses its routing
+        information to decide where to send it next.
+      </p>
+
+    </section>
+
+    <section class="section reveal">
+
+      <h2>One packet, many decisions</h2>
+
+      <p>
+        Imagine your laptop wants to reach:
+      </p>
+
+      <div class="flow">
+
+        <div class="flow-row">
+
+          <div class="flow-item highlight">
+            203.0.113.25
+          </div>
+
+        </div>
+
+      </div>
+
+      <p>
+        Your laptop first determines whether that destination belongs
+        to its own local network.
+      </p>
+
+      <p>
+        If it is somewhere else, the packet needs to be sent toward
+        a router — usually the device configured as the
+        <strong>default gateway</strong>.
+      </p>
+
+      <div class="flow">
+
+        <div class="flow-row">
+
+          <div class="flow-item">
+            Destination is local
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item highlight">
+            Deliver locally
+          </div>
+
+        </div>
+
+        <div class="flow-row" style="margin-top:18px;">
+
+          <div class="flow-item">
+            Destination is remote
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item highlight">
+            Send to gateway
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="section reveal">
+
+      <h2>The default gateway</h2>
+
+      <p>
+        Earlier, DHCP gave our device information such as:
+      </p>
+
+      <div class="route-table">
+
+        <div class="route-title">
+          DEVICE NETWORK CONFIGURATION
+        </div>
+
+        <div class="route-row header">
+          <div>SETTING</div>
+          <div>EXAMPLE</div>
+          <div>PURPOSE</div>
+        </div>
+
+        <div class="route-row">
+          <div>IP</div>
+          <div>192.168.1.24</div>
+          <div>Device identity on network</div>
+        </div>
+
+        <div class="route-row">
+          <div>MASK</div>
+          <div>255.255.255.0</div>
+          <div>Defines local network</div>
+        </div>
+
+        <div class="route-row">
+          <div>GATEWAY</div>
+          <div>192.168.1.1</div>
+          <div>Path to other networks</div>
+        </div>
+
+      </div>
+
+      <p>
+        The default gateway is usually a router interface on the local network.
+      </p>
+
+      <p>
+        If your destination is outside your local subnet,
+        your device can send the packet toward that gateway.
+      </p>
+
+    </section>
+
+    <section class="section reveal">
+
+      <h2>Routers use routing tables</h2>
+
+      <p>
+        A router needs information that helps it decide where packets should go.
+      </p>
+
+      <p>
+        This information is stored in a <strong>routing table</strong>.
+      </p>
+
+      <div class="route-table">
+
+        <div class="route-title">
+          SIMPLIFIED ROUTING TABLE
+        </div>
+
+        <div class="route-row header">
+          <div>DESTINATION</div>
+          <div>NEXT HOP</div>
+          <div>INTERFACE</div>
+        </div>
+
+        <div class="route-row">
+          <div>192.168.1.0/24</div>
+          <div>Direct</div>
+          <div>LAN</div>
+        </div>
+
+        <div class="route-row">
+          <div>10.0.0.0/8</div>
+          <div>10.0.0.1</div>
+          <div>WAN</div>
+        </div>
+
+        <div class="route-row">
+          <div>0.0.0.0/0</div>
+          <div>ISP Gateway</div>
+          <div>WAN</div>
+        </div>
+
+      </div>
+
+      <p>
+        The table above is intentionally simplified.
+        Real routing tables can contain many more entries and more specific routes.
+      </p>
+
+      <p>
+        The important idea is:
+        <strong>a router compares a packet's destination with its routing information
+        and chooses an appropriate next hop or interface.</strong>
+      </p>
+
+    </section>
+
+    <section class="section reveal">
+
+      <h2>What is a next hop?</h2>
+
+      <p>
+        A router does not necessarily send a packet directly to its final destination.
+      </p>
+
+      <p>
+        Instead, it may send the packet to another router.
+      </p>
+
+      <div class="visual reveal" style="min-height:310px;">
+
+        <div class="visual-label">
+          ONE JOURNEY · MULTIPLE HOPS
+        </div>
+
+        <div style="
+          position:absolute;
+          left:10%;
+          right:10%;
+          top:48%;
+          border-top:1px solid rgba(77,232,255,.24);
+        "></div>
+
+        <div style="
+          position:absolute;
+          left:10%;
+          top:42%;
+          width:12px;
+          height:12px;
+          border-radius:50%;
+          background:#4DE8FF;
+          box-shadow:0 0 0 5px rgba(77,232,255,.06);
+        "></div>
+
+        <div style="
+          position:absolute;
+          left:34%;
+          top:42%;
+          width:12px;
+          height:12px;
+          border-radius:50%;
+          background:#8B7CFF;
+          box-shadow:0 0 0 5px rgba(139,124,255,.06);
+        "></div>
+
+        <div style="
+          position:absolute;
+          left:59%;
+          top:42%;
+          width:12px;
+          height:12px;
+          border-radius:50%;
+          background:#8B7CFF;
+          box-shadow:0 0 0 5px rgba(139,124,255,.06);
+        "></div>
+
+        <div style="
+          position:absolute;
+          right:10%;
+          top:42%;
+          width:12px;
+          height:12px;
+          border-radius:50%;
+          background:#4DE8FF;
+          box-shadow:0 0 0 5px rgba(77,232,255,.06);
+        "></div>
+
+        <div style="
+          position:absolute;
+          left:7%;
+          top:58%;
+          font-family:'DM Mono',monospace;
+          font-size:.61rem;
+          color:#8995AA;
+        ">
+          YOUR DEVICE
+        </div>
+
+        <div style="
+          position:absolute;
+          left:29%;
+          top:58%;
+          font-family:'DM Mono',monospace;
+          font-size:.61rem;
+          color:#8995AA;
+        ">
+          ROUTER
+        </div>
+
+        <div style="
+          position:absolute;
+          left:54%;
+          top:58%;
+          font-family:'DM Mono',monospace;
+          font-size:.61rem;
+          color:#8995AA;
+        ">
+          NEXT ROUTER
+        </div>
+
+        <div style="
+          position:absolute;
+          right:5%;
+          top:58%;
+          font-family:'DM Mono',monospace;
+          font-size:.61rem;
+          color:#8995AA;
+        ">
+          DESTINATION
+        </div>
+
+      </div>
+
+      <p>
+        Each router makes another forwarding decision.
+        Eventually, the packet reaches a network that contains the destination.
+      </p>
+
+    </section>
+
+    <section class="section reveal">
+
+      <h2>Why does this matter in security?</h2>
+
+      <p>
+        Routers sit at important boundaries between networks.
+      </p>
+
+      <p>
+        Because they control how traffic moves between those networks,
+        their configuration can have major security consequences.
+      </p>
+
+      <div class="security-note">
+
+        <p>
+          Routing determines where traffic can travel.
+          Security controls such as firewalls and access-control rules
+          can then determine which traffic is allowed to cross certain boundaries.
+        </p>
+
+      </div>
+
+      <p>
+        During an investigation, network paths can also provide clues.
+        A packet's source, destination, routing information, and surrounding
+        network activity can help analysts understand how communication occurred.
+      </p>
+
+    </section>
+
+    <section class="question reveal">
+
+      <div class="question-label">
+        PAUSE FOR A SECOND
+      </div>
+
+      <p>
+        If your laptop wants to reach a server outside your local subnet,
+        which device can provide the next path toward that remote network?
+      </p>
+
+    </section>
+
+    <section class="section reveal">
+
+      <h2>The path is starting to make sense</h2>
+
+      <p>
+        We can now connect several clues from this networking path:
+      </p>
+
+      <div class="flow">
+
+        <div class="flow-row">
+
+          <div class="flow-item">
+            DHCP
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item">
+            IP
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item">
+            Subnet
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item highlight">
+            Router
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item">
+            Other Network
+          </div>
+
+        </div>
+
+      </div>
+
+      <p>
+        DHCP helps a device join a network.
+        Subnetting helps define where that network begins and ends.
+        ARP helps with local IPv4 delivery.
+        And routers connect different networks together.
+      </p>
+
+      <p>
+        But there is another problem waiting around the corner.
+      </p>
+
+      <p>
+        Your laptop may have a private address such as
+        <strong>192.168.1.24</strong>.
+        The public Internet cannot simply treat that address like
+        a globally unique address.
+      </p>
+
+      <p>
+        So how does a private network communicate with the public Internet?
+      </p>
+
+    </section>
+
+    <section class="takeaway reveal">
+
+      <div class="takeaway-label">
+        TAKEAWAY · 022
+      </div>
+
+      <p>
+        <strong>Routers connect different networks and forward packets toward
+        their destinations.</strong>
+        Devices use a default gateway when traffic needs to leave the local
+        subnet, while routers use routing information to choose the next hop.
+      </p>
+
+    </section>
+
+    <div class="article-next reveal">
+
+      <div class="article-next-label">
+        NEXT CLUE · 023
+      </div>
+
+      <a href="nat.html">
+        NAT — How Private Networks Reach the Internet
+        <span class="next-arrow">→</span>
+      </a>
+
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      KSCybSec · Cybersecurity knowledge, one clue at a time.
+    </div>
+  </footer>
+
+  <script>
+    const menuButton = document.querySelector(".menu-btn");
+    const mobileMenu = document.querySelector(".mobile-menu");
+
+    if (menuButton && mobileMenu) {
+      menuButton.addEventListener("click", () => {
+        const isOpen = mobileMenu.classList.toggle("open");
+        menuButton.setAttribute("aria-expanded", String(isOpen));
+      });
+    }
+
+    const revealElements = document.querySelectorAll(".reveal");
+
+    if ("IntersectionObserver" in window) {
+
+      const observer = new IntersectionObserver(
+        entries => {
+
+          entries.forEach(entry => {
+
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+
+          });
+
+        },
+        { threshold: 0.12 }
+      );
+
+      revealElements.forEach(element => {
+        observer.observe(element);
+      });
+
+    } else {
+
+      revealElements.forEach(element => {
+        element.classList.add("visible");
+      });
+
+    }
+  </script>
+
+</body>
+</html>
