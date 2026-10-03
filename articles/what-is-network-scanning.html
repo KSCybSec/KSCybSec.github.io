@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>What Is Network Scanning? · KSCybSec</title>
+  <meta name="description" content="Understand network scanning, what it can reveal about a host, and why scanning is an important part of cybersecurity reconnaissance.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #070B14;
+      --surface: #0B1120;
+      --surface-2: #101827;
+      --text: #E8EDF5;
+      --muted: #8995AA;
+      --cyan: #4DE8FF;
+      --purple: #8B7CFF;
+      --border: rgba(232, 237, 245, 0.10);
+      --soft-border: rgba(77, 232, 255, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Space Grotesk", sans-serif;
+      line-height: 1.7;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .container {
+      width: min(1080px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(7, 11, 20, 0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .brand span {
+      color: var(--cyan);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .menu-btn {
+      display: none;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      padding: 9px 11px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .mobile-menu {
+      display: none;
+      padding-bottom: 18px;
+    }
+
+    .mobile-menu a {
+      display: block;
+      padding: 11px 0;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .mobile-menu.open {
+      display: block;
+    }
+
+    .article-hero {
+      padding: 105px 0 65px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .eyebrow {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      max-width: 900px;
+      margin: 0;
+      font-size: clamp(2.7rem, 7vw, 5.3rem);
+      line-height: 1.02;
+      letter-spacing: -0.055em;
+      font-weight: 600;
+    }
+
+    .hero-description {
+      max-width: 700px;
+      margin: 27px 0 0;
+      color: var(--muted);
+      font-size: 1.12rem;
+    }
+
+    .article-meta {
+      margin-top: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px 26px;
+      color: var(--muted);
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+    }
+
+    .article {
+      width: min(760px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 78px 0 100px;
+    }
+
+    .article p {
+      margin: 0 0 25px;
+      color: #C5CEDD;
+      font-size: 1.03rem;
+    }
+
+    .story {
+      border-left: 2px solid var(--cyan);
+      padding: 4px 0 4px 25px;
+      margin: 0 0 65px;
+    }
+
+    .story p {
+      color: var(--text);
+      font-size: 1.13rem;
+      margin-bottom: 0;
+    }
+
+    .visual {
+      position: relative;
+      margin: 55px 0 65px;
+      min-height: 420px;
+      border: 1px solid var(--border);
+      background:
+        linear-gradient(rgba(77, 232, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(77, 232, 255, 0.035) 1px, transparent 1px),
+        var(--surface);
+      background-size: 34px 34px;
+      overflow: hidden;
+    }
+
+    .visual-label {
+      position: absolute;
+      top: 20px;
+      left: 22px;
+      font-family: "DM Mono", monospace;
+      color: var(--muted);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+    }
+
+    .scanner {
+      position: absolute;
+      left: 8%;
+      top: 44%;
+      width: 125px;
+      height: 90px;
+      transform: translateY(-50%);
+      border: 1px solid var(--soft-border);
+      background: var(--surface-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-family: "DM Mono", monospace;
+      font-size: 0.68rem;
+      color: var(--cyan);
+    }
+
+    .target {
+      position: absolute;
+      right: 9%;
+      top: 24%;
+      width: 190px;
+      height: 215px;
+      border: 1px solid var(--border);
+      background: rgba(16, 24, 39, 0.72);
+      padding: 18px;
+    }
+
+    .target-title {
+      font-family: "DM Mono", monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .target-line {
+      height: 7px;
+      margin: 11px 0;
+      background: rgba(232, 237, 245, 0.08);
+    }
+
+    .target-line.open {
+      background: rgba(77, 232, 255, 0.45);
+    }
+
+    .target-line.closed {
+      background: rgba(139, 124, 255, 0.28);
+    }
+
+    .scan-wave {
+      position: absolute;
+      left: 25%;
+      top: 44%;
+      width: 45%;
+      height: 1px;
+      background: rgba(77, 232, 255, 0.32);
+      transform-origin: left center;
+    }
+
+    .scan-dot {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 0 5px rgba(77, 232, 255, 0.05);
+    }
+
+    .scan-dot.one {
+      left: 31%;
+      top: 40%;
+    }
+
+    .scan-dot.two {
+      left: 43%;
+      top: 48%;
+    }
+
+    .scan-dot.three {
+      left: 56%;
+      top: 36%;
+    }
+
+    .result {
+      position: absolute;
+      left: 10%;
+      bottom: 17%;
+      font-family: "DM Mono", monospace;
+      color: var(--muted);
+      font-size: 0.62rem;
+      line-height: 1.8;
+    }
+
+    .result strong {
+      color: var(--cyan);
+      font-weight: 400;
+    }
+
+    .flow {
+      margin: 45px 0;
+      padding: 27px 20px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .flow-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 11px;
+      flex-wrap: wrap;
+      font-family: "DM Mono", monospace;
+      font-size: 0.71rem;
+    }
+
+    .flow-item {
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: #C5CEDD;
+    }
+
+    .flow-item.highlight {
+      color: var(--cyan);
+      border-color: var(--soft-border);
+    }
+
+    .flow-arrow {
+      color: var(--muted);
+    }
+
+    .scan-levels {
+      margin: 50px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .scan-row {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 22px;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .scan-name {
+      color: var(--cyan);
+      font-family: "DM Mono", monospace;
+      font-size: 0.75rem;
+    }
+
+    .scan-description {
+      color: #C5CEDD;
+      font-size: 0.98rem;
+    }
+
+    .security-note {
+      margin: 45px 0;
+      padding: 22px 24px;
+      border-left: 2px solid var(--purple);
+      background: rgba(139, 124, 255, 0.045);
+    }
+
+    .security-note p {
+      margin: 0;
+    }
+
+    .section {
+      margin: 70px 0;
+    }
+
+    h2 {
+      margin: 0 0 24px;
+      font-size: clamp(1.65rem, 4vw, 2.25rem);
+      line-height: 1.15;
+      letter-spacing: -0.035em;
+    }
+
+    h2::before {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin: 0 12px 5px 0;
+      border-radius: 50%;
+      background: var(--cyan);
+    }
+
+    .question {
+      margin: 70px 0;
+      padding: 30px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .question-label {
+      margin-bottom: 12px;
+      color: var(--cyan);
+      font-family: "DM Mono", monospace;
+      font-size: 0.70rem;
+      letter-spacing: 0.08em;
+    }
+
+    .question p {
+      color: var(--text);
+      font-size: 1.2rem;
+      margin: 0;
+    }
+
+    .takeaway {
+      margin-top: 80px;
+      padding: 30px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .takeaway-label {
+      margin-bottom: 15px;
+      color: var(--cyan);
+      font-family: "DM Mono", monospace;
+      font-size: 0.70rem;
+      letter-spacing: 0.08em;
+    }
+
+    .takeaway p {
+      color: var(--text);
+      font-size: 1.08rem;
+      margin: 0;
+    }
+
+    .article-next {
+      margin-top: 80px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .article-next-label {
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .article-next a {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      text-decoration: none;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.15rem;
+      transition: color 0.2s ease;
+    }
+
+    .article-next a:hover {
+      color: var(--cyan);
+    }
+
+    .article-next .next-arrow {
+      color: var(--cyan);
+      font-size: 1rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 35px 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 700px) {
+      .container {
+        width: min(100% - 28px, 1080px);
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .menu-btn {
+        display: block;
+      }
+
+      .article-hero {
+        padding: 78px 0 50px;
+      }
+
+      .article {
+        width: min(100% - 28px, 760px);
+        padding-top: 58px;
+      }
+
+      .visual {
+        min-height: 450px;
+      }
+
+      .scan-levels .scan-row {
+        grid-template-columns: 1fr;
+        gap: 7px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .article-meta {
+        flex-direction: column;
+        gap: 7px;
+      }
+
+      .visual {
+        min-height: 500px;
+      }
+
+      .scanner {
+        left: 5%;
+        width: 105px;
+      }
+
+      .target {
+        right: 4%;
+        width: 150px;
+      }
+
+      .scan-wave {
+        left: 27%;
+        width: 38%;
+      }
+
+      .result {
+        left: 7%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="container">
+
+      <div class="nav-inner">
+
+        <a href="../index.html" class="brand">
+          KSCyb<span>Sec</span>
+        </a>
+
+        <div class="nav-links">
+          <a href="../index.html#start">Start Here</a>
+          <a href="../index.html#latest">Articles</a>
+          <a href="../index.html#topics">Topics</a>
+          <a href="../index.html#explore">Explore</a>
+          <a href="../index.html#about">About</a>
+        </div>
+
+        <button
+          class="menu-btn"
+          type="button"
+          aria-label="Open menu"
+          aria-expanded="false"
+        >
+          ☰
+        </button>
+
+      </div>
+
+      <div class="mobile-menu">
+        <a href="../index.html#start">Start Here</a>
+        <a href="../index.html#latest">Articles</a>
+        <a href="../index.html#topics">Topics</a>
+        <a href="../index.html#explore">Explore</a>
+        <a href="../index.html#about">About</a>
+      </div>
+
+    </div>
+  </nav>
+
+  <header class="article-hero">
+
+    <div class="container">
+
+      <div class="eyebrow">
+        Guide 026 · Networking · Beginner
+      </div>
+
+      <h1>
+        What Is Network Scanning?
+      </h1>
+
+      <p class="hero-description">
+        Before you can understand a machine, you need to know what it is
+        exposing. Network scanning is one way security professionals begin
+        that discovery.
+      </p>
+
+      <div class="article-meta">
+        <span>NETWORKING</span>
+        <span>RECONNAISSANCE</span>
+        <span>~5 MIN READ</span>
+      </div>
+
+    </div>
+
+  </header>
+
+  <main class="article">
+
+    <section class="story reveal">
+
+      <p>
+        You have an IP address.
+      </p>
+
+      <p style="margin-top:18px;">
+        You know the machine exists somewhere on the network.
+      </p>
+
+      <p style="margin-top:18px;">
+        But looking at an IP address alone tells you almost nothing
+        about what is happening behind it.
+      </p>
+
+      <p style="margin-top:18px;">
+        Maybe port 80 is open.
+        Maybe port 22 is listening.
+        Maybe nothing is reachable at all.
+      </p>
+
+      <p style="margin-top:18px;">
+        The question is no longer
+        <strong>“Where is the machine?”</strong>
+      </p>
+
+      <p style="margin-top:18px;">
+        It's:
+        <strong>“What can I discover about it?”</strong>
+      </p>
+
+    </section>
+
+    <div class="visual reveal">
+
+      <div class="visual-label">
+        SCANNER → TARGET → RESULTS
+      </div>
+
+      <div class="scanner">
+        NETWORK<br>
+        SCANNER
+      </div>
+
+      <div class="scan-wave"></div>
+
+      <div class="scan-dot one"></div>
+      <div class="scan-dot two"></div>
+      <div class="scan-dot three"></div>
+
+      <div class="target">
+
+        <div class="target-title">
+          TARGET · 192.168.1.20
+        </div>
+
+        <div class="target-line open"></div>
+        <div class="target-line"></div>
+        <div class="target-line closed"></div>
+        <div class="target-line open"></div>
+        <div class="target-line"></div>
+
+      </div>
+
+      <div class="result">
+        RESPONSE<br>
+        <strong>HOST · REACHABLE</strong><br>
+        <strong>PORT · OPEN</strong><br>
+        SERVICE · DETECTED
+      </div>
+
+    </div>
+
+    <section class="section reveal">
+
+      <h2>What is network scanning?</h2>
+
+      <p>
+        <strong>Network scanning</strong> is the process of sending
+        network requests or probes to discover information about hosts
+        and their network exposure.
+      </p>
+
+      <p>
+        Depending on the type of scan, you might be trying to discover:
+      </p>
+
+      <div class="scan-levels">
+
+        <div class="scan-row">
+          <div class="scan-name">HOSTS</div>
+          <div class="scan-description">
+            Which devices appear to be reachable on a network?
+          </div>
+        </div>
+
+        <div class="scan-row">
+          <div class="scan-name">PORTS</div>
+          <div class="scan-description">
+            Which communication endpoints appear to be open or closed?
+          </div>
+        </div>
+
+        <div class="scan-row">
+          <div class="scan-name">SERVICES</div>
+          <div class="scan-description">
+            What network services appear to be running?
+          </div>
+        </div>
+
+        <div class="scan-row">
+          <div class="scan-name">VERSIONS</div>
+          <div class="scan-description">
+            What software or service versions may be present?
+          </div>
+        </div>
+
+        <div class="scan-row">
+          <div class="scan-name">NETWORK STRUCTURE</div>
+          <div class="scan-description">
+            What can be inferred about the systems and paths around a target?
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="section reveal">
+
+      <h2>Scanning is about questions</h2>
+
+      <p>
+        A useful way to think about scanning is not as
+        <em>“running a tool.”</em>
+      </p>
+
+      <p>
+        Think of it as asking a series of questions.
+      </p>
+
+      <div class="flow">
+
+        <div class="flow-row">
+
+          <div class="flow-item">
+            Is the host there?
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item">
+            What ports respond?
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item highlight">
+            What services are there?
+          </div>
+
+        </div>
+
+      </div>
+
+      <p>
+        Each answer gives you another piece of the picture.
+      </p>
+
+      <p>
+        This is why scanning is often associated with
+        <strong>reconnaissance</strong> and <strong>enumeration</strong>.
+      </p>
+
+    </section>
+
+    <section class="section reveal">
+
+      <h2>Not every response means “open”</h2>
+
+      <p>
+        When a scanner probes a port, the result is not simply
+        “the port exists.”
+      </p>
+
+      <p>
+        A port can appear open, closed, or filtered depending on how the
+        host and network respond to the probe.
+      </p>
+
+      <div class="scan-levels">
+
+        <div class="scan-row">
+          <div class="scan-name">OPEN</div>
+          <div class="scan-description">
+            A service appears to be listening and accepting the type of
+            connection being tested.
+          </div>
+        </div>
+
+        <div class="scan-row">
+          <div class="scan-name">CLOSED</div>
+          <div class="scan-description">
+            The host is reachable, but no service appears to be listening
+            on that port.
+          </div>
+        </div>
+
+        <div class="scan-row">
+          <div class="scan-name">FILTERED</div>
+          <div class="scan-description">
+            A firewall or other network control may be preventing the
+            scanner from determining the port's state clearly.
+          </div>
+        </div>
+
+      </div>
+
+      <p>
+        These states are clues about how the network is behaving.
+      </p>
+
+    </section>
+
+    <section class="section reveal">
+
+      <h2>Why security teams scan networks</h2>
+
+      <p>
+        Network scanning isn't automatically an attack.
+      </p>
+
+      <p>
+        Administrators can scan their own environments to check whether
+        systems are reachable and whether expected services are exposed.
+      </p>
+
+      <p>
+        Security teams can use scanning as part of authorized assessments
+        to understand an organization's attack surface.
+      </p>
+
+      <div class="security-note">
+
+        <p>
+          The same activity can look very different depending on context.
+          Scanning a system you own or have explicit permission to test is
+          fundamentally different from probing someone else's network
+          without authorization.
+        </p>
+
+      </div>
+
+      <p>
+        In real security work, authorization and scope matter before
+        technical capability.
+      </p>
+
+    </section>
+
+    <section class="section reveal">
+
+      <h2>What about attackers?</h2>
+
+      <p>
+        Attackers can also use scanning during reconnaissance.
+      </p>
+
+      <p>
+        They may be trying to discover which systems exist, which services
+        are exposed, and where further investigation might be possible.
+      </p>
+
+      <p>
+        This is one reason defenders care about network visibility.
+      </p>
+
+      <p>
+        Unexpected scanning activity can become a useful signal when it is
+        correlated with other network and security events.
+      </p>
+
+    </section>
+
+    <section class="question reveal">
+
+      <div class="question-label">
+        PAUSE FOR A SECOND
+      </div>
+
+      <p>
+        If a machine has an open port, what would you want to know next:
+        the port number, the service behind it, or both?
+      </p>
+
+    </section>
+
+    <section class="section reveal">
+
+      <h2>Scanning gives you clues, not answers</h2>
+
+      <p>
+        Suppose a scan tells you:
+      </p>
+
+      <div class="flow">
+
+        <div class="flow-row">
+
+          <div class="flow-item">
+            80 · OPEN
+          </div>
+
+          <div class="flow-item">
+            443 · OPEN
+          </div>
+
+          <div class="flow-item highlight">
+            22 · OPEN
+          </div>
+
+        </div>
+
+      </div>
+
+      <p>
+        That's useful.
+      </p>
+
+      <p>
+        But the scan alone doesn't tell the complete story.
+      </p>
+
+      <p>
+        You still need to identify what services are actually running,
+        what software they use, how they are configured, and whether
+        the exposure is expected.
+      </p>
+
+      <p>
+        That's where <strong>enumeration</strong> becomes important.
+      </p>
+
+    </section>
+
+    <section class="section reveal">
+
+      <h2>The tool you'll meet next</h2>
+
+      <p>
+        There are many network-scanning tools, but one name appears
+        repeatedly in cybersecurity:
+        <strong>Nmap</strong>.
+      </p>
+
+      <p>
+        Nmap can discover hosts, scan ports, identify services, and perform
+        other forms of network discovery depending on how it is configured.
+      </p>
+
+      <p>
+        But before using a tool, remember what the tool is actually doing.
+      </p>
+
+      <div class="flow">
+
+        <div class="flow-row">
+
+          <div class="flow-item">
+            Probe
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item">
+            Response
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-item highlight">
+            Interpretation
+          </div>
+
+        </div>
+
+      </div>
+
+      <p>
+        The tool produces observations.
+        The security professional turns those observations into understanding.
+      </p>
+
+      <p>
+        And that's exactly what we'll do next.
+      </p>
+
+    </section>
+
+    <section class="takeaway reveal">
+
+      <div class="takeaway-label">
+        TAKEAWAY · 026
+      </div>
+
+      <p>
+        <strong>
+          Network scanning is a way to discover what hosts and services
+          are exposed on a network.
+        </strong>
+        It can reveal reachable hosts, port states, and possible services.
+        Scanning is an important reconnaissance technique, but the results
+        are clues that require interpretation. Always perform scanning only
+        on systems and networks you are authorized to test.
+      </p>
+
+    </section>
+
+    <div class="article-next reveal">
+
+      <div class="article-next-label">
+        NEXT CLUE · 027
+      </div>
+
+      <a href="nmap-your-first-network-map.html">
+        Nmap: Your First Network Map
+        <span class="next-arrow">→</span>
+      </a>
+
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      KSCybSec · Cybersecurity knowledge, one clue at a time.
+    </div>
+  </footer>
+
+  <script>
+    const menuButton = document.querySelector(".menu-btn");
+    const mobileMenu = document.querySelector(".mobile-menu");
+
+    if (menuButton && mobileMenu) {
+      menuButton.addEventListener("click", () => {
+        const isOpen = mobileMenu.classList.toggle("open");
+        menuButton.setAttribute("aria-expanded", String(isOpen));
+      });
+    }
+
+    const revealElements = document.querySelectorAll(".reveal");
+
+    if ("IntersectionObserver" in window) {
+
+      const observer = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 0.12
+        }
+      );
+
+      revealElements.forEach(element => {
+        observer.observe(element);
+      });
+
+    } else {
+
+      revealElements.forEach(element => {
+        element.classList.add("visible");
+      });
+
+    }
+  </script>
+
+</body>
+</html>
