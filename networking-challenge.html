@@ -2,27 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Networking Challenge · KSCybSec</title>
-  <meta name="description" content="A small practical networking investigation challenge from KSCybSec.">
+  <meta
+    name="description"
+    content="KSCybSec Networking Challenge — Trace the Connection."
+  >
+
+  <title>Trace the Connection — KSCybSec</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
 
   <style>
     :root {
       --bg: #070B14;
       --surface: #0B1120;
       --surface-2: #101827;
+
       --text: #E8EDF5;
       --muted: #8995AA;
+
       --cyan: #4DE8FF;
       --purple: #8B7CFF;
-      --border: rgba(137,149,170,0.16);
-      --success: #7DE2A8;
-      --danger: #FF8E8E;
+
+      --border: rgba(137, 149, 170, 0.16);
+      --border-bright: rgba(77, 232, 255, 0.28);
+
+      --max-width: 860px;
     }
 
     * {
@@ -37,8 +50,9 @@
       margin: 0;
       background: var(--bg);
       color: var(--text);
+
       font-family: "Inter", sans-serif;
-      line-height: 1.7;
+      line-height: 1.75;
     }
 
     a {
@@ -46,25 +60,34 @@
     }
 
     .container {
-      width: min(920px, calc(100% - 40px));
+      width: min(var(--max-width), calc(100% - 40px));
       margin: 0 auto;
     }
 
+    /* =========================
+       NAVIGATION
+    ========================= */
+
     nav {
-      border-bottom: 1px solid var(--border);
-      background: rgba(7,11,20,0.92);
-      backdrop-filter: blur(12px);
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 20;
+
+      background: rgba(7, 11, 20, 0.88);
+      backdrop-filter: blur(14px);
+
+      border-bottom: 1px solid var(--border);
     }
 
     .nav-inner {
+      width: min(1180px, calc(100% - 40px));
       min-height: 70px;
+      margin: 0 auto;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 24px;
+      gap: 30px;
     }
 
     .brand {
@@ -72,6 +95,7 @@
       font-family: "Space Grotesk", sans-serif;
       font-weight: 600;
       letter-spacing: -0.02em;
+      white-space: nowrap;
     }
 
     .brand span {
@@ -80,13 +104,14 @@
 
     .nav-links {
       display: flex;
-      gap: 24px;
-      font-size: 0.9rem;
-      color: var(--muted);
+      align-items: center;
+      gap: 26px;
     }
 
     .nav-links a {
+      color: var(--muted);
       text-decoration: none;
+      font-size: 0.88rem;
       transition: color 0.2s ease;
     }
 
@@ -94,122 +119,290 @@
       color: var(--text);
     }
 
+    .menu-button {
+      display: none;
+
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+
+      width: 44px;
+      height: 44px;
+
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .mobile-menu {
+      display: none;
+      border-top: 1px solid var(--border);
+    }
+
+    .mobile-menu.open {
+      display: block;
+    }
+
+    .mobile-menu a {
+      display: block;
+      padding: 14px 20px;
+
+      color: var(--muted);
+      text-decoration: none;
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
     .hero {
       padding: 100px 0 70px;
     }
 
     .eyebrow {
+      margin-bottom: 18px;
+
+      color: var(--cyan);
+
       font-family: "DM Mono", monospace;
       font-size: 0.72rem;
-      letter-spacing: 0.1em;
-      color: var(--cyan);
-      margin-bottom: 18px;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
     }
 
     h1 {
+      max-width: 720px;
+      margin: 0;
+
       font-family: "Space Grotesk", sans-serif;
-      font-size: clamp(2.5rem, 7vw, 5rem);
-      line-height: 1.02;
-      letter-spacing: -0.05em;
-      margin: 0 0 24px;
-      font-weight: 600;
+      font-size: clamp(3rem, 7vw, 5.6rem);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
     }
 
-    h1 span {
-      color: var(--cyan);
-    }
-
-    .hero p {
+    .hero-description {
       max-width: 650px;
+      margin: 28px 0 0;
+
       color: var(--muted);
       font-size: 1.08rem;
     }
 
-    .intro {
-      margin-top: 35px;
-      padding: 24px 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
+    .hero-line {
+      width: 100%;
+      height: 1px;
+
+      margin-top: 55px;
+
+      background: linear-gradient(
+        90deg,
+        var(--cyan),
+        rgba(77, 232, 255, 0.12),
+        transparent
+      );
     }
 
-    .intro strong {
-      color: var(--text);
+    /* =========================
+       CONTENT
+    ========================= */
+
+    main {
+      padding-bottom: 100px;
     }
 
     section {
-      padding: 55px 0;
+      margin-top: 70px;
     }
 
     .section-label {
+      margin-bottom: 18px;
+
+      color: var(--muted);
+
       font-family: "DM Mono", monospace;
-      color: var(--cyan);
       font-size: 0.72rem;
       letter-spacing: 0.1em;
-      margin-bottom: 14px;
       text-transform: uppercase;
     }
 
     h2 {
+      margin: 0 0 22px;
+
       font-family: "Space Grotesk", sans-serif;
-      font-size: clamp(1.7rem, 4vw, 2.5rem);
+      font-size: clamp(1.7rem, 4vw, 2.4rem);
       line-height: 1.15;
-      margin: 0 0 18px;
       letter-spacing: -0.03em;
     }
 
-    .story {
-      color: var(--muted);
-      max-width: 720px;
+    h3 {
+      margin: 0 0 12px;
+
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.25rem;
     }
+
+    p {
+      margin: 0 0 20px;
+    }
+
+    .story {
+      color: #c6cedb;
+      font-size: 1.03rem;
+    }
+
+    /* =========================
+       CONNECTION VISUAL
+    ========================= */
+
+    .connection {
+      margin: 45px 0;
+
+      padding: 28px;
+
+      border-top: 1px solid var(--border-bright);
+      border-bottom: 1px solid var(--border);
+
+      background:
+        radial-gradient(
+          circle at 50% 0%,
+          rgba(77, 232, 255, 0.07),
+          transparent 45%
+        );
+    }
+
+    .connection-flow {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      align-items: center;
+      gap: 10px;
+    }
+
+    .node {
+      min-height: 120px;
+
+      padding: 18px 12px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      text-align: center;
+
+      border: 1px solid var(--border);
+      background: var(--surface);
+
+      border-radius: 8px;
+    }
+
+    .node-label {
+      color: var(--cyan);
+
+      font-family: "DM Mono", monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .node strong {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1rem;
+    }
+
+    .node small {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 0.72rem;
+      word-break: break-word;
+    }
+
+    .flow-arrow {
+      color: var(--cyan);
+      text-align: center;
+      font-size: 1.2rem;
+    }
+
+    /* =========================
+       EVIDENCE
+    ========================= */
 
     .evidence {
       margin-top: 35px;
+
       border: 1px solid var(--border);
       background: var(--surface);
-      padding: 25px;
+
+      border-radius: 10px;
+      overflow: hidden;
     }
 
-    .evidence-title {
+    .evidence-header {
+      padding: 14px 18px;
+
+      border-bottom: 1px solid var(--border);
+
+      color: var(--muted);
+
       font-family: "DM Mono", monospace;
-      color: var(--cyan);
-      font-size: 0.75rem;
-      margin-bottom: 20px;
+      font-size: 0.72rem;
       letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
-    .terminal {
-      background: #050911;
-      border: 1px solid var(--border);
+    .evidence-body {
       padding: 22px;
-      overflow-x: auto;
-      font-family: "DM Mono", monospace;
-      font-size: 0.82rem;
-      line-height: 1.8;
-      color: #B8C4D8;
     }
 
-    .terminal .highlight {
-      color: var(--cyan);
+    .evidence-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 25px;
+
+      padding: 12px 0;
+
+      border-bottom: 1px solid rgba(137, 149, 170, 0.09);
     }
+
+    .evidence-row:last-child {
+      border-bottom: 0;
+    }
+
+    .evidence-key {
+      color: var(--muted);
+    }
+
+    code {
+      color: var(--cyan);
+
+      font-family: "DM Mono", monospace;
+      font-size: 0.84rem;
+    }
+
+    /* =========================
+       QUESTIONS
+    ========================= */
 
     .question {
-      margin-top: 55px;
-      padding-top: 35px;
-      border-top: 1px solid var(--border);
+      margin: 38px 0;
+
+      padding-bottom: 34px;
+
+      border-bottom: 1px solid var(--border);
     }
 
     .question-number {
+      margin-bottom: 9px;
+
+      color: var(--cyan);
+
       font-family: "DM Mono", monospace;
-      color: var(--purple);
-      font-size: 0.75rem;
-      margin-bottom: 12px;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
     }
 
     .question h3 {
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 1.35rem;
-      margin: 0 0 20px;
+      margin-bottom: 18px;
     }
 
     .options {
@@ -218,88 +411,81 @@
     }
 
     .option {
+      position: relative;
+
       width: 100%;
-      text-align: left;
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text);
+
       padding: 15px 17px;
-      cursor: pointer;
+
+      background: var(--surface);
+      border: 1px solid var(--border);
+
+      color: var(--text);
+      text-align: left;
+
+      border-radius: 7px;
+
       font: inherit;
-      transition: border-color 0.2s ease, background 0.2s ease;
+      cursor: pointer;
+
+      transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
     }
 
     .option:hover {
-      border-color: rgba(77,232,255,0.45);
-      background: rgba(77,232,255,0.035);
+      border-color: rgba(77, 232, 255, 0.35);
+      background: var(--surface-2);
     }
 
     .option.selected {
       border-color: var(--cyan);
-      background: rgba(77,232,255,0.06);
+      background: rgba(77, 232, 255, 0.06);
     }
 
     .option.correct {
-      border-color: var(--success);
-      color: var(--success);
+      border-color: #6ee7b7;
+      background: rgba(110, 231, 183, 0.07);
     }
 
     .option.wrong {
-      border-color: var(--danger);
-      color: var(--danger);
+      border-color: #fb7185;
+      background: rgba(251, 113, 133, 0.07);
     }
 
     .feedback {
       display: none;
-      margin-top: 15px;
+
+      margin-top: 13px;
+
       color: var(--muted);
-      font-size: 0.92rem;
+      font-size: 0.9rem;
     }
 
     .feedback.show {
       display: block;
     }
 
-    .progress {
-      position: sticky;
-      bottom: 15px;
-      margin: 20px 0;
-      background: rgba(11,17,32,0.94);
-      border: 1px solid var(--border);
-      padding: 15px 18px;
-      backdrop-filter: blur(10px);
-      z-index: 5;
-    }
-
-    .progress-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
-      font-family: "DM Mono", monospace;
-      font-size: 0.72rem;
-      color: var(--muted);
-      margin-bottom: 9px;
-    }
-
-    .progress-bar {
-      height: 3px;
-      background: var(--surface-2);
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      width: 0%;
-      height: 100%;
-      background: var(--cyan);
-      transition: width 0.3s ease;
-    }
+    /* =========================
+       RESULT
+    ========================= */
 
     .result {
       display: none;
-      margin: 70px 0 30px;
-      padding: 35px 0;
-      border-top: 1px solid var(--border);
+
+      margin-top: 65px;
+      padding: 35px;
+
+      border-top: 1px solid var(--cyan);
       border-bottom: 1px solid var(--border);
+
+      background:
+        radial-gradient(
+          circle at 10% 0%,
+          rgba(77, 232, 255, 0.08),
+          transparent 40%
+        );
     }
 
     .result.show {
@@ -307,72 +493,182 @@
     }
 
     .result-score {
-      font-family: "Space Grotesk", sans-serif;
-      font-size: clamp(3rem, 10vw, 5rem);
-      line-height: 1;
-      color: var(--cyan);
-      margin-bottom: 20px;
-    }
+      margin: 8px 0 12px;
 
-    .result p {
-      color: var(--muted);
-      max-width: 650px;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(3rem, 8vw, 5rem);
+      line-height: 1;
     }
 
     .result-message {
-      color: var(--text) !important;
-      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 600px;
     }
 
-    .next {
-      margin-top: 70px;
-      padding-top: 30px;
+    .progress {
+      height: 4px;
+
+      margin-top: 25px;
+
+      background: var(--surface-2);
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+
+      background: var(--cyan);
+
+      transition: width 0.5s ease;
+    }
+
+    .retry {
+      margin-top: 25px;
+
+      padding: 12px 18px;
+
+      border: 1px solid var(--border-bright);
+      background: transparent;
+
+      color: var(--text);
+
+      font-family: "Space Grotesk", sans-serif;
+
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .retry:hover {
+      background: rgba(77, 232, 255, 0.06);
+    }
+
+    /* =========================
+       NEXT
+    ========================= */
+
+    .article-next {
+      margin-top: 80px;
+      padding-top: 32px;
+
       border-top: 1px solid var(--border);
     }
 
-    .next-label {
-      font-family: "DM Mono", monospace;
+    .article-next-label {
+      margin-bottom: 12px;
+
       color: var(--muted);
+
+      font-family: "DM Mono", monospace;
       font-size: 0.72rem;
       letter-spacing: 0.08em;
-      margin-bottom: 12px;
     }
 
-    .next a {
+    .article-next a {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+
+      color: var(--text);
       text-decoration: none;
+
       font-family: "Space Grotesk", sans-serif;
       font-size: 1.15rem;
+
+      transition: color 0.2s ease;
     }
 
-    .next a:hover {
+    .article-next a:hover {
       color: var(--cyan);
     }
 
+    .next-arrow {
+      color: var(--cyan);
+      font-size: 1rem;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
     footer {
-      padding: 70px 0 45px;
+      padding: 45px 0;
+
+      border-top: 1px solid var(--border);
+
       color: var(--muted);
-      font-size: 0.85rem;
+      font-size: 0.82rem;
+    }
+
+    footer .container {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 850px) {
+      .connection-flow {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-arrow {
+        transform: rotate(90deg);
+      }
     }
 
     @media (max-width: 700px) {
-      .container {
-        width: min(100% - 28px, 920px);
-      }
-
       .nav-links {
         display: none;
       }
 
+      .menu-button {
+        display: block;
+      }
+
       .hero {
-        padding: 75px 0 50px;
+        padding-top: 70px;
       }
 
-      section {
-        padding: 42px 0;
+      .evidence-row {
+        flex-direction: column;
+        gap: 4px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        width: min(var(--max-width), calc(100% - 28px));
       }
 
-      .evidence {
+      .nav-inner {
+        width: calc(100% - 28px);
+      }
+
+      .hero {
+        padding-bottom: 45px;
+      }
+
+      .connection {
         padding: 18px;
+      }
+
+      .result {
+        padding: 25px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      * {
+        transition: none !important;
       }
     }
   </style>
@@ -380,400 +676,515 @@
 
 <body>
 
+  <!-- =========================
+       NAVIGATION
+  ========================= -->
+
   <nav>
-    <div class="container nav-inner">
-      <a href="../index.html" class="brand">
+    <div class="nav-inner">
+
+      <a href="index.html" class="brand">
         KSCyb<span>Sec</span>
       </a>
 
       <div class="nav-links">
-        <a href="../index.html">Start</a>
-        <a href="../index.html#topics">Topics</a>
-        <a href="../index.html#explore">Explore</a>
-        <a href="../index.html#about">About</a>
+        <a href="index.html#start">Start Here</a>
+        <a href="index.html#latest">Articles</a>
+        <a href="index.html#topics">Topics</a>
+        <a href="index.html#explore">Explore</a>
+        <a href="index.html#about">About</a>
       </div>
+
+      <button
+        class="menu-button"
+        id="menuButton"
+        type="button"
+        aria-label="Open navigation"
+        aria-expanded="false"
+      >
+        ☰
+      </button>
+
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="index.html#start">Start Here</a>
+      <a href="index.html#latest">Articles</a>
+      <a href="index.html#topics">Topics</a>
+      <a href="index.html#explore">Explore</a>
+      <a href="index.html#about">About</a>
     </div>
   </nav>
 
+
+  <!-- =========================
+       HERO
+  ========================= -->
+
+  <header class="hero">
+    <div class="container">
+
+      <div class="eyebrow">
+        NETWORKING PATH · CHALLENGE
+      </div>
+
+      <h1>
+        Trace the connection.
+      </h1>
+
+      <p class="hero-description">
+        One laptop. One network. A few clues.
+        Can you follow the path from the device to the server?
+      </p>
+
+      <div class="hero-line"></div>
+
+    </div>
+  </header>
+
+
   <main>
 
-    <header class="hero">
-      <div class="container">
+    <div class="container">
 
-        <div class="eyebrow">
-          Networking Path · Investigation Challenge
+      <!-- =========================
+           STORY
+      ========================= -->
+
+      <section>
+
+        <div class="section-label">
+          THE SCENARIO
         </div>
 
-        <h1>
-          Trace the<br>
-          <span>network.</span>
-        </h1>
+        <h2>
+          Something is connecting.
+        </h2>
 
-        <p>
-          You've learned how networks connect, how devices get addresses,
-          how traffic moves, and how services reveal clues.
-        </p>
+        <div class="story">
 
-        <div class="intro">
-          <strong>Now put those clues together.</strong><br>
-          You're investigating a small network. Nothing is broken.
-          Nothing is obviously malicious. Your job is simply to understand
-          what you're looking at.
+          <p>
+            A laptop has just joined a network.
+            It received an IP address and is trying to reach
+            a secure website.
+          </p>
+
+          <p>
+            You have been given a few pieces of evidence.
+            Your job is not to memorize the answers.
+          </p>
+
+          <p>
+            Follow the clues and figure out what happens
+            at each step.
+          </p>
+
         </div>
 
-      </div>
-    </header>
+      </section>
 
 
-    <section>
-      <div class="container">
+      <!-- =========================
+           CONNECTION VISUAL
+      ========================= -->
 
-        <div class="section-label">01 · The situation</div>
+      <section>
 
-        <h2>A laptop joined the network.</h2>
+        <div class="section-label">
+          FOLLOW THE PATH
+        </div>
+
+        <div class="connection">
+
+          <div class="connection-flow">
+
+            <div class="node">
+              <div class="node-label">DEVICE</div>
+              <strong>Laptop</strong>
+              <small>192.168.1.24</small>
+            </div>
+
+            <div class="flow-arrow">→</div>
+
+            <div class="node">
+              <div class="node-label">LOCAL</div>
+              <strong>ARP</strong>
+              <small>Find the local MAC</small>
+            </div>
+
+            <div class="flow-arrow">→</div>
+
+            <div class="node">
+              <div class="node-label">ROUTER</div>
+              <strong>NAT</strong>
+              <small>Private → Public</small>
+            </div>
+
+            <div class="flow-arrow">→</div>
+
+            <div class="node">
+              <div class="node-label">SERVER</div>
+              <strong>HTTPS</strong>
+              <small>:443</small>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           EVIDENCE
+      ========================= -->
+
+      <section>
+
+        <div class="section-label">
+          EVIDENCE · 01
+        </div>
+
+        <h2>
+          The laptop joins the network.
+        </h2>
 
         <p class="story">
-          A laptop has just connected to a small office network.
-          The network administrator gives you a few pieces of information
-          and asks:
-        </p>
-
-        <p class="story">
-          <strong>“Can you figure out what is on this network?”</strong>
+          Before the laptop can communicate normally,
+          it needs network configuration.
         </p>
 
         <div class="evidence">
 
-          <div class="evidence-title">
-            NETWORK CONFIGURATION
+          <div class="evidence-header">
+            DHCP INFORMATION
           </div>
 
-          <div class="terminal">
-            Device: Laptop<br>
-            IP Address: <span class="highlight">192.168.1.24</span><br>
-            Default Gateway: <span class="highlight">192.168.1.1</span><br>
-            DNS Server: <span class="highlight">192.168.1.1</span>
+          <div class="evidence-body">
+
+            <div class="evidence-row">
+              <span class="evidence-key">IP address</span>
+              <code>192.168.1.24</code>
+            </div>
+
+            <div class="evidence-row">
+              <span class="evidence-key">Subnet mask</span>
+              <code>255.255.255.0</code>
+            </div>
+
+            <div class="evidence-row">
+              <span class="evidence-key">Default gateway</span>
+              <code>192.168.1.1</code>
+            </div>
+
+            <div class="evidence-row">
+              <span class="evidence-key">DNS server</span>
+              <code>192.168.1.1</code>
+            </div>
+
           </div>
 
         </div>
 
-      </div>
-    </section>
+      </section>
 
 
-    <section>
-      <div class="container">
+      <!-- =========================
+           QUESTIONS
+      ========================= -->
 
-        <div class="section-label">02 · First clue</div>
+      <section id="challenge">
 
-        <h2>The network responds.</h2>
+        <div class="section-label">
+          INVESTIGATION
+        </div>
+
+        <h2>
+          Connect the clues.
+        </h2>
 
         <p class="story">
-          A scan was performed on the local network. You don't need to
-          run anything yourself. The results are already here.
+          Choose the answer that best explains what is happening.
+          You can change your answer before submitting.
         </p>
 
-        <div class="evidence">
 
-          <div class="evidence-title">
-            SCAN RESULTS
+        <!-- QUESTION 1 -->
+
+        <div class="question" data-question="1">
+
+          <div class="question-number">
+            CLUE · 01
           </div>
-
-          <div class="terminal">
-            192.168.1.1 → 80/tcp open<br>
-            192.168.1.1 → 443/tcp open<br>
-            <br>
-            192.168.1.20 → 22/tcp open<br>
-            192.168.1.20 → 443/tcp open<br>
-            <br>
-            192.168.1.30 → no response
-          </div>
-
-        </div>
-
-
-        <div class="question" data-answer="A">
-
-          <div class="question-number">CLUE 01</div>
 
           <h3>
-            Which device is most likely acting as the laptop's gateway?
-          </h3>
-
-          <div class="options">
-            <button class="option" data-value="A">
-              192.168.1.1
-            </button>
-
-            <button class="option" data-value="B">
-              192.168.1.20
-            </button>
-
-            <button class="option" data-value="C">
-              192.168.1.24
-            </button>
-
-            <button class="option" data-value="D">
-              192.168.1.30
-            </button>
-          </div>
-
-          <div class="feedback">
-            The laptop's configuration already identifies 192.168.1.1
-            as its default gateway.
-          </div>
-
-        </div>
-
-
-        <div class="question" data-answer="B">
-
-          <div class="question-number">CLUE 02</div>
-
-          <h3>
-            Which host clearly exposes a web service?
-          </h3>
-
-          <div class="options">
-            <button class="option" data-value="A">
-              192.168.1.30
-            </button>
-
-            <button class="option" data-value="B">
-              192.168.1.20
-            </button>
-
-            <button class="option" data-value="C">
-              192.168.1.24
-            </button>
-
-            <button class="option" data-value="D">
-              None of them
-            </button>
-          </div>
-
-          <div class="feedback">
-            Port 443 is commonly associated with HTTPS, so
-            192.168.1.20 clearly exposes a web service.
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-
-
-    <section>
-      <div class="container">
-
-        <div class="section-label">03 · Local discovery</div>
-
-        <h2>One address isn't enough.</h2>
-
-        <p class="story">
-          The laptop knows that 192.168.1.20 exists. But local Ethernet
-          or Wi-Fi communication also needs the destination network
-          interface's hardware address.
-        </p>
-
-        <div class="evidence">
-
-          <div class="evidence-title">
-            ARP CACHE
-          </div>
-
-          <div class="terminal">
-            192.168.1.1 → 8A:31:44:72:10:01<br>
-            <span class="highlight">192.168.1.20 → 3C:52:82:7A:91:4F</span>
-          </div>
-
-        </div>
-
-
-        <div class="question" data-answer="C">
-
-          <div class="question-number">CLUE 03</div>
-
-          <h3>
-            What does 3C:52:82:7A:91:4F represent here?
+            What protocol gave the laptop its network configuration?
           </h3>
 
           <div class="options">
 
-            <button class="option" data-value="A">
-              The public IP address
-            </button>
-
-            <button class="option" data-value="B">
-              The subnet mask
-            </button>
-
-            <button class="option" data-value="C">
-              The MAC address
-            </button>
-
-            <button class="option" data-value="D">
-              The DNS server
-            </button>
-
-          </div>
-
-          <div class="feedback">
-            The colon-separated hexadecimal value is a MAC address,
-            which identifies a network interface on the local network.
-          </div>
-
-        </div>
-
-
-        <div class="question" data-answer="A">
-
-          <div class="question-number">CLUE 04</div>
-
-          <h3>
-            The laptop knows 192.168.1.20 but needs its MAC address.
-            Which protocol helps with this on an IPv4 local network?
-          </h3>
-
-          <div class="options">
-
-            <button class="option" data-value="A">
+            <button class="option" data-answer="wrong">
               ARP
             </button>
 
-            <button class="option" data-value="B">
+            <button class="option" data-answer="correct">
               DHCP
             </button>
 
-            <button class="option" data-value="C">
+            <button class="option" data-answer="wrong">
+              NAT
+            </button>
+
+            <button class="option" data-answer="wrong">
+              HTTPS
+            </button>
+
+          </div>
+
+          <div class="feedback">
+            DHCP automatically provides configuration such as an IP
+            address, subnet mask, gateway and DNS server.
+          </div>
+
+        </div>
+
+
+        <!-- QUESTION 2 -->
+
+        <div class="question" data-question="2">
+
+          <div class="question-number">
+            CLUE · 02
+          </div>
+
+          <h3>
+            The laptop wants to send traffic to
+            <code>192.168.1.1</code>.
+            What helps it discover the local MAC address?
+          </h3>
+
+          <div class="options">
+
+            <button class="option" data-answer="wrong">
+              DHCP
+            </button>
+
+            <button class="option" data-answer="correct">
+              ARP
+            </button>
+
+            <button class="option" data-answer="wrong">
               DNS
             </button>
 
-            <button class="option" data-value="D">
+            <button class="option" data-answer="wrong">
               HTTP
             </button>
 
           </div>
 
           <div class="feedback">
-            ARP resolves an IPv4 address to a MAC address on the local
-            network.
+            ARP resolves an IPv4 address to a MAC address on the
+            local network.
           </div>
 
         </div>
 
-      </div>
-    </section>
 
+        <!-- QUESTION 3 -->
 
-    <section>
-      <div class="container">
+        <div class="question" data-question="3">
 
-        <div class="section-label">04 · Put the clues together</div>
-
-        <h2>What is that machine?</h2>
-
-        <p class="story">
-          You now know that 192.168.1.20 has two open ports:
-          SSH on port 22 and HTTPS on port 443.
-        </p>
-
-        <p class="story">
-          You also know its MAC address from the ARP cache.
-          You don't need to guess an exact device model.
-          You're looking for its most reasonable role.
-        </p>
-
-
-        <div class="question" data-answer="D">
-
-          <div class="question-number">CLUE 05</div>
+          <div class="question-number">
+            CLUE · 03
+          </div>
 
           <h3>
-            Based on the available evidence, what is the most likely
-            role of 192.168.1.20?
+            The destination is outside the laptop's local network.
+            Where does the traffic normally go first?
           </h3>
 
           <div class="options">
 
-            <button class="option" data-value="A">
-              A DNS-only client
+            <button class="option" data-answer="wrong">
+              The DNS server
             </button>
 
-            <button class="option" data-value="B">
-              An offline device
+            <button class="option" data-answer="correct">
+              The default gateway / router
             </button>
 
-            <button class="option" data-value="C">
-              The laptop itself
+            <button class="option" data-answer="wrong">
+              The laptop's own MAC address
             </button>
 
-            <button class="option" data-value="D">
-              A server or networked system providing services
+            <button class="option" data-answer="wrong">
+              The web server directly
             </button>
 
           </div>
 
           <div class="feedback">
-            The host exposes both HTTPS and SSH, which are commonly
-            provided by servers or other networked systems offering
-            services. The evidence does not justify a more specific
-            device identification.
+            The default gateway is normally the router that forwards
+            traffic toward other networks.
           </div>
 
         </div>
 
 
-        <div class="question" data-answer="B">
+        <!-- QUESTION 4 -->
 
-          <div class="question-number">FINAL CLUE</div>
+        <div class="question" data-question="4">
+
+          <div class="question-number">
+            CLUE · 04
+          </div>
 
           <h3>
-            You want to discover more hosts, ports and services on an
-            authorized network. Which tool would naturally be useful?
+            The laptop uses a private address:
+            <code>192.168.1.24:51520</code>.
+            The router sends the connection outward as:
+            <code>203.0.113.10:40001</code>.
+            What is happening?
           </h3>
 
           <div class="options">
 
-            <button class="option" data-value="A">
-              Photoshop
+            <button class="option" data-answer="wrong">
+              ARP is changing the MAC address
             </button>
 
-            <button class="option" data-value="B">
-              Nmap
+            <button class="option" data-answer="correct">
+              NAT/PAT is translating the private address and port
             </button>
 
-            <button class="option" data-value="C">
-              Word
+            <button class="option" data-answer="wrong">
+              DNS is encrypting the connection
             </button>
 
-            <button class="option" data-value="D">
-              Calculator
+            <button class="option" data-answer="wrong">
+              DHCP is assigning a second IP
             </button>
 
           </div>
 
           <div class="feedback">
-            Nmap is a network discovery and scanning tool commonly used
-            to identify hosts, ports and services on authorized networks.
+            NAT/PAT can translate a private source IP and port into
+            a public IP and port while tracking the connection.
           </div>
 
         </div>
 
 
-        <div class="progress">
+        <!-- QUESTION 5 -->
 
-          <div class="progress-top">
-            <span>INVESTIGATION PROGRESS</span>
-            <span id="progressText">0 / 6</span>
+        <div class="question" data-question="5">
+
+          <div class="question-number">
+            CLUE · 05
           </div>
 
-          <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
+          <h3>
+            The server is listening on port <code>443</code>.
+            Which service is commonly associated with it?
+          </h3>
+
+          <div class="options">
+
+            <button class="option" data-answer="wrong">
+              SSH
+            </button>
+
+            <button class="option" data-answer="wrong">
+              DNS
+            </button>
+
+            <button class="option" data-answer="correct">
+              HTTPS
+            </button>
+
+            <button class="option" data-answer="wrong">
+              FTP
+            </button>
+
+          </div>
+
+          <div class="feedback">
+            TCP port 443 is conventionally associated with HTTPS.
+            Port numbers are conventions, not absolute guarantees.
           </div>
 
         </div>
 
+
+        <!-- =========================
+             FINAL CONNECTION
+        ========================= -->
+
+        <section>
+
+          <div class="section-label">
+            FINAL CLUE
+          </div>
+
+          <h2>
+            Can you reconstruct the journey?
+          </h2>
+
+          <div class="connection">
+
+            <div class="connection-flow">
+
+              <div class="node">
+                <div class="node-label">01</div>
+                <strong>DHCP</strong>
+                <small>Gets configuration</small>
+              </div>
+
+              <div class="flow-arrow">→</div>
+
+              <div class="node">
+                <div class="node-label">02</div>
+                <strong>ARP</strong>
+                <small>Finds local MAC</small>
+              </div>
+
+              <div class="flow-arrow">→</div>
+
+              <div class="node">
+                <div class="node-label">03</div>
+                <strong>Router</strong>
+                <small>Forwards traffic</small>
+              </div>
+
+              <div class="flow-arrow">→</div>
+
+              <div class="node">
+                <div class="node-label">04</div>
+                <strong>NAT</strong>
+                <small>Translates connection</small>
+              </div>
+
+            </div>
+
+          </div>
+
+          <p class="story">
+            The laptop did not simply “connect to the Internet.”
+            A chain of systems and protocols made that connection possible.
+          </p>
+
+          <p class="story">
+            That's the real skill behind networking:
+            <strong>seeing the individual clues and connecting them.</strong>
+          </p>
+
+        </section>
+
+
+        <!-- =========================
+             RESULT
+        ========================= -->
 
         <div class="result" id="result">
 
@@ -781,108 +1192,150 @@
             INVESTIGATION COMPLETE
           </div>
 
-          <div class="result-score" id="score">
-            0 / 6
+          <div class="result-score">
+            <span id="score">0</span>/5
           </div>
 
           <p class="result-message" id="resultMessage"></p>
 
-          <p>
-            You followed the clues from IP addressing to gateways,
-            services, MAC addresses, ARP and network scanning.
-            That's the same basic mindset used when investigating a
-            real network: observe → connect clues → verify.
-          </p>
+          <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+          </div>
+
+          <button class="retry" id="retryButton" type="button">
+            Try Again
+          </button>
 
         </div>
 
 
-        <div class="next">
+        <!-- =========================
+             NEXT
+        ========================= -->
 
-          <div class="next-label">
-            NEXT PATH
+        <div class="article-next">
+
+          <div class="article-next-label">
+            NETWORKING PATH · COMPLETE
           </div>
 
-          <a href="../index.html#explore">
-            Explore Web Security
-            <span style="color:var(--cyan);">→</span>
+          <a href="index.html#explore">
+            Explore the Next Security Track
+            <span class="next-arrow">→</span>
           </a>
 
         </div>
 
-      </div>
-    </section>
+      </section>
+
+    </div>
 
   </main>
 
 
+  <!-- =========================
+       FOOTER
+  ========================= -->
+
   <footer>
+
     <div class="container">
-      KSCybSec — Cybersecurity knowledge, one clue at a time.
+
+      <span>
+        KSCybSec — Cybersecurity knowledge, one clue at a time.
+      </span>
+
+      <span>
+        Learn · Try · Think · Verify
+      </span>
+
     </div>
+
   </footer>
 
 
   <script>
-    const questions = document.querySelectorAll(".question");
-    const progressText = document.getElementById("progressText");
-    const progressFill = document.getElementById("progressFill");
-    const result = document.getElementById("result");
-    const scoreElement = document.getElementById("score");
-    const resultMessage = document.getElementById("resultMessage");
+    /* =========================
+       MOBILE MENU
+    ========================= */
 
-    let answered = 0;
-    let score = 0;
+    const menuButton = document.getElementById("menuButton");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    menuButton.addEventListener("click", () => {
+      const isOpen = mobileMenu.classList.toggle("open");
+
+      menuButton.setAttribute(
+        "aria-expanded",
+        String(isOpen)
+      );
+    });
+
+    document.querySelectorAll(".mobile-menu a").forEach(link => {
+      link.addEventListener("click", () => {
+        mobileMenu.classList.remove("open");
+        menuButton.setAttribute("aria-expanded", "false");
+      });
+    });
+
+
+    /* =========================
+       CHALLENGE
+    ========================= */
+
+    const questions = document.querySelectorAll(".question");
+
+    const answers = {};
 
     questions.forEach(question => {
 
-      const correctAnswer = question.dataset.answer;
-      const options = question.querySelectorAll(".option");
-      const feedback = question.querySelector(".feedback");
+      const questionNumber =
+        question.dataset.question;
+
+      const options =
+        question.querySelectorAll(".option");
+
+      const feedback =
+        question.querySelector(".feedback");
 
       options.forEach(option => {
 
         option.addEventListener("click", () => {
 
-          if (question.dataset.completed === "true") {
-            return;
-          }
-
-          question.dataset.completed = "true";
-          answered++;
-
-          const selected = option.dataset.value;
-
-          options.forEach(button => {
-            button.disabled = true;
+          options.forEach(item => {
+            item.classList.remove(
+              "selected",
+              "correct",
+              "wrong"
+            );
           });
 
-          if (selected === correctAnswer) {
+          option.classList.add("selected");
+
+          answers[questionNumber] =
+            option.dataset.answer === "correct";
+
+          if (option.dataset.answer === "correct") {
+
+            option.classList.remove("selected");
             option.classList.add("correct");
-            score++;
+
+            feedback.textContent =
+              question.querySelector(".feedback").textContent;
+
           } else {
+
+            option.classList.remove("selected");
             option.classList.add("wrong");
 
-            options.forEach(button => {
-              if (button.dataset.value === correctAnswer) {
-                button.classList.add("correct");
-              }
-            });
+            feedback.textContent =
+              "Not quite. Look at the role this protocol plays in the connection.";
+
           }
 
           feedback.classList.add("show");
 
-          const percentage = Math.round((answered / questions.length) * 100);
-
-          progressText.textContent =
-            answered + " / " + questions.length;
-
-          progressFill.style.width = percentage + "%";
-
-          if (answered === questions.length) {
-            showResult();
-          }
-
+          checkCompletion();
         });
 
       });
@@ -890,25 +1343,72 @@
     });
 
 
-    function showResult() {
+    /* =========================
+       CHECK COMPLETION
+    ========================= */
 
-      scoreElement.textContent =
-        score + " / " + questions.length;
+    function checkCompletion() {
 
-      if (score === questions.length) {
+      const completed =
+        Object.keys(answers).length === questions.length;
 
-        resultMessage.textContent =
-          "Perfect investigation. You connected every clue.";
+      if (!completed) {
+        return;
+      }
 
-      } else if (score >= 4) {
+      let score = 0;
 
-        resultMessage.textContent =
-          "Good investigation. You have the core networking clues connected.";
+      Object.values(answers).forEach(answer => {
+        if (answer) {
+          score++;
+        }
+      });
+
+      showResult(score);
+    }
+
+
+    /* =========================
+       RESULT
+    ========================= */
+
+    function showResult(score) {
+
+      const result =
+        document.getElementById("result");
+
+      const scoreElement =
+        document.getElementById("score");
+
+      const messageElement =
+        document.getElementById("resultMessage");
+
+      const progressBar =
+        document.getElementById("progressBar");
+
+      scoreElement.textContent = score;
+
+      const percentage =
+        Math.round((score / questions.length) * 100);
+
+      progressBar.style.width =
+        percentage + "%";
+
+
+      if (score === 5) {
+
+        messageElement.textContent =
+          "Perfect. You connected the full chain — DHCP, ARP, routing, NAT and HTTPS. You are ready to move beyond the basic network clues.";
+
+      } else if (score >= 3) {
+
+        messageElement.textContent =
+          "Good investigation. You have the main networking pieces connected. Review the clues you missed, then try the challenge again if you want a stronger foundation.";
 
       } else {
 
-        resultMessage.textContent =
-          "The investigation is complete. Review the clues and try again.";
+        messageElement.textContent =
+          "The clues are there — they just need connecting. Revisit the networking articles around DHCP, ARP, routers and NAT, then come back and investigate again.";
 
       }
 
@@ -917,11 +1417,54 @@
       setTimeout(() => {
         result.scrollIntoView({
           behavior: "smooth",
-          block: "start"
+          block: "center"
         });
-      }, 250);
-
+      }, 100);
     }
+
+
+    /* =========================
+       RETRY
+    ========================= */
+
+    document
+      .getElementById("retryButton")
+      .addEventListener("click", () => {
+
+        Object.keys(answers).forEach(key => {
+          delete answers[key];
+        });
+
+        questions.forEach(question => {
+
+          question
+            .querySelectorAll(".option")
+            .forEach(option => {
+              option.classList.remove(
+                "selected",
+                "correct",
+                "wrong"
+              );
+            });
+
+          question
+            .querySelector(".feedback")
+            .classList.remove("show");
+
+        });
+
+        document
+          .getElementById("result")
+          .classList.remove("show");
+
+        document
+          .getElementById("challenge")
+          .scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+
+      });
   </script>
 
 </body>
