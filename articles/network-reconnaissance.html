@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Network Reconnaissance · KSCybSec</title>
+
+  <meta
+    name="description"
+    content="Learn what network reconnaissance is, how attackers and defenders use it, and how small network clues can build a bigger picture."
+  >
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --bg: #070B14;
+      --surface: #0B1120;
+      --surface-2: #101827;
+      --text: #E8EDF5;
+      --muted: #8995AA;
+      --cyan: #4DE8FF;
+      --purple: #8B7CFF;
+      --border: rgba(137, 149, 170, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Space Grotesk", sans-serif;
+      line-height: 1.75;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .container {
+      width: min(900px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    /* NAV */
+
+    nav {
+      border-bottom: 1px solid var(--border);
+      background: rgba(7, 11, 20, 0.92);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .nav-inner {
+      width: min(1180px, calc(100% - 40px));
+      margin: auto;
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand span {
+      color: var(--cyan);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .menu-button {
+      display: none;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      padding: 8px 11px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-family: "DM Mono", monospace;
+    }
+
+    /* HERO */
+
+    .article-hero {
+      padding: 110px 0 75px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .eyebrow {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      font-size: clamp(2.7rem, 7vw, 5rem);
+      line-height: 1.02;
+      letter-spacing: -0.055em;
+      margin: 0;
+      max-width: 800px;
+    }
+
+    .hero-description {
+      color: var(--muted);
+      max-width: 670px;
+      font-size: 1.12rem;
+      margin: 28px 0 0;
+    }
+
+    .meta {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+      color: var(--muted);
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+    }
+
+    /* ARTICLE */
+
+    article {
+      padding: 75px 0 100px;
+    }
+
+    section {
+      margin-bottom: 85px;
+    }
+
+    h2 {
+      font-size: clamp(1.7rem, 4vw, 2.3rem);
+      line-height: 1.2;
+      letter-spacing: -0.035em;
+      margin: 0 0 22px;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      margin: 32px 0 10px;
+    }
+
+    p {
+      color: #C7CFDD;
+      max-width: 720px;
+      margin: 0 0 20px;
+    }
+
+    strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .question {
+      margin: 35px 0;
+      padding-left: 22px;
+      border-left: 2px solid var(--cyan);
+      color: var(--text);
+      font-size: 1.12rem;
+    }
+
+    /* RECON VISUAL */
+
+    .recon-visual {
+      position: relative;
+      margin: 45px 0 55px;
+      min-height: 370px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background:
+        linear-gradient(rgba(77, 232, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(77, 232, 255, 0.035) 1px, transparent 1px),
+        var(--surface);
+      background-size: 42px 42px;
+    }
+
+    .recon-center {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 110px;
+      height: 110px;
+      border: 1px solid var(--cyan);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      color: var(--cyan);
+      background: rgba(7, 11, 20, 0.88);
+      box-shadow: 0 0 45px rgba(77, 232, 255, 0.07);
+    }
+
+    .recon-center::before,
+    .recon-center::after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(77, 232, 255, 0.2);
+      border-radius: 50%;
+    }
+
+    .recon-center::before {
+      inset: -18px;
+    }
+
+    .recon-center::after {
+      inset: -38px;
+    }
+
+    .clue {
+      position: absolute;
+      border: 1px solid var(--border);
+      background: rgba(16, 24, 39, 0.9);
+      padding: 12px 16px;
+      font-family: "DM Mono", monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+    }
+
+    .clue span {
+      display: block;
+      color: var(--text);
+      margin-top: 5px;
+    }
+
+    .clue.one {
+      top: 11%;
+      left: 9%;
+    }
+
+    .clue.two {
+      top: 15%;
+      right: 8%;
+    }
+
+    .clue.three {
+      bottom: 12%;
+      left: 10%;
+    }
+
+    .clue.four {
+      bottom: 10%;
+      right: 9%;
+    }
+
+    .connection {
+      position: absolute;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(77, 232, 255, 0.35),
+        transparent
+      );
+      width: 27%;
+      left: 36.5%;
+      top: 50%;
+      transform-origin: center;
+    }
+
+    .connection.one {
+      transform: rotate(-32deg);
+    }
+
+    .connection.two {
+      transform: rotate(32deg);
+    }
+
+    .connection.three {
+      transform: rotate(148deg);
+    }
+
+    .connection.four {
+      transform: rotate(-148deg);
+    }
+
+    /* CLUE FLOW */
+
+    .clue-flow {
+      margin: 40px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .flow-row {
+      display: grid;
+      grid-template-columns: 130px 30px 1fr;
+      align-items: center;
+      gap: 18px;
+      padding: 19px 5px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .flow-row:last-child {
+      border-bottom: 0;
+    }
+
+    .flow-label {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.75rem;
+    }
+
+    .flow-arrow {
+      color: var(--muted);
+      font-family: "DM Mono", monospace;
+    }
+
+    .flow-description {
+      color: #C7CFDD;
+    }
+
+    /* TAKEAWAY */
+
+    .takeaway {
+      margin-top: 70px;
+      padding-top: 35px;
+      border-top: 1px solid var(--border);
+    }
+
+    .takeaway-label {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 14px;
+    }
+
+    .takeaway p {
+      font-size: 1.08rem;
+      color: var(--text);
+    }
+
+    /* NEXT */
+
+    .article-next {
+      margin-top: 80px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .article-next-label {
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .article-next a {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      text-decoration: none;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.15rem;
+      transition: color 0.2s ease;
+    }
+
+    .article-next a:hover {
+      color: var(--cyan);
+    }
+
+    .article-next .next-arrow {
+      color: var(--cyan);
+      font-size: 1rem;
+    }
+
+    /* FOOTER */
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 30px 0;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    footer .container {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 700px) {
+      .container,
+      .nav-inner {
+        width: min(100% - 28px, 900px);
+      }
+
+      .article-hero {
+        padding: 75px 0 55px;
+      }
+
+      article {
+        padding: 55px 0 75px;
+      }
+
+      section {
+        margin-bottom: 65px;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        padding: 18px 20px;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .menu-button {
+        display: block;
+      }
+
+      .recon-visual {
+        min-height: 450px;
+      }
+
+      .clue {
+        font-size: 0.6rem;
+        padding: 10px 11px;
+      }
+
+      .clue.one {
+        top: 7%;
+        left: 5%;
+      }
+
+      .clue.two {
+        top: 7%;
+        right: 5%;
+      }
+
+      .clue.three {
+        bottom: 13%;
+        left: 5%;
+      }
+
+      .clue.four {
+        bottom: 13%;
+        right: 5%;
+      }
+
+      .flow-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+
+      .flow-arrow {
+        display: none;
+      }
+    }
+
+    @media (max-width: 430px) {
+      h1 {
+        font-size: 2.65rem;
+      }
+
+      .hero-description {
+        font-size: 1rem;
+      }
+
+      .recon-center {
+        width: 90px;
+        height: 90px;
+        font-size: 0.62rem;
+      }
+
+      .recon-center::after {
+        inset: -30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="nav-inner">
+
+      <a class="brand" href="../index.html">
+        KSCyb<span>Sec</span>
+      </a>
+
+      <div class="nav-links" id="navLinks">
+        <a href="../index.html">Start Here</a>
+        <a href="../index.html#latest">Articles</a>
+        <a href="../index.html#topics">Topics</a>
+        <a href="../index.html#explore">Explore</a>
+        <a href="../index.html#about">About</a>
+      </div>
+
+      <button
+        class="menu-button"
+        id="menuButton"
+        type="button"
+        aria-label="Open navigation"
+        aria-expanded="false"
+      >
+        MENU
+      </button>
+
+    </div>
+  </nav>
+
+
+  <header class="article-hero">
+    <div class="container">
+
+      <div class="eyebrow">
+        NETWORKING · 029 · BEGINNER
+      </div>
+
+      <h1>
+        Network<br>
+        Reconnaissance
+      </h1>
+
+      <p class="hero-description">
+        Before someone can understand a network, they need to discover what is there.
+        Reconnaissance is the process of collecting those clues.
+      </p>
+
+      <div class="meta">
+        <span>NETWORKING</span>
+        <span>~5 MIN READ</span>
+        <span>LEARN · THINK · VERIFY</span>
+      </div>
+
+    </div>
+  </header>
+
+
+  <main>
+    <article>
+
+      <div class="container">
+
+        <!-- OPENING -->
+
+        <section>
+
+          <p>
+            Imagine walking into a building you've never seen before.
+          </p>
+
+          <p>
+            You don't immediately start opening doors.
+          </p>
+
+          <p>
+            First, you look around.
+          </p>
+
+          <p>
+            How many entrances are there?
+            Which rooms are visible?
+            Where are the important areas?
+          </p>
+
+          <div class="question">
+            A network investigation starts in much the same way.
+          </div>
+
+          <p>
+            Before you can understand what a system is doing,
+            you need to understand what exists.
+          </p>
+
+        </section>
+
+
+        <!-- VISUAL -->
+
+        <section>
+
+          <div class="recon-visual">
+
+            <div class="connection one"></div>
+            <div class="connection two"></div>
+            <div class="connection three"></div>
+            <div class="connection four"></div>
+
+            <div class="recon-center">
+              NETWORK<br>MAP
+            </div>
+
+            <div class="clue one">
+              HOST
+              <span>192.168.1.20</span>
+            </div>
+
+            <div class="clue two">
+              PORT
+              <span>443 / HTTPS</span>
+            </div>
+
+            <div class="clue three">
+              SERVICE
+              <span>Web Server</span>
+            </div>
+
+            <div class="clue four">
+              DEVICE
+              <span>Server</span>
+            </div>
+
+          </div>
+
+          <p>
+            Each piece of information is small on its own.
+          </p>
+
+          <p>
+            Put them together, and a picture begins to form.
+          </p>
+
+        </section>
+
+
+        <!-- DEFINITION -->
+
+        <section>
+
+          <h2>
+            What is reconnaissance?
+          </h2>
+
+          <p>
+            <strong>Reconnaissance</strong> means gathering information
+            about a target before taking further action.
+          </p>
+
+          <p>
+            In cybersecurity, that information might include:
+          </p>
+
+          <div class="clue-flow">
+
+            <div class="flow-row">
+              <div class="flow-label">HOSTS</div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-description">
+                Which devices or systems are reachable?
+              </div>
+            </div>
+
+            <div class="flow-row">
+              <div class="flow-label">PORTS</div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-description">
+                Which communication endpoints are exposed?
+              </div>
+            </div>
+
+            <div class="flow-row">
+              <div class="flow-label">SERVICES</div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-description">
+                What appears to be running?
+              </div>
+            </div>
+
+            <div class="flow-row">
+              <div class="flow-label">STRUCTURE</div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-description">
+                How do the systems appear to connect?
+              </div>
+            </div>
+
+          </div>
+
+          <p>
+            Reconnaissance doesn't necessarily mean attacking anything.
+            It is about reducing the unknown.
+          </p>
+
+        </section>
+
+
+        <!-- PASSIVE / ACTIVE -->
+
+        <section>
+
+          <h2>
+            Two ways to gather clues
+          </h2>
+
+          <p>
+            Reconnaissance is often discussed in two broad forms:
+            <strong>passive</strong> and <strong>active</strong>.
+          </p>
+
+          <h3>
+            Passive reconnaissance
+          </h3>
+
+          <p>
+            You collect information without directly interacting with
+            the target system in a way that probes it.
+          </p>
+
+          <p>
+            Public information can sometimes reveal domains,
+            technologies, documents, company infrastructure,
+            or other useful clues.
+          </p>
+
+          <h3>
+            Active reconnaissance
+          </h3>
+
+          <p>
+            You interact directly with the target to learn more.
+          </p>
+
+          <p>
+            Network scanning with tools such as Nmap is an example
+            of active reconnaissance.
+          </p>
+
+          <p>
+            The distinction matters because active activity can be
+            visible to the target and may trigger logging or alerts.
+          </p>
+
+        </section>
+
+
+        <!-- STORY -->
+
+        <section>
+
+          <h2>
+            Follow the clues
+          </h2>
+
+          <p>
+            Suppose you're reviewing a small lab network.
+          </p>
+
+          <p>
+            You begin with one known host:
+          </p>
+
+          <div class="clue-flow">
+
+            <div class="flow-row">
+              <div class="flow-label">IP</div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-description">
+                192.168.1.20
+              </div>
+            </div>
+
+            <div class="flow-row">
+              <div class="flow-label">NMAP</div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-description">
+                22/tcp and 443/tcp appear open
+              </div>
+            </div>
+
+            <div class="flow-row">
+              <div class="flow-label">SERVICES</div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-description">
+                SSH and HTTPS appear to be available
+              </div>
+            </div>
+
+          </div>
+
+          <p>
+            You now know much more than you did at the beginning.
+          </p>
+
+          <p>
+            But the investigation doesn't end there.
+          </p>
+
+          <div class="question">
+            Is this exactly what the system is supposed to expose?
+          </div>
+
+          <p>
+            That's the important shift in thinking.
+          </p>
+
+          <p>
+            Reconnaissance isn't just collecting information.
+            It's collecting information that helps you ask better questions.
+          </p>
+
+        </section>
+
+
+        <!-- ATTACKER / DEFENDER -->
+
+        <section>
+
+          <h2>
+            Attackers and defenders both do it
+          </h2>
+
+          <p>
+            Reconnaissance is often associated with attackers,
+            but defenders need the same visibility.
+          </p>
+
+          <p>
+            An attacker might want to understand a target's
+            exposed systems and services.
+          </p>
+
+          <p>
+            A defender wants to understand the same attack surface
+            so it can be reduced, monitored, or protected.
+          </p>
+
+          <p>
+            The difference is the goal and the authorization behind the activity.
+          </p>
+
+          <div class="question">
+            If you don't know what your network exposes,
+            how can you know what needs protection?
+          </div>
+
+        </section>
+
+
+        <!-- NMAP CONNECTION -->
+
+        <section>
+
+          <h2>
+            Where Nmap fits
+          </h2>
+
+          <p>
+            We've already seen that Nmap can identify hosts,
+            ports, and likely services.
+          </p>
+
+          <p>
+            That makes it one piece of the reconnaissance process.
+          </p>
+
+          <div class="recon-visual">
+
+            <div class="connection one"></div>
+            <div class="connection two"></div>
+            <div class="connection three"></div>
+            <div class="connection four"></div>
+
+            <div class="recon-center">
+              RECON
+            </div>
+
+            <div class="clue one">
+              DISCOVER
+              <span>Hosts</span>
+            </div>
+
+            <div class="clue two">
+              MAP
+              <span>Ports</span>
+            </div>
+
+            <div class="clue three">
+              IDENTIFY
+              <span>Services</span>
+            </div>
+
+            <div class="clue four">
+              VERIFY
+              <span>Expected?</span>
+            </div>
+
+          </div>
+
+          <p>
+            The tool gives you observations.
+            Your job is to interpret them.
+          </p>
+
+        </section>
+
+
+        <!-- SECURITY -->
+
+        <section>
+
+          <h2>
+            Reconnaissance creates an attack surface map
+          </h2>
+
+          <p>
+            Every reachable service adds another point that deserves attention.
+          </p>
+
+          <p>
+            That doesn't mean every service is dangerous.
+          </p>
+
+          <p>
+            It means every exposed service should have a reason to exist,
+            appropriate protection, and suitable monitoring.
+          </p>
+
+          <p>
+            From a defensive perspective, reconnaissance can reveal:
+          </p>
+
+          <p>
+            unnecessary services,
+            unexpected devices,
+            poorly segmented networks,
+            and systems that expose more than intended.
+          </p>
+
+          <p>
+            Visibility comes before improvement.
+          </p>
+
+        </section>
+
+
+        <!-- MINDSET -->
+
+        <section>
+
+          <h2>
+            Think like an investigator
+          </h2>
+
+          <p>
+            A beginner mistake is to collect as many results as possible
+            without asking what they mean.
+          </p>
+
+          <p>
+            Instead, build a habit of asking:
+          </p>
+
+          <p>
+            <strong>What did I discover?</strong>
+          </p>
+
+          <p>
+            <strong>Why is it there?</strong>
+          </p>
+
+          <p>
+            <strong>Is it expected?</strong>
+          </p>
+
+          <p>
+            <strong>What clue should I verify next?</strong>
+          </p>
+
+          <p>
+            That's the mindset that turns scanning into investigation.
+          </p>
+
+        </section>
+
+
+        <!-- TAKEAWAY -->
+
+        <section class="takeaway">
+
+          <div class="takeaway-label">
+            TAKEAWAY
+          </div>
+
+          <p>
+            Network reconnaissance is about reducing the unknown.
+            You discover hosts, ports, services, and relationships,
+            then connect those clues into a bigger picture.
+          </p>
+
+          <p>
+            Nmap can help build the map.
+            <strong>Cybersecurity thinking begins when you start asking
+            what the map means.</strong>
+          </p>
+
+        </section>
+
+
+        <!-- NEXT -->
+
+        <div class="article-next">
+
+          <div class="article-next-label">
+            NEXT CLUE · 030
+          </div>
+
+          <a href="network-security-protecting-the-conversation.html">
+            Network Security: Protecting the Conversation
+            <span class="next-arrow">→</span>
+          </a>
+
+        </div>
+
+      </div>
+
+    </article>
+  </main>
+
+
+  <footer>
+    <div class="container">
+      <span>KSCybSec — Cybersecurity knowledge, one clue at a time.</span>
+      <span>Learn · Try · Think · Verify</span>
+    </div>
+  </footer>
+
+
+  <script>
+    const menuButton = document.getElementById("menuButton");
+    const navLinks = document.getElementById("navLinks");
+
+    menuButton.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+
+      menuButton.setAttribute(
+        "aria-expanded",
+        String(isOpen)
+      );
+    });
+
+    navLinks.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        menuButton.setAttribute("aria-expanded", "false");
+      });
+    });
+  </script>
+
+</body>
+</html>
