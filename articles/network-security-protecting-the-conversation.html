@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Network Security: Protecting the Conversation · KSCybSec</title>
+
+  <meta
+    name="description"
+    content="Learn how network security protects communication between devices using segmentation, firewalls, encryption, authentication, and monitoring."
+  >
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --bg: #070B14;
+      --surface: #0B1120;
+      --surface-2: #101827;
+      --text: #E8EDF5;
+      --muted: #8995AA;
+      --cyan: #4DE8FF;
+      --purple: #8B7CFF;
+      --border: rgba(137, 149, 170, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Space Grotesk", sans-serif;
+      line-height: 1.75;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .container {
+      width: min(900px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    /* NAV */
+
+    nav {
+      border-bottom: 1px solid var(--border);
+      background: rgba(7, 11, 20, 0.92);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .nav-inner {
+      width: min(1180px, calc(100% - 40px));
+      margin: auto;
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand span {
+      color: var(--cyan);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .menu-button {
+      display: none;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      padding: 8px 11px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-family: "DM Mono", monospace;
+    }
+
+    /* HERO */
+
+    .article-hero {
+      padding: 110px 0 75px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .eyebrow {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      font-size: clamp(2.7rem, 7vw, 5rem);
+      line-height: 1.02;
+      letter-spacing: -0.055em;
+      margin: 0;
+      max-width: 850px;
+    }
+
+    .hero-description {
+      color: var(--muted);
+      max-width: 670px;
+      font-size: 1.12rem;
+      margin: 28px 0 0;
+    }
+
+    .meta {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+      color: var(--muted);
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+    }
+
+    /* ARTICLE */
+
+    article {
+      padding: 75px 0 100px;
+    }
+
+    section {
+      margin-bottom: 85px;
+    }
+
+    h2 {
+      font-size: clamp(1.7rem, 4vw, 2.3rem);
+      line-height: 1.2;
+      letter-spacing: -0.035em;
+      margin: 0 0 22px;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      margin: 32px 0 10px;
+    }
+
+    p {
+      color: #C7CFDD;
+      max-width: 720px;
+      margin: 0 0 20px;
+    }
+
+    strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .question {
+      margin: 35px 0;
+      padding-left: 22px;
+      border-left: 2px solid var(--cyan);
+      color: var(--text);
+      font-size: 1.12rem;
+    }
+
+    /* MAIN VISUAL */
+
+    .network-visual {
+      position: relative;
+      margin: 45px 0 55px;
+      min-height: 370px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background:
+        linear-gradient(rgba(77, 232, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(77, 232, 255, 0.035) 1px, transparent 1px),
+        var(--surface);
+      background-size: 42px 42px;
+    }
+
+    .device {
+      position: absolute;
+      width: 105px;
+      height: 72px;
+      border: 1px solid var(--border);
+      background: rgba(16, 24, 39, 0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-family: "DM Mono", monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+
+    .device strong {
+      display: block;
+      color: var(--text);
+      font-size: 0.72rem;
+      margin-bottom: 4px;
+    }
+
+    .device.router {
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 125px;
+      height: 82px;
+      border-color: rgba(77, 232, 255, 0.45);
+      color: var(--cyan);
+    }
+
+    .device.laptop {
+      left: 9%;
+      top: 22%;
+    }
+
+    .device.server {
+      right: 9%;
+      top: 22%;
+    }
+
+    .device.phone {
+      left: 9%;
+      bottom: 18%;
+    }
+
+    .device.db {
+      right: 9%;
+      bottom: 18%;
+    }
+
+    .network-line {
+      position: absolute;
+      height: 1px;
+      width: 31%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(77, 232, 255, 0.45),
+        transparent
+      );
+      left: 34.5%;
+      top: 50%;
+      transform-origin: center;
+    }
+
+    .network-line.one {
+      transform: rotate(-25deg);
+    }
+
+    .network-line.two {
+      transform: rotate(25deg);
+    }
+
+    .network-line.three {
+      transform: rotate(155deg);
+    }
+
+    .network-line.four {
+      transform: rotate(-155deg);
+    }
+
+    .security-label {
+      position: absolute;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%);
+      color: var(--muted);
+      font-family: "DM Mono", monospace;
+      font-size: 0.63rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    /* PROTECTION FLOW */
+
+    .protection-flow {
+      margin: 40px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .flow-row {
+      display: grid;
+      grid-template-columns: 145px 1fr;
+      gap: 25px;
+      padding: 20px 5px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .flow-row:last-child {
+      border-bottom: 0;
+    }
+
+    .flow-label {
+      color: var(--cyan);
+      font-family: "DM Mono", monospace;
+      font-size: 0.73rem;
+    }
+
+    .flow-text {
+      color: #C7CFDD;
+    }
+
+    /* PACKET VISUAL */
+
+    .packet-visual {
+      margin: 40px 0;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      padding: 30px;
+    }
+
+    .packet-path {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: "DM Mono", monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+      overflow-x: auto;
+      padding-bottom: 5px;
+    }
+
+    .packet-node {
+      border: 1px solid var(--border);
+      padding: 12px 15px;
+      min-width: 95px;
+      text-align: center;
+      color: var(--text);
+      background: var(--surface-2);
+    }
+
+    .packet-node.highlight {
+      border-color: rgba(77, 232, 255, 0.45);
+      color: var(--cyan);
+    }
+
+    .packet-arrow {
+      color: var(--cyan);
+    }
+
+    /* TAKEAWAY */
+
+    .takeaway {
+      margin-top: 70px;
+      padding-top: 35px;
+      border-top: 1px solid var(--border);
+    }
+
+    .takeaway-label {
+      font-family: "DM Mono", monospace;
+      color: var(--cyan);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 14px;
+    }
+
+    .takeaway p {
+      font-size: 1.08rem;
+      color: var(--text);
+    }
+
+    /* NEXT */
+
+    .article-next {
+      margin-top: 80px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .article-next-label {
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .article-next a {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      text-decoration: none;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.15rem;
+      transition: color 0.2s ease;
+    }
+
+    .article-next a:hover {
+      color: var(--cyan);
+    }
+
+    .article-next .next-arrow {
+      color: var(--cyan);
+      font-size: 1rem;
+    }
+
+    /* FOOTER */
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 30px 0;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    footer .container {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 700px) {
+      .container,
+      .nav-inner {
+        width: min(100% - 28px, 900px);
+      }
+
+      .article-hero {
+        padding: 75px 0 55px;
+      }
+
+      article {
+        padding: 55px 0 75px;
+      }
+
+      section {
+        margin-bottom: 65px;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        padding: 18px 20px;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .menu-button {
+        display: block;
+      }
+
+      .network-visual {
+        min-height: 450px;
+      }
+
+      .device {
+        width: 90px;
+        height: 64px;
+        font-size: 0.58rem;
+      }
+
+      .device.router {
+        width: 105px;
+        height: 72px;
+      }
+
+      .security-label {
+        font-size: 0.56rem;
+      }
+
+      .flow-row {
+        grid-template-columns: 1fr;
+        gap: 7px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      h1 {
+        font-size: 2.65rem;
+      }
+
+      .hero-description {
+        font-size: 1rem;
+      }
+
+      .network-visual {
+        min-height: 470px;
+      }
+
+      .device.laptop,
+      .device.server {
+        top: 16%;
+      }
+
+      .device.phone,
+      .device.db {
+        bottom: 17%;
+      }
+
+      .packet-visual {
+        padding: 20px 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="nav-inner">
+
+      <a class="brand" href="../index.html">
+        KSCyb<span>Sec</span>
+      </a>
+
+      <div class="nav-links" id="navLinks">
+        <a href="../index.html">Start Here</a>
+        <a href="../index.html#latest">Articles</a>
+        <a href="../index.html#topics">Topics</a>
+        <a href="../index.html#explore">Explore</a>
+        <a href="../index.html#about">About</a>
+      </div>
+
+      <button
+        class="menu-button"
+        id="menuButton"
+        type="button"
+        aria-label="Open navigation"
+        aria-expanded="false"
+      >
+        MENU
+      </button>
+
+    </div>
+  </nav>
+
+
+  <header class="article-hero">
+    <div class="container">
+
+      <div class="eyebrow">
+        NETWORKING · 030 · BEGINNER
+      </div>
+
+      <h1>
+        Network Security:<br>
+        Protecting the Conversation
+      </h1>
+
+      <p class="hero-description">
+        Networks move information between systems every second.
+        Network security is about making that communication safer,
+        more controlled, and easier to monitor.
+      </p>
+
+      <div class="meta">
+        <span>NETWORKING</span>
+        <span>~5 MIN READ</span>
+        <span>LEARN · THINK · VERIFY</span>
+      </div>
+
+    </div>
+  </header>
+
+
+  <main>
+    <article>
+
+      <div class="container">
+
+        <!-- OPENING -->
+
+        <section>
+
+          <p>
+            A message leaves your laptop.
+          </p>
+
+          <p>
+            It travels through your local network, reaches a router,
+            crosses other networks, and eventually reaches a server.
+          </p>
+
+          <p>
+            We have spent the last few articles learning how that journey works.
+          </p>
+
+          <div class="question">
+            But what stops that conversation from becoming unsafe?
+          </div>
+
+          <p>
+            That's where network security enters the picture.
+          </p>
+
+        </section>
+
+
+        <!-- VISUAL -->
+
+        <section>
+
+          <div class="network-visual">
+
+            <div class="network-line one"></div>
+            <div class="network-line two"></div>
+            <div class="network-line three"></div>
+            <div class="network-line four"></div>
+
+            <div class="device laptop">
+              <div>
+                <strong>LAPTOP</strong>
+                USER DEVICE
+              </div>
+            </div>
+
+            <div class="device server">
+              <div>
+                <strong>SERVER</strong>
+                WEB SERVICE
+              </div>
+            </div>
+
+            <div class="device phone">
+              <div>
+                <strong>PHONE</strong>
+                USER DEVICE
+              </div>
+            </div>
+
+            <div class="device db">
+              <div>
+                <strong>DATABASE</strong>
+                INTERNAL
+              </div>
+            </div>
+
+            <div class="device router">
+              <div>
+                <strong>ROUTER</strong>
+                NETWORK BOUNDARY
+              </div>
+            </div>
+
+            <div class="security-label">
+              VISIBILITY · CONTROL · PROTECTION
+            </div>
+
+          </div>
+
+          <p>
+            Network security isn't one single tool.
+          </p>
+
+          <p>
+            It is a collection of controls that work together
+            to protect devices, traffic, services, and the boundaries
+            between networks.
+          </p>
+
+        </section>
+
+
+        <!-- WHAT IT PROTECTS -->
+
+        <section>
+
+          <h2>
+            What are we protecting?
+          </h2>
+
+          <p>
+            Think back to the CIA Triad.
+          </p>
+
+          <p>
+            Network security helps protect the
+            <strong>confidentiality, integrity, and availability</strong>
+            of information moving through a network.
+          </p>
+
+          <div class="protection-flow">
+
+            <div class="flow-row">
+              <div class="flow-label">CONFIDENTIALITY</div>
+              <div class="flow-text">
+                Preventing unauthorized people from reading network traffic
+                or accessing protected information.
+              </div>
+            </div>
+
+            <div class="flow-row">
+              <div class="flow-label">INTEGRITY</div>
+              <div class="flow-text">
+                Helping ensure information is not improperly changed
+                while it is being transmitted.
+              </div>
+            </div>
+
+            <div class="flow-row">
+              <div class="flow-label">AVAILABILITY</div>
+              <div class="flow-text">
+                Keeping important network services reachable and functioning.
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- FIREWALL -->
+
+        <section>
+
+          <h2>
+            The first boundary: firewalls
+          </h2>
+
+          <p>
+            Imagine a server receiving connection attempts from many different
+            systems.
+          </p>
+
+          <p>
+            Should every connection be allowed?
+          </p>
+
+          <div class="question">
+            Not necessarily.
+          </div>
+
+          <p>
+            A <strong>firewall</strong> applies rules to network traffic.
+            It can allow some traffic and block other traffic based on
+            factors such as addresses, ports, protocols, and direction.
+          </p>
+
+          <div class="packet-visual">
+
+            <div class="packet-path">
+
+              <div class="packet-node">
+                CLIENT
+              </div>
+
+              <div class="packet-arrow">→</div>
+
+              <div class="packet-node highlight">
+                FIREWALL
+              </div>
+
+              <div class="packet-arrow">→</div>
+
+              <div class="packet-node">
+                SERVER
+              </div>
+
+            </div>
+
+          </div>
+
+          <p>
+            For example, a firewall might allow HTTPS traffic to a public
+            web server while blocking an administrative service from
+            untrusted networks.
+          </p>
+
+          <p>
+            The exact rules depend on the environment.
+            The important idea is simple:
+            <strong>not every network conversation needs to be allowed.</strong>
+          </p>
+
+        </section>
+
+
+        <!-- SEGMENTATION -->
+
+        <section>
+
+          <h2>
+            Don't put everything in one room
+          </h2>
+
+          <p>
+            Imagine a company where employee laptops,
+            public web servers, databases, and security systems
+            all sit on exactly the same network.
+          </p>
+
+          <p>
+            One compromised device could potentially have a much easier path
+            toward other systems.
+          </p>
+
+          <p>
+            Network <strong>segmentation</strong> helps separate systems
+            into different network areas.
+          </p>
+
+          <div class="network-visual">
+
+            <div class="device laptop">
+              <div>
+                <strong>USERS</strong>
+                NETWORK A
+              </div>
+            </div>
+
+            <div class="device server">
+              <div>
+                <strong>WEB</strong>
+                NETWORK B
+              </div>
+            </div>
+
+            <div class="device phone">
+              <div>
+                <strong>GUESTS</strong>
+                NETWORK C
+              </div>
+            </div>
+
+            <div class="device db">
+              <div>
+                <strong>DATABASE</strong>
+                NETWORK D
+              </div>
+            </div>
+
+            <div class="device router">
+              <div>
+                <strong>CONTROL</strong>
+                BOUNDARIES
+              </div>
+            </div>
+
+            <div class="network-line one"></div>
+            <div class="network-line two"></div>
+            <div class="network-line three"></div>
+            <div class="network-line four"></div>
+
+          </div>
+
+          <p>
+            Segmentation doesn't magically make a network secure.
+          </p>
+
+          <p>
+            But it can reduce unnecessary communication paths
+            and limit how far an incident can spread.
+          </p>
+
+        </section>
+
+
+        <!-- ENCRYPTION -->
+
+        <section>
+
+          <h2>
+            What about the conversation itself?
+          </h2>
+
+          <p>
+            Network boundaries can control where traffic goes.
+            But what about the information inside the traffic?
+          </p>
+
+          <p>
+            This is where <strong>encryption</strong> becomes important.
+          </p>
+
+          <p>
+            When a secure protocol such as HTTPS is used,
+            information exchanged between the client and server
+            is protected by cryptographic mechanisms.
+          </p>
+
+          <div class="packet-visual">
+
+            <div class="packet-path">
+
+              <div class="packet-node">
+                LAPTOP
+              </div>
+
+              <div class="packet-arrow">→</div>
+
+              <div class="packet-node highlight">
+                ENCRYPTED
+              </div>
+
+              <div class="packet-arrow">→</div>
+
+              <div class="packet-node">
+                SERVER
+              </div>
+
+            </div>
+
+          </div>
+
+          <p>
+            Encryption doesn't mean the network itself is invisible.
+            Metadata such as addresses and connection information
+            can still exist.
+          </p>
+
+          <p>
+            But protecting the contents of communication makes it much harder
+            for an unauthorized observer to simply read the conversation.
+          </p>
+
+        </section>
+
+
+        <!-- AUTHENTICATION -->
+
+        <section>
+
+          <h2>
+            Who is allowed to talk?
+          </h2>
+
+          <p>
+            Another part of network security is deciding
+            <strong>who or what is allowed to communicate</strong>.
+          </p>
+
+          <p>
+            Authentication can establish identity.
+            Authorization determines what that identity is allowed to do.
+          </p>
+
+          <p>
+            This matters for network services too.
+          </p>
+
+          <p>
+            A server may be reachable,
+            but that doesn't mean every user should be able to access
+            every function on it.
+          </p>
+
+          <div class="question">
+            Reachable does not always mean authorized.
+          </div>
+
+        </section>
+
+
+        <!-- MONITORING -->
+
+        <section>
+
+          <h2>
+            Protection isn't enough without visibility
+          </h2>
+
+          <p>
+            Suppose a firewall blocks an unusual connection.
+          </p>
+
+          <p>
+            That's useful.
+          </p>
+
+          <p>
+            But security teams also want to know:
+            <strong>what happened?</strong>
+          </p>
+
+          <p>
+            Network monitoring and logging can provide evidence about
+            connections, events, and unusual activity.
+          </p>
+
+          <p>
+            This connects directly to the reconnaissance work
+            from the previous article.
+          </p>
+
+          <div class="protection-flow">
+
+            <div class="flow-row">
+              <div class="flow-label">DISCOVER</div>
+              <div class="flow-text">
+                Understand what the network contains.
+              </div>
+            </div>
+
+            <div class="flow-row">
+              <div class="flow-label">PROTECT</div>
+              <div class="flow-text">
+                Control unnecessary or unauthorized communication.
+              </div>
+            </div>
+
+            <div class="flow-row">
+              <div class="flow-label">MONITOR</div>
+              <div class="flow-text">
+                Look for events and unusual behavior.
+              </div>
+            </div>
+
+            <div class="flow-row">
+              <div class="flow-label">RESPOND</div>
+              <div class="flow-text">
+                Investigate when something goes wrong.
+              </div>
+            </div>
+
+          </div>
+
+          <p>
+            Security becomes much stronger when these ideas work together.
+          </p>
+
+        </section>
+
+
+        <!-- STORY -->
+
+        <section>
+
+          <h2>
+            Follow one connection
+          </h2>
+
+          <p>
+            Let's put everything together.
+          </p>
+
+          <p>
+            A user opens a secure website.
+          </p>
+
+          <div class="packet-visual">
+
+            <div class="packet-path">
+
+              <div class="packet-node">
+                USER
+              </div>
+
+              <div class="packet-arrow">→</div>
+
+              <div class="packet-node">
+                ROUTER
+              </div>
+
+              <div class="packet-arrow">→</div>
+
+              <div class="packet-node highlight">
+                FIREWALL
+              </div>
+
+              <div class="packet-arrow">→</div>
+
+              <div class="packet-node">
+                HTTPS
+              </div>
+
+              <div class="packet-arrow">→</div>
+
+              <div class="packet-node">
+                SERVER
+              </div>
+
+            </div>
+
+          </div>
+
+          <p>
+            The router helps move the traffic.
+          </p>
+
+          <p>
+            Network controls can decide whether the traffic should be allowed.
+          </p>
+
+          <p>
+            HTTPS protects the communication contents.
+          </p>
+
+          <p>
+            Logs and monitoring can provide visibility into what happened.
+          </p>
+
+          <p>
+            No single component is responsible for everything.
+          </p>
+
+          <p>
+            That's the important idea.
+          </p>
+
+        </section>
+
+
+        <!-- MINDSET -->
+
+        <section>
+
+          <h2>
+            Network security is about reducing unnecessary trust
+          </h2>
+
+          <p>
+            A secure network doesn't simply assume that every device,
+            user, or connection should be trusted.
+          </p>
+
+          <p>
+            Instead, it asks:
+          </p>
+
+          <p>
+            <strong>
+              Who is connecting?
+            </strong>
+          </p>
+
+          <p>
+            <strong>
+              Where is the traffic going?
+            </strong>
+          </p>
+
+          <p>
+            <strong>
+              What service is being accessed?
+            </strong>
+          </p>
+
+          <p>
+            <strong>
+              Should this communication be allowed?
+            </strong>
+          </p>
+
+          <p>
+            <strong>
+              Can we detect something unusual?
+            </strong>
+          </p>
+
+          <p>
+            These questions form the foundation for much deeper
+            network security work.
+          </p>
+
+        </section>
+
+
+        <!-- TAKEAWAY -->
+
+        <section class="takeaway">
+
+          <div class="takeaway-label">
+            TAKEAWAY
+          </div>
+
+          <p>
+            Network security protects communication by combining
+            <strong>boundaries, access control, encryption, segmentation,
+            and monitoring</strong>.
+          </p>
+
+          <p>
+            The goal isn't simply to stop every connection.
+            It's to understand the network well enough to decide
+            <strong>which conversations should be allowed, protected,
+            watched, or blocked.</strong>
+          </p>
+
+        </section>
+
+
+        <!-- PATH COMPLETE -->
+
+        <section>
+
+          <div class="question">
+            You now have the foundations to start exploring networking
+            from a security perspective.
+          </div>
+
+          <p>
+            From networks and IP addresses to ports, protocols,
+            scanning, reconnaissance, and protection,
+            you've followed the clues from the wire to the security boundary.
+          </p>
+
+          <p>
+            The next step is not another concept to memorize.
+            It's putting the pieces together.
+          </p>
+
+        </section>
+
+
+        <!-- NEXT -->
+
+        <div class="article-next">
+
+          <div class="article-next-label">
+            NETWORKING PATH COMPLETE
+          </div>
+
+          <a href="../index.html#explore">
+            Explore the Next Security Track
+            <span class="next-arrow">→</span>
+          </a>
+
+        </div>
+
+      </div>
+
+    </article>
+  </main>
+
+
+  <footer>
+    <div class="container">
+      <span>KSCybSec — Cybersecurity knowledge, one clue at a time.</span>
+      <span>Learn · Try · Think · Verify</span>
+    </div>
+  </footer>
+
+
+  <script>
+    const menuButton = document.getElementById("menuButton");
+    const navLinks = document.getElementById("navLinks");
+
+    menuButton.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+
+      menuButton.setAttribute(
+        "aria-expanded",
+        String(isOpen)
+      );
+    });
+
+    navLinks.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        menuButton.setAttribute("aria-expanded", "false");
+      });
+    });
+  </script>
+
+</body>
+</html>
