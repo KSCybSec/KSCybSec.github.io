@@ -6,7 +6,7 @@
     <loc>https://kscybsec.github.io/</loc>
   </url>
 
-  <!-- Beginner Path -->
+  <!-- Foundation Path · 001—015 -->
 
   <url>
     <loc>https://kscybsec.github.io/articles/what-is-cybersecurity.html</loc>
@@ -68,10 +68,78 @@
     <loc>https://kscybsec.github.io/articles/how-cyber-attacks-work.html</loc>
   </url>
 
-  <!-- Beginner Challenge -->
+  <!-- Foundation Challenge -->
 
   <url>
     <loc>https://kscybsec.github.io/beginner-challenge.html</loc>
+  </url>
+
+  <!-- Networking Path · 016—030 -->
+
+  <url>
+    <loc>https://kscybsec.github.io/articles/what-is-a-network.html</loc>
+  </url>
+
+  <url>
+    <loc>https://kscybsec.github.io/articles/lan-wan-internet.html</loc>
+  </url>
+
+  <url>
+    <loc>https://kscybsec.github.io/articles/mac-addresses.html</loc>
+  </url>
+
+  <url>
+    <loc>https://kscybsec.github.io/articles/arp.html</loc>
+  </url>
+
+  <url>
+    <loc>https://kscybsec.github.io/articles/dhcp.html</loc>
+  </url>
+
+  <url>
+    <loc>https://kscybsec.github.io/articles/subnets.html</loc>
+  </url>
+
+  <url>
+    <loc>https://kscybsec.github.io/articles/routers.html</loc>
+  </url>
+
+  <url>
+    <loc>https://kscybsec.github.io/articles/nat.html</loc>
+  </url>
+
+  <url>
+    <loc>https://kscybsec.github.io/articles/common-network-protocols.html</loc>
+  </url>
+
+  <url>
+    <loc>https://kscybsec.github.io/articles/network-services.html</loc>
+  </url>
+
+  <url>
+    <loc>https://kscybsec.github.io/articles/what-is-network-scanning.html</loc>
+  </url>
+
+  <url>
+    <loc>https://kscybsec.github.io/articles/nmap-your-first-network-map.html</loc>
+  </url>
+
+  <url>
+    <loc>https://kscybsec.github.io/articles/reading-an-nmap-scan.html</loc>
+  </url>
+
+  <url>
+    <loc>https://kscybsec.github.io/articles/network-reconnaissance.html</loc>
+  </url>
+
+  <url>
+    <loc>https://kscybsec.github.io/articles/network-security-protecting-the-conversation.html</loc>
+  </url>
+
+  <!-- Networking Challenge -->
+
+  <url>
+    <loc>https://kscybsec.github.io/networking-challenge.html</loc>
   </url>
 
   <!-- Investigation Track · OSINT -->
