@@ -2103,46 +2103,110 @@
 
 
     /* =========================================================
+       SHUFFLE ANSWERS
+    ========================================================= */
+
+    function shuffleOptions(optionList) {
+
+        /*
+         * Create a copy so the original clue data
+         * is never permanently rearranged.
+         */
+
+        const shuffled =
+            [...optionList];
+
+
+        /*
+         * Fisher-Yates style shuffle.
+         */
+
+        for (
+            let i = shuffled.length - 1;
+            i > 0;
+            i--
+        ) {
+
+            const randomIndex =
+                Math.floor(
+                    Math.random() * (i + 1)
+                );
+
+
+            [
+                shuffled[i],
+                shuffled[randomIndex]
+            ] = [
+                shuffled[randomIndex],
+                shuffled[i]
+            ];
+
+        }
+
+
+        return shuffled;
+
+    }
+
+
+
+    /* =========================================================
        TRACE UI
     ========================================================= */
 
     function updateTrace() {
 
-        nodes.forEach((node, index) => {
+        nodes.forEach(
+            (node, index) => {
 
-            node.classList.remove("active");
+                node.classList.remove(
+                    "active"
+                );
 
-            node.classList.remove("done");
-
-
-            if (index < current) {
-
-                node.classList.add("done");
-
-            }
+                node.classList.remove(
+                    "done"
+                );
 
 
-            if (index === current) {
+                if (index < current) {
 
-                node.classList.add("active");
+                    node.classList.add(
+                        "done"
+                    );
 
-            }
-
-        });
-
-
-        arrows.forEach((arrow, index) => {
-
-            arrow.classList.remove("lit");
+                }
 
 
-            if (index < current) {
+                if (index === current) {
 
-                arrow.classList.add("lit");
+                    node.classList.add(
+                        "active"
+                    );
+
+                }
 
             }
+        );
 
-        });
+
+        arrows.forEach(
+            (arrow, index) => {
+
+                arrow.classList.remove(
+                    "lit"
+                );
+
+
+                if (index < current) {
+
+                    arrow.classList.add(
+                        "lit"
+                    );
+
+                }
+
+            }
+        );
 
     }
 
@@ -2178,15 +2242,31 @@
             `Clue ${current + 1} of ${clues.length}`;
 
 
-        options.innerHTML = "";
+        options.innerHTML =
+            "";
 
 
-        clue.options.forEach(
+        /*
+         * Shuffle the answers every time
+         * a clue is loaded.
+         */
+
+        const shuffledOptions =
+            shuffleOptions(clue.options);
+
+
+        shuffledOptions.forEach(
             (option, index) => {
 
                 const details =
                     document.createElement("details");
 
+
+                /*
+                 * Allows the browser to treat
+                 * these details elements as one
+                 * exclusive answer group.
+                 */
 
                 details.name =
                     "answer-options";
@@ -2238,7 +2318,9 @@
 
 
                 const chooseButton =
-                    body.querySelector(".choose");
+                    body.querySelector(
+                        ".choose"
+                    );
 
 
                 chooseButton.addEventListener(
@@ -2250,6 +2332,12 @@
                         event.stopPropagation();
 
 
+                        /*
+                         * The correct answer is
+                         * determined by its data,
+                         * not by its position.
+                         */
+
                         if (option.correct) {
 
                             score++;
@@ -2260,7 +2348,10 @@
                         current++;
 
 
-                        if (current < clues.length) {
+                        if (
+                            current <
+                            clues.length
+                        ) {
 
                             loadClue();
 
@@ -2274,11 +2365,19 @@
                 );
 
 
-                details.appendChild(summary);
+                details.appendChild(
+                    summary
+                );
 
-                details.appendChild(body);
 
-                options.appendChild(details);
+                details.appendChild(
+                    body
+                );
+
+
+                options.appendChild(
+                    details
+                );
 
             }
         );
@@ -2296,7 +2395,9 @@
 
     function launchCelebration() {
 
-        celebration.classList.add("show");
+        celebration.classList.add(
+            "show"
+        );
 
 
         celebration.setAttribute(
@@ -2305,13 +2406,20 @@
         );
 
 
-        particles.innerHTML = "";
+        particles.innerHTML =
+            "";
 
 
-        for (let i = 0; i < 32; i++) {
+        for (
+            let i = 0;
+            i < 32;
+            i++
+        ) {
 
             const particle =
-                document.createElement("span");
+                document.createElement(
+                    "span"
+                );
 
 
             particle.className =
@@ -2413,7 +2521,10 @@
          * 5 / 5
          */
 
-        if (score === clues.length) {
+        if (
+            score ===
+            clues.length
+        ) {
 
             resultIcon.textContent =
                 "✓";
@@ -2466,7 +2577,9 @@
          * 3–4 / 5
          */
 
-        } else if (score >= 3) {
+        } else if (
+            score >= 3
+        ) {
 
             resultIcon.textContent =
                 "◐";
