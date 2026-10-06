@@ -1,1471 +1,1056 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <meta
-    name="description"
-    content="KSCybSec Networking Challenge — Trace the Connection."
-  >
-
-  <title>Trace the Connection — KSCybSec</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  >
-
-  <style>
-    :root {
-      --bg: #070B14;
-      --surface: #0B1120;
-      --surface-2: #101827;
-
-      --text: #E8EDF5;
-      --muted: #8995AA;
-
-      --cyan: #4DE8FF;
-      --purple: #8B7CFF;
-
-      --border: rgba(137, 149, 170, 0.16);
-      --border-bright: rgba(77, 232, 255, 0.28);
-
-      --max-width: 860px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-
-      font-family: "Inter", sans-serif;
-      line-height: 1.75;
-    }
-
-    a {
-      color: inherit;
-    }
-
-    .container {
-      width: min(var(--max-width), calc(100% - 40px));
-      margin: 0 auto;
-    }
-
-    /* =========================
-       NAVIGATION
-    ========================= */
-
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-
-      background: rgba(7, 11, 20, 0.88);
-      backdrop-filter: blur(14px);
-
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-inner {
-      width: min(1180px, calc(100% - 40px));
-      min-height: 70px;
-      margin: 0 auto;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 30px;
-    }
-
-    .brand {
-      text-decoration: none;
-      font-family: "Space Grotesk", sans-serif;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      white-space: nowrap;
-    }
-
-    .brand span {
-      color: var(--cyan);
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 26px;
-    }
-
-    .nav-links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.88rem;
-      transition: color 0.2s ease;
-    }
-
-    .nav-links a:hover {
-      color: var(--text);
-    }
-
-    .menu-button {
-      display: none;
-
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text);
-
-      width: 44px;
-      height: 44px;
-
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .mobile-menu {
-      display: none;
-      border-top: 1px solid var(--border);
-    }
-
-    .mobile-menu.open {
-      display: block;
-    }
-
-    .mobile-menu a {
-      display: block;
-      padding: 14px 20px;
-
-      color: var(--muted);
-      text-decoration: none;
-
-      border-bottom: 1px solid var(--border);
-    }
-
-    /* =========================
-       HERO
-    ========================= */
-
-    .hero {
-      padding: 100px 0 70px;
-    }
-
-    .eyebrow {
-      margin-bottom: 18px;
-
-      color: var(--cyan);
-
-      font-family: "DM Mono", monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    h1 {
-      max-width: 720px;
-      margin: 0;
-
-      font-family: "Space Grotesk", sans-serif;
-      font-size: clamp(3rem, 7vw, 5.6rem);
-      line-height: 0.98;
-      letter-spacing: -0.055em;
-    }
-
-    .hero-description {
-      max-width: 650px;
-      margin: 28px 0 0;
-
-      color: var(--muted);
-      font-size: 1.08rem;
-    }
-
-    .hero-line {
-      width: 100%;
-      height: 1px;
-
-      margin-top: 55px;
-
-      background: linear-gradient(
-        90deg,
-        var(--cyan),
-        rgba(77, 232, 255, 0.12),
-        transparent
-      );
-    }
-
-    /* =========================
-       CONTENT
-    ========================= */
-
-    main {
-      padding-bottom: 100px;
-    }
-
-    section {
-      margin-top: 70px;
-    }
-
-    .section-label {
-      margin-bottom: 18px;
-
-      color: var(--muted);
-
-      font-family: "DM Mono", monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    h2 {
-      margin: 0 0 22px;
-
-      font-family: "Space Grotesk", sans-serif;
-      font-size: clamp(1.7rem, 4vw, 2.4rem);
-      line-height: 1.15;
-      letter-spacing: -0.03em;
-    }
-
-    h3 {
-      margin: 0 0 12px;
-
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 1.25rem;
-    }
-
-    p {
-      margin: 0 0 20px;
-    }
-
-    .story {
-      color: #c6cedb;
-      font-size: 1.03rem;
-    }
-
-    /* =========================
-       CONNECTION VISUAL
-    ========================= */
-
-    .connection {
-      margin: 45px 0;
-
-      padding: 28px;
-
-      border-top: 1px solid var(--border-bright);
-      border-bottom: 1px solid var(--border);
-
-      background:
-        radial-gradient(
-          circle at 50% 0%,
-          rgba(77, 232, 255, 0.07),
-          transparent 45%
-        );
-    }
-
-    .connection-flow {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      align-items: center;
-      gap: 10px;
-    }
-
-    .node {
-      min-height: 120px;
-
-      padding: 18px 12px;
-
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-
-      text-align: center;
-
-      border: 1px solid var(--border);
-      background: var(--surface);
-
-      border-radius: 8px;
-    }
-
-    .node-label {
-      color: var(--cyan);
-
-      font-family: "DM Mono", monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.08em;
-      margin-bottom: 8px;
-    }
-
-    .node strong {
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 1rem;
-    }
-
-    .node small {
-      margin-top: 5px;
-      color: var(--muted);
-      font-size: 0.72rem;
-      word-break: break-word;
-    }
-
-    .flow-arrow {
-      color: var(--cyan);
-      text-align: center;
-      font-size: 1.2rem;
-    }
-
-    /* =========================
-       EVIDENCE
-    ========================= */
-
-    .evidence {
-      margin-top: 35px;
-
-      border: 1px solid var(--border);
-      background: var(--surface);
-
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    .evidence-header {
-      padding: 14px 18px;
-
-      border-bottom: 1px solid var(--border);
-
-      color: var(--muted);
-
-      font-family: "DM Mono", monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .evidence-body {
-      padding: 22px;
-    }
-
-    .evidence-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 25px;
-
-      padding: 12px 0;
-
-      border-bottom: 1px solid rgba(137, 149, 170, 0.09);
-    }
-
-    .evidence-row:last-child {
-      border-bottom: 0;
-    }
-
-    .evidence-key {
-      color: var(--muted);
-    }
-
-    code {
-      color: var(--cyan);
-
-      font-family: "DM Mono", monospace;
-      font-size: 0.84rem;
-    }
-
-    /* =========================
-       QUESTIONS
-    ========================= */
-
-    .question {
-      margin: 38px 0;
-
-      padding-bottom: 34px;
-
-      border-bottom: 1px solid var(--border);
-    }
-
-    .question-number {
-      margin-bottom: 9px;
-
-      color: var(--cyan);
-
-      font-family: "DM Mono", monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
-    }
-
-    .question h3 {
-      margin-bottom: 18px;
-    }
-
-    .options {
-      display: grid;
-      gap: 10px;
-    }
-
-    .option {
-      position: relative;
-
-      width: 100%;
-
-      padding: 15px 17px;
-
-      background: var(--surface);
-      border: 1px solid var(--border);
-
-      color: var(--text);
-      text-align: left;
-
-      border-radius: 7px;
-
-      font: inherit;
-      cursor: pointer;
-
-      transition:
-        border-color 0.2s ease,
-        background 0.2s ease,
-        transform 0.2s ease;
-    }
-
-    .option:hover {
-      border-color: rgba(77, 232, 255, 0.35);
-      background: var(--surface-2);
-    }
-
-    .option.selected {
-      border-color: var(--cyan);
-      background: rgba(77, 232, 255, 0.06);
-    }
-
-    .option.correct {
-      border-color: #6ee7b7;
-      background: rgba(110, 231, 183, 0.07);
-    }
-
-    .option.wrong {
-      border-color: #fb7185;
-      background: rgba(251, 113, 133, 0.07);
-    }
-
-    .feedback {
-      display: none;
-
-      margin-top: 13px;
-
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    .feedback.show {
-      display: block;
-    }
-
-    /* =========================
-       RESULT
-    ========================= */
-
-    .result {
-      display: none;
-
-      margin-top: 65px;
-      padding: 35px;
-
-      border-top: 1px solid var(--cyan);
-      border-bottom: 1px solid var(--border);
-
-      background:
-        radial-gradient(
-          circle at 10% 0%,
-          rgba(77, 232, 255, 0.08),
-          transparent 40%
-        );
-    }
-
-    .result.show {
-      display: block;
-    }
-
-    .result-score {
-      margin: 8px 0 12px;
-
-      font-family: "Space Grotesk", sans-serif;
-      font-size: clamp(3rem, 8vw, 5rem);
-      line-height: 1;
-    }
-
-    .result-message {
-      color: var(--muted);
-      max-width: 600px;
-    }
-
-    .progress {
-      height: 4px;
-
-      margin-top: 25px;
-
-      background: var(--surface-2);
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      width: 0;
-      height: 100%;
-
-      background: var(--cyan);
-
-      transition: width 0.5s ease;
-    }
-
-    .retry {
-      margin-top: 25px;
-
-      padding: 12px 18px;
-
-      border: 1px solid var(--border-bright);
-      background: transparent;
-
-      color: var(--text);
-
-      font-family: "Space Grotesk", sans-serif;
-
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    .retry:hover {
-      background: rgba(77, 232, 255, 0.06);
-    }
-
-    /* =========================
-       NEXT
-    ========================= */
-
-    .article-next {
-      margin-top: 80px;
-      padding-top: 32px;
-
-      border-top: 1px solid var(--border);
-    }
-
-    .article-next-label {
-      margin-bottom: 12px;
-
-      color: var(--muted);
-
-      font-family: "DM Mono", monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
-    }
-
-    .article-next a {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-
-      color: var(--text);
-      text-decoration: none;
-
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 1.15rem;
-
-      transition: color 0.2s ease;
-    }
-
-    .article-next a:hover {
-      color: var(--cyan);
-    }
-
-    .next-arrow {
-      color: var(--cyan);
-      font-size: 1rem;
-    }
-
-    /* =========================
-       FOOTER
-    ========================= */
-
-    footer {
-      padding: 45px 0;
-
-      border-top: 1px solid var(--border);
-
-      color: var(--muted);
-      font-size: 0.82rem;
-    }
-
-    footer .container {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    /* =========================
-       RESPONSIVE
-    ========================= */
-
-    @media (max-width: 850px) {
-      .connection-flow {
-        grid-template-columns: 1fr;
-      }
-
-      .flow-arrow {
-        transform: rotate(90deg);
-      }
-    }
-
-    @media (max-width: 700px) {
-      .nav-links {
-        display: none;
-      }
-
-      .menu-button {
-        display: block;
-      }
-
-      .hero {
-        padding-top: 70px;
-      }
-
-      .evidence-row {
-        flex-direction: column;
-        gap: 4px;
-      }
-    }
-
-    @media (max-width: 500px) {
-      .container {
-        width: min(var(--max-width), calc(100% - 28px));
-      }
-
-      .nav-inner {
-        width: calc(100% - 28px);
-      }
-
-      .hero {
-        padding-bottom: 45px;
-      }
-
-      .connection {
-        padding: 18px;
-      }
-
-      .result {
-        padding: 25px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html {
-        scroll-behavior: auto;
-      }
-
-      * {
-        transition: none !important;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Trace the Connection — KSCybSec</title>
+
+    <meta
+        name="description"
+        content="A beginner-friendly networking investigation by KSCybSec."
+    >
+
+    <style>
+        :root {
+            --bg: #070B14;
+            --bg-soft: #0B1120;
+            --panel: #101827;
+            --text: #E8EDF5;
+            --muted: #8995AA;
+            --cyan: #4DE8FF;
+            --purple: #8B7CFF;
+            --green: #62e6a7;
+            --red: #ff7185;
+            --border: rgba(255,255,255,0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family:
+                Inter,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 75% 10%,
+                    rgba(77, 232, 255, 0.06),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 20% 50%,
+                    rgba(139, 124, 255, 0.04),
+                    transparent 30%
+                ),
+                var(--bg);
+
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            width: min(920px, calc(100% - 40px));
+            margin: auto;
+        }
+
+        /* NAV */
+
+        nav {
+            border-bottom: 1px solid var(--border);
+            background: rgba(7, 11, 20, 0.88);
+            backdrop-filter: blur(14px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-inner {
+            min-height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .logo {
+            font-weight: 750;
+            letter-spacing: -0.02em;
+            font-size: 1.05rem;
+        }
+
+        .logo span {
+            color: var(--cyan);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+        }
+
+        /* HERO */
+
+        .hero {
+            padding: 88px 0 58px;
+        }
+
+        .eyebrow {
+            color: var(--cyan);
+            font-size: 0.78rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+
+        h1 {
+            font-size: clamp(2.6rem, 7vw, 5rem);
+            line-height: 0.98;
+            letter-spacing: -0.055em;
+            max-width: 780px;
+            margin-bottom: 24px;
+        }
+
+        .hero p {
+            max-width: 650px;
+            color: var(--muted);
+            font-size: 1.08rem;
+        }
+
+        .clue-line {
+            margin-top: 30px;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        .clue-line span {
+            color: var(--cyan);
+        }
+
+        /* CASE INTRO */
+
+        .case {
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 52px 0;
+        }
+
+        .case-label {
+            color: var(--muted);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.13em;
+            margin-bottom: 14px;
+        }
+
+        .case h2 {
+            font-size: clamp(1.6rem, 4vw, 2.3rem);
+            margin-bottom: 18px;
+            letter-spacing: -0.025em;
+        }
+
+        .case p {
+            max-width: 680px;
+            color: var(--muted);
+        }
+
+        .symptom {
+            margin-top: 28px;
+            padding: 20px 22px;
+            border-left: 2px solid var(--cyan);
+            background: rgba(77, 232, 255, 0.035);
+        }
+
+        .symptom strong {
+            color: var(--text);
+        }
+
+        /* CONNECTION TRACE */
+
+        .trace {
+            padding: 52px 0 20px;
+        }
+
+        .trace-title {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .trace-title h2 {
+            font-size: 1.35rem;
+        }
+
+        .progress-text {
+            color: var(--muted);
+            font-size: 0.82rem;
+        }
+
+        .trace-line {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 12px 0 22px;
+        }
+
+        .trace-node {
+            min-width: 92px;
+            padding: 11px 12px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.78rem;
+            transition: 0.25s ease;
+        }
+
+        .trace-node.active {
+            border-color: rgba(77,232,255,0.6);
+            color: var(--cyan);
+            background: rgba(77,232,255,0.05);
+        }
+
+        .trace-node.done {
+            border-color: rgba(98,230,167,0.4);
+            color: var(--green);
+        }
+
+        .arrow {
+            color: #4c586b;
+            flex-shrink: 0;
+        }
+
+        /* INVESTIGATION */
+
+        .investigation {
+            padding: 28px 0 90px;
+        }
+
+        .investigation-panel {
+            border: 1px solid var(--border);
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(16,24,39,0.88),
+                    rgba(11,17,32,0.72)
+                );
+            border-radius: 16px;
+            padding: clamp(24px, 5vw, 42px);
+        }
+
+        .step-label {
+            color: var(--cyan);
+            font-size: 0.76rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .question {
+            font-size: clamp(1.35rem, 3vw, 1.9rem);
+            line-height: 1.35;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+        }
+
+        .context {
+            color: var(--muted);
+            max-width: 680px;
+            margin-bottom: 30px;
+        }
+
+        /* EVIDENCE */
+
+        .evidence {
+            margin: 25px 0 30px;
+            padding: 20px;
+            border: 1px dashed rgba(77,232,255,0.22);
+            background: rgba(0,0,0,0.12);
+            border-radius: 10px;
+        }
+
+        .evidence-label {
+            color: var(--muted);
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .evidence code {
+            font-family:
+                "SFMono-Regular",
+                Consolas,
+                "Liberation Mono",
+                monospace;
+
+            color: var(--cyan);
+            font-size: 0.95rem;
+            word-break: break-word;
+        }
+
+        /* OPTIONS */
+
+        .options {
+            display: grid;
+            gap: 11px;
+        }
+
+        .option {
+            width: 100%;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.015);
+            color: var(--text);
+            padding: 17px 18px;
+            border-radius: 10px;
+            text-align: left;
+            font: inherit;
+            cursor: pointer;
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .option:hover {
+            border-color: rgba(77,232,255,0.4);
+            background: rgba(77,232,255,0.035);
+            transform: translateY(-1px);
+        }
+
+        .option:focus-visible {
+            outline: 2px solid var(--cyan);
+            outline-offset: 3px;
+        }
+
+        .option .letter {
+            display: inline-block;
+            width: 28px;
+            color: var(--cyan);
+            font-weight: 700;
+        }
+
+        /* RESULT */
+
+        .result {
+            display: none;
+        }
+
+        .result.visible {
+            display: block;
+        }
+
+        .result-icon {
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+        }
+
+        .result h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 14px;
+        }
+
+        .result p {
+            color: var(--muted);
+            max-width: 650px;
+        }
+
+        .result-path {
+            margin: 30px 0;
+            display: grid;
+            gap: 10px;
+        }
+
+        .result-step {
+            padding: 14px 16px;
+            border-left: 2px solid var(--green);
+            background: rgba(98,230,167,0.035);
+        }
+
+        .result-step strong {
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .result-step span {
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .score {
+            margin-top: 28px;
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        .score strong {
+            color: var(--cyan);
+        }
+
+        .retry {
+            margin-top: 28px;
+            border: 1px solid rgba(77,232,255,0.45);
+            background: rgba(77,232,255,0.06);
+            color: var(--cyan);
+            padding: 13px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font: inherit;
+        }
+
+        .retry:hover {
+            background: rgba(77,232,255,0.1);
+        }
+
+        /* FOOTER */
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 32px 0;
+            color: var(--muted);
+            font-size: 0.82rem;
+        }
+
+        footer span {
+            color: var(--cyan);
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 680px) {
+            .container {
+                width: min(100% - 28px, 920px);
+            }
+
+            .nav-inner {
+                min-height: 60px;
+            }
+
+            .nav-links {
+                gap: 12px;
+                font-size: 0.78rem;
+            }
+
+            .hero {
+                padding: 65px 0 45px;
+            }
+
+            .trace-line {
+                padding-bottom: 15px;
+            }
+
+            .trace-node {
+                min-width: 82px;
+            }
+
+            .investigation {
+                padding-bottom: 60px;
+            }
+
+            .investigation-panel {
+                border-radius: 12px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            * {
+                transition: none !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-  <!-- =========================
-       NAVIGATION
-  ========================= -->
+    <!-- NAVIGATION -->
 
-  <nav>
-    <div class="nav-inner">
+    <nav>
+        <div class="container nav-inner">
 
-      <a href="index.html" class="brand">
-        KSCyb<span>Sec</span>
-      </a>
+            <a href="index.html" class="logo">
+                KSCyb<span>Sec</span>
+            </a>
 
-      <div class="nav-links">
-        <a href="index.html#start">Start Here</a>
-        <a href="index.html#latest">Articles</a>
-        <a href="index.html#topics">Topics</a>
-        <a href="index.html#explore">Explore</a>
-        <a href="index.html#about">About</a>
-      </div>
-
-      <button
-        class="menu-button"
-        id="menuButton"
-        type="button"
-        aria-label="Open navigation"
-        aria-expanded="false"
-      >
-        ☰
-      </button>
-
-    </div>
-
-    <div class="mobile-menu" id="mobileMenu">
-      <a href="index.html#start">Start Here</a>
-      <a href="index.html#latest">Articles</a>
-      <a href="index.html#topics">Topics</a>
-      <a href="index.html#explore">Explore</a>
-      <a href="index.html#about">About</a>
-    </div>
-  </nav>
-
-
-  <!-- =========================
-       HERO
-  ========================= -->
-
-  <header class="hero">
-    <div class="container">
-
-      <div class="eyebrow">
-        NETWORKING PATH · CHALLENGE
-      </div>
-
-      <h1>
-        Trace the connection.
-      </h1>
-
-      <p class="hero-description">
-        One laptop. One network. A few clues.
-        Can you follow the path from the device to the server?
-      </p>
-
-      <div class="hero-line"></div>
-
-    </div>
-  </header>
-
-
-  <main>
-
-    <div class="container">
-
-      <!-- =========================
-           STORY
-      ========================= -->
-
-      <section>
-
-        <div class="section-label">
-          THE SCENARIO
-        </div>
-
-        <h2>
-          Something is connecting.
-        </h2>
-
-        <div class="story">
-
-          <p>
-            A laptop has just joined a network.
-            It received an IP address and is trying to reach
-            a secure website.
-          </p>
-
-          <p>
-            You have been given a few pieces of evidence.
-            Your job is not to memorize the answers.
-          </p>
-
-          <p>
-            Follow the clues and figure out what happens
-            at each step.
-          </p>
-
-        </div>
-
-      </section>
-
-
-      <!-- =========================
-           CONNECTION VISUAL
-      ========================= -->
-
-      <section>
-
-        <div class="section-label">
-          FOLLOW THE PATH
-        </div>
-
-        <div class="connection">
-
-          <div class="connection-flow">
-
-            <div class="node">
-              <div class="node-label">DEVICE</div>
-              <strong>Laptop</strong>
-              <small>192.168.1.24</small>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#articles">Articles</a>
+                <a href="index.html#start">Start</a>
             </div>
 
-            <div class="flow-arrow">→</div>
+        </div>
+    </nav>
 
-            <div class="node">
-              <div class="node-label">LOCAL</div>
-              <strong>ARP</strong>
-              <small>Find the local MAC</small>
+
+    <!-- HERO -->
+
+    <header class="hero">
+        <div class="container">
+
+            <div class="eyebrow">
+                Networking Investigation · Beginner
             </div>
 
-            <div class="flow-arrow">→</div>
+            <h1>
+                Trace the<br>
+                connection.
+            </h1>
 
-            <div class="node">
-              <div class="node-label">ROUTER</div>
-              <strong>NAT</strong>
-              <small>Private → Public</small>
+            <p>
+                Something went wrong with a web connection.
+                You have a few clues, but no complete picture.
+                Follow the trail and figure out what happens
+                between a device and a website.
+            </p>
+
+            <div class="clue-line">
+                <span>Every system leaves clues.</span>
+                Follow them in the right order.
             </div>
 
-            <div class="flow-arrow">→</div>
+        </div>
+    </header>
 
-            <div class="node">
-              <div class="node-label">SERVER</div>
-              <strong>HTTPS</strong>
-              <small>:443</small>
+
+    <!-- CASE -->
+
+    <section class="case">
+        <div class="container">
+
+            <div class="case-label">
+                Case 001
             </div>
 
-          </div>
+            <h2>
+                The connection stopped somewhere.
+            </h2>
 
-        </div>
+            <p>
+                A laptop is connected to the network.
+                The user opens a browser and tries to visit a website.
+                The browser reports that the site cannot be reached.
+            </p>
 
-      </section>
-
-
-      <!-- =========================
-           EVIDENCE
-      ========================= -->
-
-      <section>
-
-        <div class="section-label">
-          EVIDENCE · 01
-        </div>
-
-        <h2>
-          The laptop joins the network.
-        </h2>
-
-        <p class="story">
-          Before the laptop can communicate normally,
-          it needs network configuration.
-        </p>
-
-        <div class="evidence">
-
-          <div class="evidence-header">
-            DHCP INFORMATION
-          </div>
-
-          <div class="evidence-body">
-
-            <div class="evidence-row">
-              <span class="evidence-key">IP address</span>
-              <code>192.168.1.24</code>
+            <div class="symptom">
+                <strong>Initial clue:</strong>
+                The laptop appears to be connected, but something
+                in the journey to the website is missing.
             </div>
 
-            <div class="evidence-row">
-              <span class="evidence-key">Subnet mask</span>
-              <code>255.255.255.0</code>
+        </div>
+    </section>
+
+
+    <!-- TRACE -->
+
+    <section class="trace">
+        <div class="container">
+
+            <div class="trace-title">
+                <h2>Connection trace</h2>
+
+                <div class="progress-text" id="progressText">
+                    Clue 1 of 5
+                </div>
             </div>
 
-            <div class="evidence-row">
-              <span class="evidence-key">Default gateway</span>
-              <code>192.168.1.1</code>
-            </div>
+            <div class="trace-line">
 
-            <div class="evidence-row">
-              <span class="evidence-key">DNS server</span>
-              <code>192.168.1.1</code>
-            </div>
+                <div class="trace-node active" data-node="0">
+                    Device
+                </div>
 
-          </div>
+                <div class="arrow">→</div>
 
-        </div>
+                <div class="trace-node" data-node="1">
+                    IP
+                </div>
 
-      </section>
+                <div class="arrow">→</div>
 
+                <div class="trace-node" data-node="2">
+                    Gateway
+                </div>
 
-      <!-- =========================
-           QUESTIONS
-      ========================= -->
+                <div class="arrow">→</div>
 
-      <section id="challenge">
+                <div class="trace-node" data-node="3">
+                    DNS
+                </div>
 
-        <div class="section-label">
-          INVESTIGATION
-        </div>
+                <div class="arrow">→</div>
 
-        <h2>
-          Connect the clues.
-        </h2>
-
-        <p class="story">
-          Choose the answer that best explains what is happening.
-          You can change your answer before submitting.
-        </p>
-
-
-        <!-- QUESTION 1 -->
-
-        <div class="question" data-question="1">
-
-          <div class="question-number">
-            CLUE · 01
-          </div>
-
-          <h3>
-            What protocol gave the laptop its network configuration?
-          </h3>
-
-          <div class="options">
-
-            <button class="option" data-answer="wrong">
-              ARP
-            </button>
-
-            <button class="option" data-answer="correct">
-              DHCP
-            </button>
-
-            <button class="option" data-answer="wrong">
-              NAT
-            </button>
-
-            <button class="option" data-answer="wrong">
-              HTTPS
-            </button>
-
-          </div>
-
-          <div class="feedback">
-            DHCP automatically provides configuration such as an IP
-            address, subnet mask, gateway and DNS server.
-          </div>
-
-        </div>
-
-
-        <!-- QUESTION 2 -->
-
-        <div class="question" data-question="2">
-
-          <div class="question-number">
-            CLUE · 02
-          </div>
-
-          <h3>
-            The laptop wants to send traffic to
-            <code>192.168.1.1</code>.
-            What helps it discover the local MAC address?
-          </h3>
-
-          <div class="options">
-
-            <button class="option" data-answer="wrong">
-              DHCP
-            </button>
-
-            <button class="option" data-answer="correct">
-              ARP
-            </button>
-
-            <button class="option" data-answer="wrong">
-              DNS
-            </button>
-
-            <button class="option" data-answer="wrong">
-              HTTP
-            </button>
-
-          </div>
-
-          <div class="feedback">
-            ARP resolves an IPv4 address to a MAC address on the
-            local network.
-          </div>
-
-        </div>
-
-
-        <!-- QUESTION 3 -->
-
-        <div class="question" data-question="3">
-
-          <div class="question-number">
-            CLUE · 03
-          </div>
-
-          <h3>
-            The destination is outside the laptop's local network.
-            Where does the traffic normally go first?
-          </h3>
-
-          <div class="options">
-
-            <button class="option" data-answer="wrong">
-              The DNS server
-            </button>
-
-            <button class="option" data-answer="correct">
-              The default gateway / router
-            </button>
-
-            <button class="option" data-answer="wrong">
-              The laptop's own MAC address
-            </button>
-
-            <button class="option" data-answer="wrong">
-              The web server directly
-            </button>
-
-          </div>
-
-          <div class="feedback">
-            The default gateway is normally the router that forwards
-            traffic toward other networks.
-          </div>
-
-        </div>
-
-
-        <!-- QUESTION 4 -->
-
-        <div class="question" data-question="4">
-
-          <div class="question-number">
-            CLUE · 04
-          </div>
-
-          <h3>
-            The laptop uses a private address:
-            <code>192.168.1.24:51520</code>.
-            The router sends the connection outward as:
-            <code>203.0.113.10:40001</code>.
-            What is happening?
-          </h3>
-
-          <div class="options">
-
-            <button class="option" data-answer="wrong">
-              ARP is changing the MAC address
-            </button>
-
-            <button class="option" data-answer="correct">
-              NAT/PAT is translating the private address and port
-            </button>
-
-            <button class="option" data-answer="wrong">
-              DNS is encrypting the connection
-            </button>
-
-            <button class="option" data-answer="wrong">
-              DHCP is assigning a second IP
-            </button>
-
-          </div>
-
-          <div class="feedback">
-            NAT/PAT can translate a private source IP and port into
-            a public IP and port while tracking the connection.
-          </div>
-
-        </div>
-
-
-        <!-- QUESTION 5 -->
-
-        <div class="question" data-question="5">
-
-          <div class="question-number">
-            CLUE · 05
-          </div>
-
-          <h3>
-            The server is listening on port <code>443</code>.
-            Which service is commonly associated with it?
-          </h3>
-
-          <div class="options">
-
-            <button class="option" data-answer="wrong">
-              SSH
-            </button>
-
-            <button class="option" data-answer="wrong">
-              DNS
-            </button>
-
-            <button class="option" data-answer="correct">
-              HTTPS
-            </button>
-
-            <button class="option" data-answer="wrong">
-              FTP
-            </button>
-
-          </div>
-
-          <div class="feedback">
-            TCP port 443 is conventionally associated with HTTPS.
-            Port numbers are conventions, not absolute guarantees.
-          </div>
-
-        </div>
-
-
-        <!-- =========================
-             FINAL CONNECTION
-        ========================= -->
-
-        <section>
-
-          <div class="section-label">
-            FINAL CLUE
-          </div>
-
-          <h2>
-            Can you reconstruct the journey?
-          </h2>
-
-          <div class="connection">
-
-            <div class="connection-flow">
-
-              <div class="node">
-                <div class="node-label">01</div>
-                <strong>DHCP</strong>
-                <small>Gets configuration</small>
-              </div>
-
-              <div class="flow-arrow">→</div>
-
-              <div class="node">
-                <div class="node-label">02</div>
-                <strong>ARP</strong>
-                <small>Finds local MAC</small>
-              </div>
-
-              <div class="flow-arrow">→</div>
-
-              <div class="node">
-                <div class="node-label">03</div>
-                <strong>Router</strong>
-                <small>Forwards traffic</small>
-              </div>
-
-              <div class="flow-arrow">→</div>
-
-              <div class="node">
-                <div class="node-label">04</div>
-                <strong>NAT</strong>
-                <small>Translates connection</small>
-              </div>
+                <div class="trace-node" data-node="4">
+                    HTTPS
+                </div>
 
             </div>
 
-          </div>
-
-          <p class="story">
-            The laptop did not simply “connect to the Internet.”
-            A chain of systems and protocols made that connection possible.
-          </p>
-
-          <p class="story">
-            That's the real skill behind networking:
-            <strong>seeing the individual clues and connecting them.</strong>
-          </p>
-
-        </section>
+        </div>
+    </section>
 
 
-        <!-- =========================
-             RESULT
-        ========================= -->
+    <!-- INVESTIGATION -->
 
-        <div class="result" id="result">
+    <main class="investigation">
+        <div class="container">
 
-          <div class="section-label">
-            INVESTIGATION COMPLETE
-          </div>
+            <div class="investigation-panel">
 
-          <div class="result-score">
-            <span id="score">0</span>/5
-          </div>
+                <!-- QUESTION AREA -->
 
-          <p class="result-message" id="resultMessage"></p>
+                <section id="questionArea">
 
-          <div class="progress">
-            <div class="progress-bar" id="progressBar"></div>
-          </div>
+                    <div class="step-label" id="stepLabel">
+                        Clue 01
+                    </div>
 
-          <button class="retry" id="retryButton" type="button">
-            Try Again
-          </button>
+                    <h2 class="question" id="question">
+                        What would you check first?
+                    </h2>
+
+                    <p class="context" id="context">
+                        Before a device can communicate normally,
+                        it needs network configuration. You have
+                        just connected this laptop to the network.
+                    </p>
+
+                    <div class="evidence">
+
+                        <div class="evidence-label">
+                            Evidence found
+                        </div>
+
+                        <code id="evidence">
+                            Network adapter: connected
+                        </code>
+
+                    </div>
+
+                    <div class="options" id="options"></div>
+
+                </section>
+
+
+                <!-- RESULT AREA -->
+
+                <section class="result" id="resultArea">
+
+                    <div class="result-icon" id="resultIcon">
+                        ✓
+                    </div>
+
+                    <h2 id="resultTitle">
+                        Connection traced.
+                    </h2>
+
+                    <p id="resultDescription">
+                        You followed the request from the device
+                        toward the website.
+                    </p>
+
+                    <div class="result-path">
+
+                        <div class="result-step">
+                            <strong>01 · DHCP</strong>
+                            <span>
+                                The device receives its network configuration.
+                            </span>
+                        </div>
+
+                        <div class="result-step">
+                            <strong>02 · IP address</strong>
+                            <span>
+                                The device gets an address such as 192.168.1.24.
+                            </span>
+                        </div>
+
+                        <div class="result-step">
+                            <strong>03 · Default gateway</strong>
+                            <span>
+                                Traffic leaving the local network goes through
+                                the gateway/router.
+                            </span>
+                        </div>
+
+                        <div class="result-step">
+                            <strong>04 · DNS</strong>
+                            <span>
+                                The domain name is resolved to an IP address.
+                            </span>
+                        </div>
+
+                        <div class="result-step">
+                            <strong>05 · TCP / HTTPS</strong>
+                            <span>
+                                The browser can then establish the connection
+                                to the web service.
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div class="score" id="score"></div>
+
+                    <button
+                        type="button"
+                        class="retry"
+                        id="retryButton"
+                    >
+                        Trace again
+                    </button>
+
+                </section>
+
+            </div>
 
         </div>
+    </main>
 
 
-        <!-- =========================
-             NEXT
-        ========================= -->
+    <!-- FOOTER -->
 
-        <div class="article-next">
-
-          <div class="article-next-label">
-            NETWORKING PATH · COMPLETE
-          </div>
-
-          <a href="index.html#explore">
-            Explore the Next Security Track
-            <span class="next-arrow">→</span>
-          </a>
-
+    <footer>
+        <div class="container">
+            KSCybSec · Cybersecurity knowledge,
+            <span>one clue at a time.</span>
         </div>
-
-      </section>
-
-    </div>
-
-  </main>
+    </footer>
 
 
-  <!-- =========================
-       FOOTER
-  ========================= -->
+    <script>
+        const investigation = [
+            {
+                label: "Clue 01",
+                node: 0,
+                question: "The laptop just joined the network. What should you look for first?",
+                context:
+                    "A device normally needs network configuration before it can communicate properly.",
+                evidence:
+                    "Network adapter: connected",
+                options: [
+                    "DHCP configuration",
+                    "Browser history",
+                    "CPU temperature",
+                    "Screen resolution"
+                ],
+                correct: 0
+            },
 
-  <footer>
+            {
+                label: "Clue 02",
+                node: 1,
+                question: "The device received this address. What does it tell you?",
+                context:
+                    "The first piece of network configuration has arrived. Now inspect the address assigned to the device.",
+                evidence:
+                    "IP address: 192.168.1.24",
+                options: [
+                    "It identifies the device on its network",
+                    "It is the website's domain name",
+                    "It is the MAC address",
+                    "It is the default gateway"
+                ],
+                correct: 0
+            },
 
-    <div class="container">
+            {
+                label: "Clue 03",
+                node: 2,
+                question: "The destination is outside the local network. Where should the traffic go next?",
+                context:
+                    "The laptop knows its own address, but the website is not sitting on the same local network.",
+                evidence:
+                    "Default gateway: 192.168.1.1",
+                options: [
+                    "To the default gateway/router",
+                    "Back to the laptop",
+                    "Directly to the DNS cache",
+                    "To the keyboard"
+                ],
+                correct: 0
+            },
 
-      <span>
-        KSCybSec — Cybersecurity knowledge, one clue at a time.
-      </span>
+            {
+                label: "Clue 04",
+                node: 3,
+                question: "The user typed a website name. What needs to happen before the browser can find its server?",
+                context:
+                    "Humans use names such as example.com. Networks ultimately communicate using IP addresses.",
+                evidence:
+                    "Requested name: example.com",
+                options: [
+                    "DNS resolves the name to an IP address",
+                    "DHCP changes the website name",
+                    "The browser converts it into a MAC address",
+                    "The gateway becomes the website"
+                ],
+                correct: 0
+            },
 
-      <span>
-        Learn · Try · Think · Verify
-      </span>
+            {
+                label: "Clue 05",
+                node: 4,
+                question: "The destination IP is known. What should you expect for a normal HTTPS connection?",
+                context:
+                    "The name has been resolved and the traffic has a destination. Now look at the transport/service side of the connection.",
+                evidence:
+                    "Destination service: HTTPS",
+                options: [
+                    "TCP connection to port 443",
+                    "DHCP on port 67",
+                    "DNS on port 25",
+                    "ARP on port 443"
+                ],
+                correct: 0
+            }
+        ];
 
-    </div>
+        let currentStep = 0;
+        let score = 0;
 
-  </footer>
+        const questionArea =
+            document.getElementById("questionArea");
 
+        const resultArea =
+            document.getElementById("resultArea");
 
-  <script>
-    /* =========================
-       MOBILE MENU
-    ========================= */
+        const stepLabel =
+            document.getElementById("stepLabel");
 
-    const menuButton = document.getElementById("menuButton");
-    const mobileMenu = document.getElementById("mobileMenu");
+        const question =
+            document.getElementById("question");
 
-    menuButton.addEventListener("click", () => {
-      const isOpen = mobileMenu.classList.toggle("open");
+        const context =
+            document.getElementById("context");
 
-      menuButton.setAttribute(
-        "aria-expanded",
-        String(isOpen)
-      );
-    });
+        const evidence =
+            document.getElementById("evidence");
 
-    document.querySelectorAll(".mobile-menu a").forEach(link => {
-      link.addEventListener("click", () => {
-        mobileMenu.classList.remove("open");
-        menuButton.setAttribute("aria-expanded", "false");
-      });
-    });
+        const optionsContainer =
+            document.getElementById("options");
 
+        const progressText =
+            document.getElementById("progressText");
 
-    /* =========================
-       CHALLENGE
-    ========================= */
+        const traceNodes =
+            document.querySelectorAll(".trace-node");
 
-    const questions = document.querySelectorAll(".question");
+        const resultIcon =
+            document.getElementById("resultIcon");
 
-    const answers = {};
+        const resultTitle =
+            document.getElementById("resultTitle");
 
-    questions.forEach(question => {
+        const resultDescription =
+            document.getElementById("resultDescription");
 
-      const questionNumber =
-        question.dataset.question;
+        const scoreText =
+            document.getElementById("score");
 
-      const options =
-        question.querySelectorAll(".option");
-
-      const feedback =
-        question.querySelector(".feedback");
-
-      options.forEach(option => {
-
-        option.addEventListener("click", () => {
-
-          options.forEach(item => {
-            item.classList.remove(
-              "selected",
-              "correct",
-              "wrong"
-            );
-          });
-
-          option.classList.add("selected");
-
-          answers[questionNumber] =
-            option.dataset.answer === "correct";
-
-          if (option.dataset.answer === "correct") {
-
-            option.classList.remove("selected");
-            option.classList.add("correct");
-
-            feedback.textContent =
-              question.querySelector(".feedback").textContent;
-
-          } else {
-
-            option.classList.remove("selected");
-            option.classList.add("wrong");
-
-            feedback.textContent =
-              "Not quite. Look at the role this protocol plays in the connection.";
-
-          }
-
-          feedback.classList.add("show");
-
-          checkCompletion();
-        });
-
-      });
-
-    });
+        const retryButton =
+            document.getElementById("retryButton");
 
 
-    /* =========================
-       CHECK COMPLETION
-    ========================= */
+        function updateTrace() {
 
-    function checkCompletion() {
+            traceNodes.forEach((node, index) => {
 
-      const completed =
-        Object.keys(answers).length === questions.length;
+                node.classList.remove("active");
+                node.classList.remove("done");
 
-      if (!completed) {
-        return;
-      }
+                if (index < currentStep) {
+                    node.classList.add("done");
+                }
 
-      let score = 0;
-
-      Object.values(answers).forEach(answer => {
-        if (answer) {
-          score++;
+                if (index === currentStep) {
+                    node.classList.add("active");
+                }
+            });
         }
-      });
-
-      showResult(score);
-    }
 
 
-    /* =========================
-       RESULT
-    ========================= */
+        function loadInvestigationStep() {
 
-    function showResult(score) {
+            const step = investigation[currentStep];
 
-      const result =
-        document.getElementById("result");
+            stepLabel.textContent = step.label;
 
-      const scoreElement =
-        document.getElementById("score");
+            question.textContent = step.question;
 
-      const messageElement =
-        document.getElementById("resultMessage");
+            context.textContent = step.context;
 
-      const progressBar =
-        document.getElementById("progressBar");
+            evidence.textContent = step.evidence;
 
-      scoreElement.textContent = score;
+            progressText.textContent =
+                `Clue ${currentStep + 1} of ${investigation.length}`;
 
-      const percentage =
-        Math.round((score / questions.length) * 100);
+            optionsContainer.innerHTML = "";
 
-      progressBar.style.width =
-        percentage + "%";
+            step.options.forEach((option, index) => {
 
+                const button =
+                    document.createElement("button");
 
-      if (score === 5) {
+                button.type = "button";
 
-        messageElement.textContent =
-          "Perfect. You connected the full chain — DHCP, ARP, routing, NAT and HTTPS. You are ready to move beyond the basic network clues.";
+                button.className = "option";
 
-      } else if (score >= 3) {
+                button.innerHTML = `
+                    <span class="letter">
+                        ${String.fromCharCode(65 + index)}
+                    </span>
+                    ${option}
+                `;
 
-        messageElement.textContent =
-          "Good investigation. You have the main networking pieces connected. Review the clues you missed, then try the challenge again if you want a stronger foundation.";
+                button.addEventListener("click", () => {
+                    handleAnswer(index);
+                });
 
-      } else {
-
-        messageElement.textContent =
-          "The clues are there — they just need connecting. Revisit the networking articles around DHCP, ARP, routers and NAT, then come back and investigate again.";
-
-      }
-
-      result.classList.add("show");
-
-      setTimeout(() => {
-        result.scrollIntoView({
-          behavior: "smooth",
-          block: "center"
-        });
-      }, 100);
-    }
-
-
-    /* =========================
-       RETRY
-    ========================= */
-
-    document
-      .getElementById("retryButton")
-      .addEventListener("click", () => {
-
-        Object.keys(answers).forEach(key => {
-          delete answers[key];
-        });
-
-        questions.forEach(question => {
-
-          question
-            .querySelectorAll(".option")
-            .forEach(option => {
-              option.classList.remove(
-                "selected",
-                "correct",
-                "wrong"
-              );
+                optionsContainer.appendChild(button);
             });
 
-          question
-            .querySelector(".feedback")
-            .classList.remove("show");
+            updateTrace();
+        }
 
-        });
 
-        document
-          .getElementById("result")
-          .classList.remove("show");
+        function handleAnswer(selectedIndex) {
 
-        document
-          .getElementById("challenge")
-          .scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-          });
+            const step = investigation[currentStep];
 
-      });
-  </script>
+            if (selectedIndex === step.correct) {
+                score++;
+            }
+
+            currentStep++;
+
+            if (currentStep < investigation.length) {
+
+                loadInvestigationStep();
+
+            } else {
+
+                showResult();
+            }
+        }
+
+
+        function showResult() {
+
+            questionArea.style.display = "none";
+
+            resultArea.classList.add("visible");
+
+            traceNodes.forEach(node => {
+                node.classList.remove("active");
+                node.classList.add("done");
+            });
+
+            progressText.textContent =
+                "Investigation complete";
+
+            if (score === 5) {
+
+                resultIcon.textContent = "✓";
+
+                resultTitle.textContent =
+                    "Connection traced.";
+
+                resultDescription.textContent =
+                    "You followed the clues from the device all the way to the web service. Nothing in the path was skipped.";
+
+                scoreText.innerHTML =
+                    `<strong>5 / 5 clues followed.</strong> You found the trail.`;
+
+            } else if (score >= 3) {
+
+                resultIcon.textContent = "◐";
+
+                resultTitle.textContent =
+                    "Mostly traced.";
+
+                resultDescription.textContent =
+                    "You found most of the path. A couple of clues slipped past you, but the connection trail is starting to make sense.";
+
+                scoreText.innerHTML =
+                    `<strong>${score} / 5 clues followed.</strong> Trace the networking path once more and see what you missed.`;
+
+            } else {
+
+                resultIcon.textContent = "×";
+
+                resultTitle.textContent =
+                    "Connection lost.";
+
+                resultDescription.textContent =
+                    "The clues were there, but the path got interrupted. Go back through the networking articles and try the investigation again.";
+
+                scoreText.innerHTML =
+                    `<strong>${score} / 5 clues followed.</strong> The trail is still there.`;
+
+            }
+        }
+
+
+        function resetInvestigation() {
+
+            currentStep = 0;
+
+            score = 0;
+
+            questionArea.style.display = "block";
+
+            resultArea.classList.remove("visible");
+
+            loadInvestigationStep();
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+
+
+        retryButton.addEventListener(
+            "click",
+            resetInvestigation
+        );
+
+
+        loadInvestigationStep();
+    </script>
 
 </body>
 </html>
