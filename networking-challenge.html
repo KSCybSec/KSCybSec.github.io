@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,10 +12,6 @@
     >
 
     <style>
-
-        /* =========================================================
-           KSCYBSEC — TRACE THE CONNECTION
-        ========================================================= */
 
         :root {
             --bg: #070B14;
@@ -95,9 +90,9 @@
         }
 
 
-        /* =========================================================
-           NAVIGATION
-        ========================================================= */
+        /* =========================
+           NAV
+        ========================= */
 
         nav {
             position: sticky;
@@ -160,9 +155,9 @@
         }
 
 
-        /* =========================================================
+        /* =========================
            HERO
-        ========================================================= */
+        ========================= */
 
         .hero {
             padding: 88px 0 62px;
@@ -181,12 +176,6 @@
             text-transform: uppercase;
         }
 
-
-        /*
-            IMPORTANT:
-            Main title stays the original KSCybSec light color.
-            Cyan is used only as an accent.
-        */
 
         h1 {
             max-width: 800px;
@@ -230,9 +219,9 @@
         }
 
 
-        /* =========================================================
-           CASE INTRO
-        ========================================================= */
+        /* =========================
+           CASE
+        ========================= */
 
         .case {
             padding: 48px 0;
@@ -292,9 +281,9 @@
         }
 
 
-        /* =========================================================
-           CONNECTION TRACE
-        ========================================================= */
+        /* =========================
+           TRACE
+        ========================= */
 
         .trace {
             padding: 46px 0 18px;
@@ -339,8 +328,6 @@
 
 
         .trace-node {
-            position: relative;
-
             min-width: 92px;
 
             padding: 10px 12px;
@@ -402,9 +389,9 @@
         }
 
 
-        /* =========================================================
+        /* =========================
            INVESTIGATION
-        ========================================================= */
+        ========================= */
 
         .investigation {
             padding: 26px 0 90px;
@@ -461,9 +448,9 @@
         }
 
 
-        /* =========================================================
+        /* =========================
            EVIDENCE
-        ========================================================= */
+        ========================= */
 
         .evidence {
             margin-bottom: 25px;
@@ -501,9 +488,9 @@
         }
 
 
-        /* =========================================================
-           COLLAPSIBLE OPTIONS
-        ========================================================= */
+        /* =========================
+           ANSWERS
+        ========================= */
 
         .options {
             display: grid;
@@ -632,16 +619,17 @@
 
 
         .choose:focus-visible,
-        .retry:focus-visible {
+        .retry:focus-visible,
+        .next-path-link:focus-visible {
             outline: 2px solid var(--cyan);
 
             outline-offset: 3px;
         }
 
 
-        /* =========================================================
+        /* =========================
            RESULT
-        ========================================================= */
+        ========================= */
 
         .result {
             display: none;
@@ -695,10 +683,6 @@
             border-left: 2px solid var(--green);
 
             background: rgba(98,230,167,0.035);
-
-            transition:
-                border-color 0.3s ease,
-                background 0.3s ease;
         }
 
 
@@ -746,9 +730,121 @@
         }
 
 
-        /* =========================================================
-           5/5 CELEBRATION
-        ========================================================= */
+        /* =========================
+           NEXT PATH
+        ========================= */
+
+        .next-path {
+            display: none;
+
+            margin-top: 36px;
+
+            padding: 26px 0 4px;
+
+            border-top: 1px solid rgba(77,232,255,0.18);
+        }
+
+
+        .next-path.show {
+            display: block;
+
+            animation:
+                nextPathReveal 0.75s
+                cubic-bezier(.2,.8,.2,1)
+                forwards;
+        }
+
+
+        .next-path-label {
+            margin-bottom: 9px;
+
+            color: var(--cyan);
+
+            font-size: 0.7rem;
+            font-weight: 700;
+
+            letter-spacing: 0.17em;
+
+            text-transform: uppercase;
+        }
+
+
+        .next-path h3 {
+            margin-bottom: 10px;
+
+            color: var(--text);
+
+            font-size: clamp(1.5rem, 4vw, 2rem);
+
+            letter-spacing: -0.03em;
+        }
+
+
+        .next-path p {
+            max-width: 680px;
+
+            margin-bottom: 20px;
+
+            color: var(--muted);
+
+            font-size: 0.92rem;
+        }
+
+
+        .next-path-link {
+            display: inline-flex;
+            align-items: center;
+
+            padding: 12px 17px;
+
+            border: 1px solid rgba(77,232,255,0.42);
+            border-radius: 8px;
+
+            background: rgba(77,232,255,0.055);
+
+            color: var(--cyan);
+
+            font-size: 0.88rem;
+            font-weight: 650;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .next-path-link:hover {
+            background: rgba(77,232,255,0.1);
+
+            border-color: rgba(77,232,255,0.68);
+
+            transform: translateY(-1px);
+        }
+
+
+        @keyframes nextPathReveal {
+
+            from {
+                opacity: 0;
+
+                transform:
+                    translateY(14px);
+            }
+
+            to {
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+            }
+
+        }
+
+
+        /* =========================
+           CELEBRATION
+        ========================= */
 
         .celebration {
             position: fixed;
@@ -1006,9 +1102,9 @@
         }
 
 
-        /* =========================================================
+        /* =========================
            FOOTER
-        ========================================================= */
+        ========================= */
 
         footer {
             padding: 30px 0;
@@ -1026,9 +1122,9 @@
         }
 
 
-        /* =========================================================
+        /* =========================
            MOBILE
-        ========================================================= */
+        ========================= */
 
         @media (max-width: 680px) {
 
@@ -1071,9 +1167,9 @@
         }
 
 
-        /* =========================================================
+        /* =========================
            REDUCED MOTION
-        ========================================================= */
+        ========================= */
 
         @media (prefers-reduced-motion: reduce) {
 
@@ -1086,7 +1182,8 @@
             .celebration-content,
             .celebration-mark,
             .celebration-glow,
-            .particle {
+            .particle,
+            .next-path.show {
                 animation: none;
             }
 
@@ -1104,9 +1201,9 @@
 <body>
 
 
-<!-- =============================================================
-     NAVIGATION
-============================================================= -->
+<!-- =========================
+     NAV
+========================= -->
 
 <nav>
 
@@ -1139,9 +1236,9 @@
 
 
 
-<!-- =============================================================
+<!-- =========================
      HERO
-============================================================= -->
+========================= -->
 
 <header class="hero">
 
@@ -1182,9 +1279,9 @@
 
 
 
-<!-- =============================================================
+<!-- =========================
      CASE
-============================================================= -->
+========================= -->
 
 <section class="case">
 
@@ -1225,9 +1322,9 @@
 
 
 
-<!-- =============================================================
-     CONNECTION TRACE
-============================================================= -->
+<!-- =========================
+     TRACE
+========================= -->
 
 <section class="trace">
 
@@ -1316,9 +1413,9 @@
 
 
 
-<!-- =============================================================
+<!-- =========================
      INVESTIGATION
-============================================================= -->
+========================= -->
 
 <main class="investigation">
 
@@ -1372,9 +1469,7 @@
 
 
 
-            <!-- =================================================
-                 RESULT
-            ================================================= -->
+            <!-- RESULT -->
 
             <section
                 class="result"
@@ -1475,6 +1570,42 @@
                 ></div>
 
 
+                <!-- NEXT PATH -->
+
+                <div
+                    class="next-path"
+                    id="nextPath"
+                >
+
+                    <div class="next-path-label">
+                        NEXT PATH UNLOCKED
+                    </div>
+
+
+                    <h3>
+                        Offensive Security
+                    </h3>
+
+
+                    <p>
+                        You traced the connection. Now it's time
+                        to look at the other side of cybersecurity —
+                        how security testers discover weaknesses,
+                        investigate attack surfaces, and understand
+                        how systems can be attacked.
+                    </p>
+
+
+                    <a
+                        href="offensive-security.html"
+                        class="next-path-link"
+                    >
+                        Enter Offensive Security →
+                    </a>
+
+                </div>
+
+
                 <button
                     type="button"
                     class="retry"
@@ -1493,9 +1624,9 @@
 
 
 
-<!-- =============================================================
-     5/5 CELEBRATION
-============================================================= -->
+<!-- =========================
+     CELEBRATION
+========================= -->
 
 <div
     class="celebration"
@@ -1524,7 +1655,7 @@
 
 
         <p>
-            All five networking clues connected.
+            Networking path complete. A new path is now unlocked.
         </p>
 
     </div>
@@ -1539,9 +1670,9 @@
 
 
 
-<!-- =============================================================
+<!-- =========================
      FOOTER
-============================================================= -->
+========================= -->
 
 <footer>
 
@@ -1958,6 +2089,10 @@
         document.getElementById("retry");
 
 
+    const nextPath =
+        document.getElementById("nextPath");
+
+
     const celebration =
         document.getElementById("celebration");
 
@@ -2053,11 +2188,6 @@
                     document.createElement("details");
 
 
-                /*
-                    Named details create an exclusive
-                    accordion group in supported browsers.
-                */
-
                 details.name =
                     "answer-options";
 
@@ -2134,7 +2264,6 @@
 
                             loadClue();
 
-
                         } else {
 
                             showResult();
@@ -2179,12 +2308,6 @@
         particles.innerHTML = "";
 
 
-        /*
-            Create subtle cyan particles.
-            They are deliberately restrained to keep
-            the KSCybSec cinematic aesthetic.
-        */
-
         for (let i = 0; i < 32; i++) {
 
             const particle =
@@ -2219,11 +2342,6 @@
 
         }
 
-
-        /*
-            Return to the result screen after
-            the celebration has played.
-        */
 
         setTimeout(
             function() {
@@ -2291,9 +2409,11 @@
             "Investigation complete";
 
 
-        if (score === clues.length) {
+        /*
+         * 5 / 5
+         */
 
-          
+        if (score === clues.length) {
 
             resultIcon.textContent =
                 "✓";
@@ -2307,21 +2427,47 @@
                 "You followed every clue from the device to the web service.";
 
 
-            scoreDisplay.innerHTML =
+            scoreDisplay.innerHTML = `
 
-                `<strong>
+                <strong>
                     5 / 5 clues followed.
                 </strong>
-                You found the complete trail.`;
+
+                You found the complete trail.
+
+            `;
 
 
-            
+            /*
+             * Start the cinematic celebration.
+             */
+
             launchCelebration();
 
 
+            /*
+             * Reveal the next path only after
+             * the celebration has finished.
+             */
+
+            setTimeout(
+                function() {
+
+                    nextPath.classList.add(
+                        "show"
+                    );
+
+                },
+                3600
+            );
+
+
+        /*
+         * 3–4 / 5
+         */
+
         } else if (score >= 3) {
 
-           
             resultIcon.textContent =
                 "◐";
 
@@ -2334,16 +2480,21 @@
                 "You followed most of the connection path. A few clues were easy to miss.";
 
 
-            scoreDisplay.innerHTML =
+            scoreDisplay.innerHTML = `
 
-                `<strong>
+                <strong>
                     ${score} / ${clues.length} clues followed.
-                </strong>`;
+                </strong>
 
+            `;
+
+
+        /*
+         * 0–2 / 5
+         */
 
         } else {
 
-        
             resultIcon.textContent =
                 "×";
 
@@ -2356,11 +2507,13 @@
                 "The clues were there, but the trail got interrupted. Review the networking path and investigate again.";
 
 
-            scoreDisplay.innerHTML =
+            scoreDisplay.innerHTML = `
 
-                `<strong>
+                <strong>
                     ${score} / ${clues.length} clues followed.
-                </strong>`;
+                </strong>
+
+            `;
 
         }
 
@@ -2368,7 +2521,9 @@
 
 
 
-
+    /* =========================================================
+       RESET
+    ========================================================= */
 
     function resetInvestigation() {
 
@@ -2390,6 +2545,11 @@
 
         particles.innerHTML =
             "";
+
+
+        nextPath.classList.remove(
+            "show"
+        );
 
 
         resultArea.classList.remove(
@@ -2414,6 +2574,12 @@
 
     }
 
+
+
+    /* =========================================================
+       RETRY
+    ========================================================= */
+
     retry.addEventListener(
         "click",
         resetInvestigation
@@ -2421,6 +2587,9 @@
 
 
 
+    /* =========================================================
+       START
+    ========================================================= */
 
     loadClue();
 
